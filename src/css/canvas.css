@@ -30,10 +30,11 @@
   border-radius: 50%;
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
   transition: opacity 0.1s ease;
-  opacity: 0;
+  opacity: 1;
   background: url(../images/headToWin/fruit1.png);
   background-position: center;
   background-size: cover;
+  transform: scale(1);
 }
 
 .buttonWrapper {
@@ -239,6 +240,19 @@
   animation-name: fallingAnimation;
   animation-duration: var(--fallingSpeed);
   animation-timing-function: linear;
+  transform: scale(1);
+}
+
+.canvasWrapper > .optionArea > .optionWrapper.showBonunce {
+  position: absolute;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-name: bounceAnimation;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  transform-origin: center bottom;
 }
 
 .canvasWrapper > .optionArea > .optionWrapper > .option {
@@ -257,9 +271,14 @@
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+  transform-origin: center center; /* Ensure the options scale from the center */
+  will-change: transform; /* Optimize the animation */
 }
 
 :root {
+  --bounce-x: 0px;
+  --head-position-x: 0px;
+  --head-position-y: 0px;
   --fallingSpeed: 2.5s;
   --top-height: 0px;
   --bottom-height: 200px;
@@ -277,12 +296,24 @@
   animation-duration: 1s;
 }
 
-@keyframes fallingAnimation {
+@keyframes bounceAnimation {
   0% {
-    transform: translateY(var(--top-height));
+    transform: translate(0, var(--head-position-y))scale(1);
+  }
+  25% {
+    transform: translate(var(--bounce-x), calc(var(--head-position-y) - 100px)) scale(1);
   }
   100% {
-    transform: translateY(var(--bottom-height));
+    transform: translate(var(--bounce-x), var(--bottom-height)) scale(0.8);
+  }
+}
+
+@keyframes fallingAnimation {
+  0% {
+    transform: translateY(var(--top-height)) rotate(0deg);
+  }
+  100% {
+    transform: translateY(var(--bottom-height)) rotate(360deg);
   }
 }
 

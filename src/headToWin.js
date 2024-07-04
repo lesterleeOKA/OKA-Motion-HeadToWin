@@ -36,7 +36,7 @@ export default {
   eachQAMark: 0,
   isPlayLastTen: false,
   isTriggeredBackSpace: false,
-  selectedCount: 0,
+  selectedCount: -1,
 
   init() {
     //View.showTips('tipsReady');
@@ -70,7 +70,7 @@ export default {
     this.redBoxHeight = (View.canvas.height / 5) * 2;
     this.leftCount = 0;
     this.rightCount = 0;
-    this.fallingDelay = 800;
+    this.fallingDelay = 500;
     View.stageImg.innerHTML = '';
     View.optionArea.innerHTML = '';
     document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
@@ -86,7 +86,7 @@ export default {
     }
     this.isPlayLastTen = false;
     this.isTriggeredBackSpace = false;
-    this.selectedCount = 0;
+    this.selectedCount = Math.floor(Math.random() * 5);
   },
 
   handleVisibilityChange() {
@@ -273,7 +273,7 @@ export default {
   },
 
   getBalancedColumn() {
-    if (this.selectedCount < 3)
+    if (this.selectedCount < 5)
       this.selectedCount += 1;
     else
       this.selectedCount = 0;
@@ -281,7 +281,7 @@ export default {
     return this.selectedCount;
   },
 
-  generatePositionX(columnId) {
+  /*generatePositionX(columnId) {
     //console.log("Generated X", columnId);
     const isLeft = columnId < Math.floor(this.redBoxX / this.optionSize);
     let numColumns, columnWidth;
@@ -295,7 +295,30 @@ export default {
       columnWidth = (View.canvas.width - this.redBoxX - this.redBoxWidth - 10) / numColumns;
       return this.redBoxX + this.redBoxWidth + (columnId - Math.floor(this.redBoxX / this.optionSize)) * columnWidth + 15;
     }
+  },*/
+
+  generatePositionX(columnId) {
+    const canvasWidth = View.canvas.width;
+    const offset = 20; // Define the offset distance from the edges
+
+    // Calculate the total available width for columns after accounting for the offset on both sides
+    const availableWidth = canvasWidth;
+
+    // Calculate the total number of columns that fit within the available width
+    const numColumns = Math.floor(availableWidth / (this.optionSize + offset));
+
+    // Calculate the width of each column
+    const columnWidth = availableWidth / numColumns;
+
+    // Calculate the X position based on the columnId
+    let positionX = columnId * columnWidth + offset; // Center the position within the column
+
+    if (positionX + columnWidth / 2 > canvasWidth - offset) {
+      positionX = canvasWidth - offset - columnWidth / 2;
+    }
+    return positionX;
   },
+
   getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   },
@@ -642,7 +665,7 @@ export default {
     View.stageImg.innerHTML = '';
     View.optionArea.innerHTML = '';
   },
-  fillWord(option) {
+  fillWord(option, headPosition) {
     if (this.answerWrapper) {
       if (this.fillwordTime < this.answerLength) {
         this.answerWrapper.textContent += option.getAttribute('word');
@@ -653,11 +676,21 @@ export default {
           }
         }
         else {
+          // console.log("headPosition", headPosition);
+          const screenCenterX = View.canvas.width / 2;
+
+          let bounceX;
+          console.log("screenCenterX", screenCenterX);
+          console.log("option left", option.offsetLeft);
+
+          bounceX = (option.offsetLeft - headPosition.x) / 5;
+          option.style.setProperty('--bounce-x', `${bounceX}px`);
+
+          option.style.setProperty('--head-position-x', `${0}px`);
+          option.style.setProperty('--head-position-y', `${headPosition.y}px`);
           option.classList.remove('show');
-          //option.classList.add('fadeOut');
-          //this.removeFallingItem()
-          //View.optionArea.removeChild(option);
-          //this.removeFallingItem(option);
+          option.classList.add('showBonunce');
+
           console.log("deduct:", option);
           this.typedItems.push(option);
         }
@@ -723,7 +756,7 @@ export default {
     this.column2Count = 0;
     this.column3Count = 0;
     this.column4Count = 0;
-    this.selectedCount = 0;
+    this.selectedCount = Math.floor(Math.random() * 5);
   },
   checkAnswer(answer) {
     if (answer === this.randomQuestion.correctAnswer) {
@@ -745,6 +778,6 @@ export default {
     View.stageImg.innerHTML = '';
     setTimeout(() => {
       this.nextQuestion = true;
-    }, 500);
+    }, 1000);
   }
 }

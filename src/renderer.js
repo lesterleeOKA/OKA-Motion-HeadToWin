@@ -14,7 +14,9 @@ export class RendererCanvas2d {
     this.modelType = posedetection.SupportedModels.BlazePose;
     this.scoreThreshold = 0.75;
     this.triggerAudio = false;
-    this.headKeypoints = ['nose', 'left_eye_inner', 'left_eye', 'left_eye_outer', 'right_eye_inner', 'right_eye', 'right_eye_outer', 'left_ear', 'right_ear', 'mouth_left', 'mouth_right'];
+    this.headKeypoints = ['nose', 'left_eye_inner', 'left_eye', 'left_eye_outer', 'right_eye_inner', 'right_eye', 'right_eye_outer', 'left_ear', 'right_ear'];
+    this.topmostPoint = null;
+    this.headCircle = null;
   }
 
   draw(rendererParams) {
@@ -24,7 +26,7 @@ export class RendererCanvas2d {
     this.ctx.canvas.width = this.videoWidth;
     this.ctx.canvas.height = this.videoHeight;
 
-    this.lineHeight = this.videoHeight / 2;
+    this.lineHeight = this.videoHeight / 2.5;
     /*this.redBoxX = this.videoWidth / 3;
     this.redBoxY = this.videoHeight / 5 * 1;
     this.redBoxWidth = this.videoWidth / 3;
@@ -81,20 +83,36 @@ export class RendererCanvas2d {
     }
   }
 
+  checkCircleRectIntersection(
+    circleX, circleY, circleRadius,
+    rectLeft, rectTop, rectRight, rectBottom
+  ) {
+    // Calculate the distance between the circle center and the closest point on the rectangle
+    let distanceX = Math.max(rectLeft - circleX, 0, circleX - rectRight);
+    let distanceY = Math.max(rectTop - circleY, 0, circleY - rectBottom);
+
+    // Check if the distance is less than the circle radius
+    let distanceSquared = distanceX * distanceX + distanceY * distanceY;
+    return distanceSquared <= (circleRadius * circleRadius);
+  }
+
   isPoseValid(poses) {
     if (!poses[0]) return false;
     let pose = poses[0];
-    let passScore = this.scoreThreshold;
+    //let passScore = this.scoreThreshold;
+    let isBodyOutBox;
 
     if (pose.keypoints != null) {
       //nose, left_eye_inner, left_eye, left_eye_outer, right_eye_inner, right_eye, right_eye_outer, left_ear, right_ear, mouth_left, mouth_right, left_shoulder, right_shoulder, left_elbow, right_elbow, left_wrist, right_wrist, left_pinky, right_pinky, left_index, right_index, left_thumb, right_thumb, left_hip, right_hip, left_knee, right_knee, left_ankle, right_ankle, left_heel, right_heel, left_foot_index, right_foot_index
       //let checkKeypoints = pose.keypoints.filter(k=>['left_shoulder', 'right_shoulder', 'left_elbow', 'right_elbow', 'left_wrist', 'right_wrist', 'left_hip', 'right_hip', 'left_knee', 'right_knee'].includes(k.name) && k.score>0.65);
-      let checkKeypoints = pose.keypoints.filter(k => k.name == 'nose' && k.score > passScore);
-      let isBodyOutBox = (
-        checkKeypoints.find(keypoint => (
-          keypoint.y < this.lineHeight
-        )) ? true : false
-      );
+      //let checkKeypoints = pose.keypoints.filter(k => k.name == 'nose' && k.score > passScore);
+      if (this.topmostPoint) {
+        isBodyOutBox = this.topmostPoint.y < this.lineHeight ? true : false
+      }
+      else {
+        isBodyOutBox = false;
+      }
+
       State.setPoseState('bodyInsideRedBox', !isBodyOutBox);
       if (isBodyOutBox) {
         if (State.state == 'playing') State.changeState('outBox', 'outBox');
@@ -113,94 +131,35 @@ export class RendererCanvas2d {
         }
       }
 
-      let resetBtn = document.querySelector('.resetBtn');
+      //let resetBtn = document.querySelector('.resetBtn');
 
       //檢查是否有選到圖
       let optionWrappers = document.querySelectorAll('.canvasWrapper > .optionArea > .optionWrapper.show');
       let canvasWrapper = document.querySelector('.canvasWrapper');
       if (State.state == 'playing' && ['waitAns'].includes(State.stateType)) {
-        let checkKeypoints = pose.keypoints.filter(k => ['right_index', 'left_index'].includes(k.name) && k.score > passScore);
+
         let touchingWord = [];
-
-        for (let point of checkKeypoints) {
-
-          if (questionBoard) {
-
-            const questionBoardOffsetLeft = questionBoard.offsetLeft;
-            const questionBoardOffsetTop = questionBoard.offsetTop;
-            const questionBoardWidth = questionBoard.offsetWidth;
-            const questionBoardHeight = questionBoard.offsetHeight;
-
-            if (
-              point.x > questionBoardOffsetLeft * 2.5 &&
-              point.x < (questionBoardOffsetLeft * 2 + questionBoardWidth * 1.5) &&
-              point.y > questionBoardOffsetTop &&
-              point.y < (questionBoardOffsetTop + questionBoardHeight * 0.5
-              )
-            ) {
-              //console.log('touch question board!!!!!!!!!!!!!!!!!!!!!!');
-              if (!this.triggerAudio) {
-                Game.motionTriggerPlayAudio(true);
-                this.triggerAudio = true;
-              }
-            }
-            else {
-              Game.motionTriggerPlayAudio(false);
-              this.triggerAudio = false;
-            }
-          }
-
-
-          if (resetBtn) {
-            if (
-              point.x > (resetBtn.offsetLeft * 2 + 20) &&
-              point.x < (resetBtn.offsetLeft * 2 + (resetBtn.offsetWidth * 2) - 20) &&
-              point.y > (resetBtn.offsetTop + 20) &&
-              point.y < (resetBtn.offsetTop + (resetBtn.offsetHeight - 20)) &&
-              !Game.isTriggeredBackSpace
-            ) {
-
-              if (!resetBtn.classList.contains('active')) {
-                if (!Game.isTriggeredBackSpace) {
-                  if (State.isSoundOn) {
-                    Sound.stopAll(['bgm', 'lastTen']);
-                    Sound.play('btnClick');
-                  }
-                  for (let option of optionWrappers) option.classList.remove('touch');
-                  Game.backSpaceWord();
-                  resetBtn.classList.add('active');
-                }
-              }
-              //console.log("reset word");
-            } else {
-              resetBtn.classList.remove('active');
-            }
-          }
-
-
+        if (this.headCircle) {
+          const canvasWrapperRect = canvasWrapper.getBoundingClientRect();
+          //console.log(this.headCircle);
           for (let option of optionWrappers) {
-
             const optionRect = option.getBoundingClientRect();
-            const canvasWrapperRect = canvasWrapper.getBoundingClientRect();
-
             if (
-              point.x > (optionRect.left - canvasWrapperRect.left) &&
-              point.x < (optionRect.right - canvasWrapperRect.left) &&
-              point.y > (optionRect.top - canvasWrapperRect.top) &&
-              point.y < (optionRect.bottom - canvasWrapperRect.top) &&
-              !Game.isTriggeredBackSpace
+              (this.topmostPoint.x + this.topmostPoint.radius) > (optionRect.left - canvasWrapperRect.left) &&
+              (this.topmostPoint.x - this.topmostPoint.radius) < (optionRect.right - canvasWrapperRect.left) &&
+              this.topmostPoint.y > (optionRect.top - canvasWrapperRect.top) &&
+              this.topmostPoint.y < (optionRect.bottom - canvasWrapperRect.top)
             ) {
               touchingWord.push(option);
             }
-            //console.log(point);
           }
         }
 
         for (let option of optionWrappers) {
           if (touchingWord.includes(option) && !option.classList.contains('touch')) {
             State.setPoseState('selectedImg', option);
-            //console.log("touch ", option);
-            Game.fillWord(option);
+            console.log("touch ", option);
+            Game.fillWord(option, this.topmostPoint);
           }
         }
 
@@ -325,6 +284,10 @@ export class RendererCanvas2d {
     this.ctx.strokeStyle = color;
     this.ctx.lineWidth = 2;
 
+    let leftEar = null;
+    let rightEar = null;
+    let offsetY = null;
+
     posedetection.util.getAdjacentPairs(this.modelType).forEach(([i, j]) => {
 
       const kp1 = keypoints[i];
@@ -341,7 +304,47 @@ export class RendererCanvas2d {
         this.ctx.lineTo(kp2.x, kp2.y);
         this.ctx.stroke();
       }
+
+      // Store keypoints for left and right eye outer
+      if (kp1.name === 'left_ear') leftEar = kp1;
+      if (kp1.name === 'right_ear') rightEar = kp1;
+      if (kp2.name === 'left_ear') leftEar = kp2;
+      if (kp2.name === 'right_ear') rightEar = kp2;
     });
+
+    // Draw circle around the head
+    if (leftEar && rightEar) {
+      const centerX = (leftEar.x + rightEar.x) / 2;
+      const centerY = (leftEar.y + rightEar.y) / 2;
+      offsetY = (centerY * 0.1);
+      const dx = rightEar.x - leftEar.x;
+      const dy = rightEar.y - leftEar.y;
+      const radius = Math.sqrt(dx * dx + dy * dy) / 2;
+
+      // Increase the radius to better cover the head
+      const scaleFactor = 1.5; // Adjust this factor as needed
+      const adjustedRadius = radius * scaleFactor;
+
+      this.topmostPoint = {
+        x: centerX,
+        y: centerY - adjustedRadius - offsetY,
+        radius: adjustedRadius,
+      };
+
+      this.headCircle = { x: this.topmostPoint.x, y: centerY - offsetY, radius: adjustedRadius };
+      this.ctx.beginPath();
+      this.ctx.arc(this.headCircle.x, this.headCircle.y, adjustedRadius, 0, 2 * Math.PI);
+      this.ctx.stroke();
+
+      // Draw the keypoint as a circle
+      this.ctx.fillStyle = 'Red';
+      this.ctx.strokeStyle = 'White';
+      this.ctx.lineWidth = 2;
+      const circle = new Path2D();
+      circle.arc(this.topmostPoint.x, this.topmostPoint.y, 4, 0, 2 * Math.PI);
+      this.ctx.fill(circle);
+      this.ctx.stroke(circle);
+    }
   }
 
 

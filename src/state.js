@@ -117,7 +117,7 @@ export default {
           setTimeout(() => {
             this.setPoseState('selectedImg', '');
             Game.resetFillWord();
-          }, 100);
+          }, 1000);
           break;
         case 'ansCorrect':
           if (this.isSoundOn) {
