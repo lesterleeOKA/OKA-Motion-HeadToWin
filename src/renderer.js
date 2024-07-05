@@ -158,7 +158,7 @@ export class RendererCanvas2d {
         for (let option of optionWrappers) {
           if (touchingWord.includes(option) && !option.classList.contains('touch')) {
             State.setPoseState('selectedImg', option);
-            console.log("touch ", option);
+            //console.log("touch ", option);
             Game.fillWord(option, this.topmostPoint);
           }
         }

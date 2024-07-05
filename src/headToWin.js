@@ -36,7 +36,9 @@ export default {
   eachQAMark: 0,
   isPlayLastTen: false,
   isTriggeredBackSpace: false,
-  selectedCount: -1,
+  columnWidth: 0,
+  numberOfColumns: 0,
+  usedColumn: [],
 
   init() {
     //View.showTips('tipsReady');
@@ -86,7 +88,6 @@ export default {
     }
     this.isPlayLastTen = false;
     this.isTriggeredBackSpace = false;
-    this.selectedCount = Math.floor(Math.random() * 5);
   },
 
   handleVisibilityChange() {
@@ -150,6 +151,7 @@ export default {
   startCountTime() {
     if (!this.startedGame) {
       this.time = this.remainingTime;
+      this.columnWidth = this.seperateColumnWith();
       this.startedGame = true;
     }
 
@@ -201,6 +203,7 @@ export default {
       }
       this.time--;
       this.updateTimerDisplay(this.time);
+      console.log(this.usedColumn);
 
       if (this.time <= 10 && !this.isPlayLastTen) {
         if (State.isSoundOn) {
@@ -273,48 +276,35 @@ export default {
   },
 
   getBalancedColumn() {
-    if (this.selectedCount < 5)
-      this.selectedCount += 1;
-    else
-      this.selectedCount = 0;
+    let randomId = Math.floor(Math.random() * this.usedColumn.length);
+    let newRandomId = this.usedColumn[randomId];
 
-    return this.selectedCount;
+    let indexToRemove = this.usedColumn.indexOf(newRandomId);
+    this.usedColumn.splice(indexToRemove, 1);
+    return newRandomId;
   },
 
-  /*generatePositionX(columnId) {
-    //console.log("Generated X", columnId);
-    const isLeft = columnId < Math.floor(this.redBoxX / this.optionSize);
-    let numColumns, columnWidth;
+  seperateColumnWith() {
+    const offset = 20;
+    const availableWidth = View.canvas.width;
+    this.numberOfColumns = Math.floor(availableWidth / (this.optionSize + offset));
 
-    if (isLeft) {
-      numColumns = Math.floor(this.redBoxX / this.optionSize);
-      columnWidth = this.redBoxX / numColumns;
-      return columnId * columnWidth + 30;
-    } else {
-      numColumns = Math.floor((View.canvas.width - this.redBoxX - this.redBoxWidth - 10) / this.optionSize);
-      columnWidth = (View.canvas.width - this.redBoxX - this.redBoxWidth - 10) / numColumns;
-      return this.redBoxX + this.redBoxWidth + (columnId - Math.floor(this.redBoxX / this.optionSize)) * columnWidth + 15;
+    console.log("this.numberOfColumns", this.numberOfColumns);
+    for (var i = 0; i < this.numberOfColumns; i++) {
+      if (!this.usedColumn.includes(i))
+        this.usedColumn.push(i);
     }
-  },*/
+    const columnWidth = availableWidth / this.numberOfColumns;
+    return columnWidth;
+  },
 
   generatePositionX(columnId) {
-    const canvasWidth = View.canvas.width;
-    const offset = 20; // Define the offset distance from the edges
-
-    // Calculate the total available width for columns after accounting for the offset on both sides
-    const availableWidth = canvasWidth;
-
-    // Calculate the total number of columns that fit within the available width
-    const numColumns = Math.floor(availableWidth / (this.optionSize + offset));
-
-    // Calculate the width of each column
-    const columnWidth = availableWidth / numColumns;
-
+    const offset = 20;
     // Calculate the X position based on the columnId
-    let positionX = columnId * columnWidth + offset; // Center the position within the column
+    let positionX = columnId * this.columnWidth + offset; // Center the position within the column
 
-    if (positionX + columnWidth / 2 > canvasWidth - offset) {
-      positionX = canvasWidth - offset - columnWidth / 2;
+    if (positionX + this.columnWidth / 2 > View.canvas.width - offset) {
+      positionX = View.canvas.width - offset - this.columnWidth / 2;
     }
     return positionX;
   },
@@ -332,13 +322,25 @@ export default {
     optionWrapper.id = id;
     optionWrapper.setAttribute('word', text);
     optionWrapper.setAttribute('column', columnId);
-    let option = document.createElement('input');
+    let option = document.createElement('span');
     option.classList.add('option');
-    option.type = 'text';
-    option.value = text;
-    let fontSize = `calc(min(max(4vh, 20vh - ${text.length} * 5.2vh), 8vh))`;
-    option.style.setProperty('--font-size', fontSize);
+    option.textContent = text;
     optionWrapper.appendChild(option);
+
+    requestAnimationFrame(() => {
+      // Calculate the font size based on the container size
+      const containerHeight = optionWrapper.offsetHeight;
+
+      let baseFontSize = containerHeight * 0.18; // 10% of the container's height
+      let sizeAdjustment = text.length * 0.2; // Adjust this factor to control how much the text length affects the font size
+      let minFontSize = containerHeight * 0.05; // Minimum font size as 5% of the container's height
+      let maxFontSize = containerHeight * 0.2; // Maximum font size as 20% of the container's height
+      // Calculate the font size
+      let calculatedFontSize = Math.min(Math.max(baseFontSize - sizeAdjustment, minFontSize), maxFontSize);
+      // Set the custom property for font size
+      option.style.setProperty('--font-size', `${calculatedFontSize}px`);
+      option.style.setProperty('--line-height', `${calculatedFontSize * 0.9}px`);
+    });
     return optionWrapper;
   },
   getRandomQuestions(string) {
@@ -355,13 +357,16 @@ export default {
   },
   resetFallingItem(item) {
     const optionWrapper = item.optionWrapper;
+    let usedColumnId = optionWrapper.getAttribute('column');
+    this.usedColumn.push(parseInt(usedColumnId));
 
     optionWrapper.classList.remove('show');
-    if (this.nextQuestion)
-      return;
-
     const columnId = this.getBalancedColumn();
     optionWrapper.x = this.generatePositionX(columnId);
+    optionWrapper.setAttribute('column', columnId);
+
+    if (this.nextQuestion || State.stateType === 'ansWrong')
+      return;
 
     let delay = this.refallingDelay();
     //console.log("delay", delay, itemLength);
@@ -456,19 +461,8 @@ export default {
 
   randomOptions() {
     //console.log('question class', this.randomQuestion);
-    switch (this.randomQuestion.type) {
-      case 'Spelling':
-      case 'Listening':
-      case 'FillingBlank':
-      case 'Reorder':
-      case 'Picture':
-        var array = this.generateCharArray(this.randomQuestion.correctAnswer);
-        this.answerLength = array.length;
-        return array;
-      case 'MultipleChoice':
-        this.answerLength = 1;
-        return this.randomizeAnswers(this.randomQuestion.answers);
-    }
+    this.answerLength = 1;
+    return this.randomizeAnswers(this.randomQuestion.answers);
   },
   setQuestions() {
     this.randomQuestion = this.randQuestion();
@@ -483,54 +477,8 @@ export default {
     this.answerWrapper = document.createElement('span');
 
     switch (this.randomQuestion.type) {
-      case 'Spelling':
-      case 'MultipleChoice':
-        this.questionWrapper.classList.add('questionWrapper');
-        questionBg.classList.add('questionBg');
-        View.stageImg.appendChild(questionBg);
-
-        var questionText = document.createElement('span');
-        questionText.textContent = this.randomQuestion.question;
-        this.questionWrapper.appendChild(questionText);
-        var fontSize = `calc(min(max(3vh, 6vh - ${this.randomQuestion.question.length} * 0.1vh), 6vh))`;
-        this.questionWrapper.style.setProperty('--question-font-size', fontSize);
-        this.answerWrapper.classList.add('textType');
-        //View.stageImg.appendChild(questionText);
-        break;
-      case 'Listening':
-        this.questionWrapper.classList.add('questionAudioWrapper');
-        questionBg.classList.add('questionAudioBg');
-        View.stageImg.appendChild(questionBg);
-        this.buttonWrapper = document.createElement('button');
-        this.buttonWrapper.classList.add('buttonWrapper');
-        this.buttonWrapper.classList.add('audioPlay');
-        this.buttonWrapper.addEventListener('mousedown', () => {
-          this.buttonWrapper.classList.add('clicked');
-          this.buttonWrapper.classList.remove('not-clicked');
-          this.playWordAudio(this.randomQuestion.QID);
-        });
-
-        this.buttonWrapper.addEventListener('mouseup', () => {
-          this.buttonWrapper.classList.remove('clicked');
-          this.buttonWrapper.classList.add('not-clicked');
-        });
-        this.buttonWrapper.addEventListener('touchstart', (event) => {
-          event.preventDefault(); // Prevent default touch behavior
-          this.buttonWrapper.classList.add('clicked');
-          this.buttonWrapper.classList.remove('not-clicked');
-          this.playWordAudio(this.randomQuestion.QID);
-        });
-
-        this.buttonWrapper.addEventListener('touchend', (event) => {
-          event.preventDefault(); // Prevent default touch behavior
-          this.buttonWrapper.classList.remove('clicked');
-          this.buttonWrapper.classList.add('not-clicked');
-        });
-        this.questionWrapper.appendChild(this.buttonWrapper);
-        this.answerWrapper.classList.add('audioType');
-        break;
       case 'FillingBlank':
-      case 'Reorder':
+      case 'Listening':
         this.questionWrapper.classList.add('questionFillBlankWrapper');
         questionBg.classList.add('questionImgBg');
         View.stageImg.appendChild(questionBg);
@@ -599,7 +547,7 @@ export default {
     }
 
     console.log("this.randomQuestion.answers", this.randomQuestion.answers);
-    if (this.randomQuestion.answers === undefined) {
+    /*if (this.randomQuestion.answers === undefined) {
       let resetBtn = document.createElement('div');
       resetBtn.classList.add('resetBtn');
 
@@ -617,7 +565,7 @@ export default {
           break;
       }
       View.stageImg.appendChild(resetBtn);
-    }
+    }*/
 
     if (this.randomQuestion.QID && this.randomQuestion.QID.trim() !== '') {
       this.playWordAudio(this.randomQuestion.QID);
@@ -657,6 +605,12 @@ export default {
     if (!status) {
       this.fallingItems.splice(0);
       View.optionArea.innerHTML = '';
+
+      this.usedColumn.slice(0);
+      for (var i = 0; i < this.numberOfColumns; i++) {
+        if (!this.usedColumn.includes(i))
+          this.usedColumn.push(i);
+      }
     }
   },
   finishedGame() {
@@ -676,22 +630,33 @@ export default {
           }
         }
         else {
-          // console.log("headPosition", headPosition);
-          const screenCenterX = View.canvas.width / 2;
-
           let bounceX;
-          console.log("screenCenterX", screenCenterX);
-          console.log("option left", option.offsetLeft);
+          let angle;
+          let optionCenter = (option.offsetLeft + (this.optionSize / 2));
+          bounceX = (optionCenter - headPosition.x) / 5;
+          angle = (optionCenter - headPosition.x) / 3;
+          let bounceAngle;
+          let bounceBottomAngle;
+          console.log("angle", angle);
+          if (angle > 0) {
+            bounceAngle = Math.abs(angle);
+            bounceBottomAngle = Math.abs(angle) + 25;
+          } else {
+            let newAngle = Math.abs(angle);
+            bounceAngle = '-' + newAngle;
+            bounceBottomAngle = '-' + (Math.abs(angle) + 25);
+          }
 
-          bounceX = (option.offsetLeft - headPosition.x) / 5;
           option.style.setProperty('--bounce-x', `${bounceX}px`);
 
           option.style.setProperty('--head-position-x', `${0}px`);
           option.style.setProperty('--head-position-y', `${headPosition.y}px`);
+          option.style.setProperty('--bounce-angle', `${bounceAngle}deg`);
+          option.style.setProperty('--bounce-bottom-angle', `${bounceBottomAngle}deg`);
           option.classList.remove('show');
           option.classList.add('showBonunce');
 
-          console.log("deduct:", option);
+          // console.log("deduct:", option);
           this.typedItems.push(option);
         }
 
@@ -752,11 +717,12 @@ export default {
     this.fallingItems.splice(0);
     View.optionArea.innerHTML = '';
     this.typedItems.splice(0);
-    this.column1Count = 0;
-    this.column2Count = 0;
-    this.column3Count = 0;
-    this.column4Count = 0;
-    this.selectedCount = Math.floor(Math.random() * 5);
+
+    this.usedColumn.slice(0);
+    for (var i = 0; i < this.numberOfColumns; i++) {
+      if (!this.usedColumn.includes(i))
+        this.usedColumn.push(i);
+    }
   },
   checkAnswer(answer) {
     if (answer === this.randomQuestion.correctAnswer) {

@@ -25,6 +25,7 @@
 
 .canvasWrapper > .optionArea > .optionWrapper {
   position: relative;
+  display: inline-block;
   left: 0px;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
@@ -243,6 +244,17 @@
   transform: scale(1);
 }
 
+.canvasWrapper > .optionArea > .optionWrapper.spin {
+  position: absolute;
+  opacity: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation-name: spinning;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+}
+
 .canvasWrapper > .optionArea > .optionWrapper.showBonunce {
   position: absolute;
   opacity: 1;
@@ -251,7 +263,7 @@
   align-items: center;
   animation-name: bounceAnimation;
   animation-duration: 1s;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: cubic-bezier(0.42,0,1,1);
   transform-origin: center bottom;
 }
 
@@ -273,9 +285,17 @@
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
   transform-origin: center center; /* Ensure the options scale from the center */
   will-change: transform; /* Optimize the animation */
+  word-wrap: break-word; /* Allow long words to break and wrap to the next line */
+  white-space: normal; /* Allow lines to break normally */
+  overflow-wrap: break-word; /* Break long words */
+  padding: 5px; /* Add padding to avoid text touching edges */
+  box-sizing: border-box; /* Include padding in width/height calculations */
+  line-height: var(--line-height);
 }
 
 :root {
+  --bounce-angle: 0deg;
+  --bounce-bottom-angle: 0deg;
   --bounce-x: 0px;
   --head-position-x: 0px;
   --head-position-y: 0px;
@@ -283,6 +303,7 @@
   --top-height: 0px;
   --bottom-height: 200px;
   --font-size: 3vh;
+  --line-height: 0px;
   --question-font-size:3vh;
 }
 
@@ -296,9 +317,9 @@
   animation-duration: 1s;
 }
 
-@keyframes bounceAnimation {
+/*@keyframes bounceAnimation {
   0% {
-    transform: translate(0, var(--head-position-y))scale(1);
+    transform: translate(0, var(--head-position-y)) scale(1);
   }
   25% {
     transform: translate(var(--bounce-x), calc(var(--head-position-y) - 100px)) scale(1);
@@ -306,14 +327,26 @@
   100% {
     transform: translate(var(--bounce-x), var(--bottom-height)) scale(0.8);
   }
+}*/
+
+@keyframes bounceAnimation {
+  0% {
+    transform: translate(0, var(--head-position-y)) rotate(0deg);
+  }
+  25%{
+    transform: translate(var(--bounce-x), calc(var(--head-position-y) - 100px)) rotate(var(--bounce-angle));
+  }
+  100% {
+    transform: translate(var(--bounce-x), var(--bottom-height)) rotate(var(--bounce-bottom-angle));
+  }
 }
 
 @keyframes fallingAnimation {
   0% {
-    transform: translateY(var(--top-height)) rotate(0deg);
+    transform: translateY(var(--top-height));
   }
   100% {
-    transform: translateY(var(--bottom-height)) rotate(360deg);
+    transform: translateY(var(--bottom-height));
   }
 }
 
