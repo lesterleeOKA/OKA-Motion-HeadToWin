@@ -128,8 +128,13 @@ async function renderResult() {
     endEstimatePosesStats();
   }
 
-  View.renderer.draw([Camera.video, poses, false, compositeCanvas]);
-  //View.renderer.draw([Camera.video, poses, false, canvas]);
+  let fpsMode = fps === '1' ? true : false;
+  if (removal === '1') {
+    if (compositeCanvas) View.renderer.draw([Camera.video, poses, fpsMode, compositeCanvas]);
+  }
+  else {
+    View.renderer.draw([Camera.video, poses, fpsMode, null]);
+  }
 }
 
 function beginEstimatePosesStats() {

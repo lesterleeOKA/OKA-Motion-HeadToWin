@@ -130,7 +130,7 @@
           "Principle",
           "Princess"
         ],
-        "correctAnswer": "Principal"
+        "correctAnswer": "principle"
       },
       {
         "QID": "p1u1-a13",
@@ -219,6 +219,116 @@
           "Principal"
         ],
         "correctAnswer": "Prefect"
+      },
+      {
+        "QID": "p1u3-e1",
+        "type": "Text",
+        "question": "I have many colors. I make your picture more beautiful.",
+        "answers": [
+          "Crayons",
+          "Erasers",
+          "Pencils"
+        ],
+        "correctAnswer": "Crayons"
+      },
+      {
+        "QID": "p1u3-e2",
+        "type": "Text",
+        "question": "I am very important. I help all students carry all the things to school.",
+        "answers": [
+          "Folder",
+          "Lunchbox",
+          "School Bag"
+        ],
+        "correctAnswer": "School Bag"
+      },
+      {
+        "QID": "p1u3-e3",
+        "type": "Text",
+        "question": "I make sure your book is clean and neat. I help correct your mistakes.",
+        "answers": [
+          "Eraser",
+          "Ruler",
+          "Pen"
+        ],
+        "correctAnswer": "Eraser"
+      },
+      {
+        "QID": "p1u3-e4",
+        "type": "Text",
+        "question": "You need me when you are hungry at recess.",
+        "answers": [
+          "Bottle",
+          "Snacks",
+          "Lunchbox"
+        ],
+        "correctAnswer": "Snacks"
+      },
+      {
+        "QID": "p1u3-e5",
+        "type": "Text",
+        "question": "I have two legs and I am sharp. I can cut paper but also your finger.",
+        "answers": [
+          "Sharpener",
+          "Scissors",
+          "Glue"
+        ],
+        "correctAnswer": "Scissors"
+      },
+      {
+        "QID": "p1u3-e6",
+        "type": "Text",
+        "question": "I can speak English, Chinese and even numbers too. You can learn a lot from me.",
+        "answers": [
+          "Highlighters",
+          "Folders",
+          "Books"
+        ],
+        "correctAnswer": "Books"
+      },
+      {
+        "QID": "p1u3-e7",
+        "type": "Text",
+        "question": "You need me in math class. I help you find out how long the line is.",
+        "answers": [
+          "Eraser",
+          "Pen",
+          "Ruler"
+        ],
+        "correctAnswer": "Ruler"
+      },
+      {
+        "QID": "p1u3-e8",
+        "type": "Text",
+        "question": "I help you remember what your teacher said.",
+        "answers": [
+          "Exercise",
+          "Notebook",
+          "Stapler"
+        ],
+        "correctAnswer": "Notebook"
+      },
+      {
+        "QID": "p1u3-e9",
+        "type": "Text",
+        "question": "If you forget to bring me, you will be very thirsty all day.",
+        "answers": [
+          "Bottle",
+          "Lunchbox",
+          "Snacks"
+        ],
+        "correctAnswer": "Bottle"
+      },
+      {
+        "QID": "p1u3-e10",
+        "type": "Text",
+        "question": "I usually wear blue, red or black. Your teacher likes red the most.",
+        "answers": [
+          "Pens",
+          "Pencils",
+          "Crayons"
+        ],
+        "correctAnswer": "Pens"
       }
    ]
 }

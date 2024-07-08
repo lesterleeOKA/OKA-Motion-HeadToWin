@@ -22,7 +22,7 @@
 
 .instructionWrapper > .instructionBoard> .gameTitle {
   position: relative;
-  background-image: url(../images/headToWin/title_mspell.png);
+  /*background-image: url(../images/headToWin/title_mspell.png);*/
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

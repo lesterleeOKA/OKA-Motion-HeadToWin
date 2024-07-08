@@ -15,12 +15,13 @@ export class RendererCanvas2d {
     this.scoreThreshold = 0.75;
     this.triggerAudio = false;
     this.headKeypoints = ['nose', 'left_eye_inner', 'left_eye', 'left_eye_outer', 'right_eye_inner', 'right_eye', 'right_eye_outer', 'left_ear', 'right_ear'];
-    this.topmostPoint = null;
     this.headCircle = null;
+    this.headCircleXScale = 0.9;
+    this.headCircleYScale = 1.4;
   }
 
   draw(rendererParams) {
-    const [video, poses, isModelChanged, bodySegmentationCanvas] = rendererParams;
+    const [video, poses, isFPSMode, bodySegmentationCanvas] = rendererParams;
     this.videoWidth = video.width;
     this.videoHeight = video.height;
     this.ctx.canvas.width = this.videoWidth;
@@ -35,8 +36,8 @@ export class RendererCanvas2d {
     this.drawCtx(video, bodySegmentationCanvas);
     if (['prepare', 'counting3', 'counting2', 'counting1', 'counting0', 'playing', 'outBox'].includes(State.state)) {
       let isCurPoseValid = false;
-      if (poses && poses.length > 0 && !isModelChanged) {
-        this.drawResults(poses, video.width / video.videoWidth);
+      if (poses && poses.length > 0) {
+        this.drawResults(poses, video.width / video.videoWidth, isFPSMode);
         //this.isPoseValid(poses, video.width / video.videoWidth);
         isCurPoseValid = this.isPoseValid(poses, video.width / video.videoWidth);
         if (isCurPoseValid && State.bodyInsideRedBox.value == true) {
@@ -103,11 +104,13 @@ export class RendererCanvas2d {
     let isBodyOutBox;
 
     if (pose.keypoints != null) {
+      const headTracker = document.getElementById('head');
       //nose, left_eye_inner, left_eye, left_eye_outer, right_eye_inner, right_eye, right_eye_outer, left_ear, right_ear, mouth_left, mouth_right, left_shoulder, right_shoulder, left_elbow, right_elbow, left_wrist, right_wrist, left_pinky, right_pinky, left_index, right_index, left_thumb, right_thumb, left_hip, right_hip, left_knee, right_knee, left_ankle, right_ankle, left_heel, right_heel, left_foot_index, right_foot_index
       //let checkKeypoints = pose.keypoints.filter(k=>['left_shoulder', 'right_shoulder', 'left_elbow', 'right_elbow', 'left_wrist', 'right_wrist', 'left_hip', 'right_hip', 'left_knee', 'right_knee'].includes(k.name) && k.score>0.65);
       //let checkKeypoints = pose.keypoints.filter(k => k.name == 'nose' && k.score > passScore);
-      if (this.topmostPoint) {
-        isBodyOutBox = this.topmostPoint.y < this.lineHeight ? true : false
+      if (this.headCircle) {
+        let headToppestY = this.headCircle.y - this.headCircle.radius;
+        isBodyOutBox = headToppestY < this.lineHeight ? true : false
       }
       else {
         isBodyOutBox = false;
@@ -117,19 +120,20 @@ export class RendererCanvas2d {
       if (isBodyOutBox) {
         if (State.state == 'playing') State.changeState('outBox', 'outBox');
         //console.log('outBox', 'outBox');
+        headTracker.style.display = 'none';
         return false;
       }
 
-      let questionBoard = null;
+      /* let questionBoard = null;
 
-      if (Game.randomQuestion) {
-        if (Game.randomQuestion.type === 'Listening') {
-          questionBoard = document.querySelector('.questionAudioBg');
-        }
-        else if (Game.randomQuestion.type === 'FillingBlank') {
-          questionBoard = document.querySelector('.questionImgBg');
-        }
-      }
+       if (Game.randomQuestion) {
+         if (Game.randomQuestion.type === 'Listening') {
+           questionBoard = document.querySelector('.questionAudioBg');
+         }
+         else if (Game.randomQuestion.type === 'FillingBlank') {
+           questionBoard = document.querySelector('.questionImgBg');
+         }
+       }*/
 
       //let resetBtn = document.querySelector('.resetBtn');
 
@@ -140,26 +144,42 @@ export class RendererCanvas2d {
 
         let touchingWord = [];
         if (this.headCircle) {
+
+          const xInVw = (this.headCircle.x / window.innerWidth) * 100;
+          const maxWidth = this.headCircle.radius * 2 / window.innerWidth * 100;
+          const width = `calc(${maxWidth}vw)`;
+          const left = `calc(${xInVw}vw - ${maxWidth / 2}vw)`;
+          const offsetY = Math.max(10, this.headCircle.radius / 1.5);
+          const top = `calc(${this.headCircle.y - this.headCircle.radius - offsetY}px)`;
+
+          headTracker.style.width = width;
+          headTracker.style.left = left;
+          headTracker.style.top = top;
+          headTracker.style.display = 'block';
+
           const canvasWrapperRect = canvasWrapper.getBoundingClientRect();
           //console.log(this.headCircle);
           for (let option of optionWrappers) {
             const optionRect = option.getBoundingClientRect();
             if (
-              (this.topmostPoint.x + this.topmostPoint.radius) > (optionRect.left - canvasWrapperRect.left) &&
-              (this.topmostPoint.x - this.topmostPoint.radius) < (optionRect.right - canvasWrapperRect.left) &&
-              this.topmostPoint.y > (optionRect.top - canvasWrapperRect.top) &&
-              this.topmostPoint.y < (optionRect.bottom - canvasWrapperRect.top)
+              (this.headCircle.x + (this.headCircle.radius * this.headCircleXScale)) > (optionRect.left - canvasWrapperRect.left) &&
+              (this.headCircle.x - (this.headCircle.radius * this.headCircleXScale)) < (optionRect.right - canvasWrapperRect.left) &&
+              (this.headCircle.y + (this.headCircle.radius * this.headCircleYScale)) > (optionRect.top - canvasWrapperRect.top) &&
+              (this.headCircle.y - (this.headCircle.radius * this.headCircleYScale)) < (optionRect.bottom - canvasWrapperRect.top)
             ) {
               touchingWord.push(option);
             }
           }
+        }
+        else {
+          headTracker.style.display = 'none';
         }
 
         for (let option of optionWrappers) {
           if (touchingWord.includes(option) && !option.classList.contains('touch')) {
             State.setPoseState('selectedImg', option);
             //console.log("touch ", option);
-            Game.fillWord(option, this.topmostPoint);
+            Game.fillWord(option, this.headCircle);
           }
         }
 
@@ -223,17 +243,17 @@ export class RendererCanvas2d {
     this.ctx.clearRect(0, 0, this.videoWidth, this.videoHeight);
   }
 
-  drawResults(poses, ratio) {
+  drawResults(poses, ratio, isFPSMode) {
     for (const pose of poses) {
-      this.drawResult(pose, ratio);
+      this.drawResult(pose, ratio, isFPSMode);
     }
   }
 
-  drawResult(pose, ratio) {
+  drawResult(pose, ratio, isFPSMode) {
     if (pose.keypoints != null) {
       this.keypointsFitRatio(pose.keypoints, ratio);
       this.drawKeypoints(pose.keypoints);
-      this.drawSkeleton(pose.keypoints, pose.id);
+      this.drawSkeleton(pose.keypoints, pose.id, isFPSMode);
     }
   }
 
@@ -278,15 +298,17 @@ export class RendererCanvas2d {
     }
   }
 
-  drawSkeleton(keypoints, poseId) {
+  drawSkeleton(keypoints, poseId, isFPSMode) {
     const color = 'White';
     this.ctx.fillStyle = color;
     this.ctx.strokeStyle = color;
     this.ctx.lineWidth = 2;
 
+    let nose = null;
     let leftEar = null;
     let rightEar = null;
     let offsetY = null;
+    let circleY = null;
 
     posedetection.util.getAdjacentPairs(this.modelType).forEach(([i, j]) => {
 
@@ -308,42 +330,50 @@ export class RendererCanvas2d {
       // Store keypoints for left and right eye outer
       if (kp1.name === 'left_ear') leftEar = kp1;
       if (kp1.name === 'right_ear') rightEar = kp1;
+
       if (kp2.name === 'left_ear') leftEar = kp2;
       if (kp2.name === 'right_ear') rightEar = kp2;
     });
 
     // Draw circle around the head
     if (leftEar && rightEar) {
+      const dx = Math.abs(rightEar.x - leftEar.x);
+      const dy = Math.abs(rightEar.y - leftEar.y);
+      const averageDistance = (dx + dy) / 2;
       const centerX = (leftEar.x + rightEar.x) / 2;
       const centerY = (leftEar.y + rightEar.y) / 2;
-      offsetY = (centerY * 0.1);
-      const dx = rightEar.x - leftEar.x;
-      const dy = rightEar.y - leftEar.y;
-      const radius = Math.sqrt(dx * dx + dy * dy) / 2;
+      offsetY = (centerY * 0.02);
+      circleY = centerY - offsetY;
+      //let distanceLeftMid = Math.abs(circleY - leftEar.y);
+      //let distanceRightMid = Math.abs(circleY - rightEar.y);
 
+      //const distance = Math.abs(circleY - nose.y);
       // Increase the radius to better cover the head
-      const scaleFactor = 1.5; // Adjust this factor as needed
-      const adjustedRadius = radius * scaleFactor;
+      const scaleFactor = 1.3; // Adjust this factor as needed
+      const adjustedRadius = averageDistance * scaleFactor;
 
-      this.topmostPoint = {
+      this.headCircle = {
         x: centerX,
-        y: centerY - adjustedRadius - offsetY,
+        y: circleY,
         radius: adjustedRadius,
       };
 
-      this.headCircle = { x: this.topmostPoint.x, y: centerY - offsetY, radius: adjustedRadius };
-      this.ctx.beginPath();
-      this.ctx.arc(this.headCircle.x, this.headCircle.y, adjustedRadius, 0, 2 * Math.PI);
-      this.ctx.stroke();
+      if (isFPSMode) {
+        const radiusX = adjustedRadius * this.headCircleXScale; // Horizontal radius
+        const radiusY = adjustedRadius * this.headCircleYScale; // Vertical radius, adjust this factor as needed
+        this.ctx.beginPath();
+        this.ctx.ellipse(this.headCircle.x, this.headCircle.y, radiusX, radiusY, 0, 0, 2 * Math.PI);
+        this.ctx.stroke();
 
-      // Draw the keypoint as a circle
-      this.ctx.fillStyle = 'Red';
-      this.ctx.strokeStyle = 'White';
-      this.ctx.lineWidth = 2;
-      const circle = new Path2D();
-      circle.arc(this.topmostPoint.x, this.topmostPoint.y, 4, 0, 2 * Math.PI);
-      this.ctx.fill(circle);
-      this.ctx.stroke(circle);
+        // Draw the keypoint as a circle
+        this.ctx.fillStyle = 'Blue';
+        this.ctx.strokeStyle = 'White';
+        this.ctx.lineWidth = 2;
+        const circle = new Path2D();
+        circle.arc(this.headCircle.x, this.headCircle.y, 4, 0, 2 * Math.PI);
+        this.ctx.fill(circle);
+        this.ctx.stroke(circle);
+      }
     }
   }
 

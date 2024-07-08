@@ -1,4 +1,3 @@
-import { stat } from 'fs';
 import Game from './headToWin';
 import State from './state';
 

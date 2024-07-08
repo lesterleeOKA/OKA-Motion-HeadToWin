@@ -186,6 +186,7 @@
   align-items: baseline;
   transition: all 0.5s ease;
   opacity: 1;
+  z-index: 10;
 }
 
 .gameWrapper > .topLeftControl.hide { opacity: 0; }
@@ -283,6 +284,7 @@
   justify-content: space-evenly;
   display: flex;
   align-items: baseline;
+  z-index: 10;
 }
 
 .gameWrapper > .topRightControl > .tips {
@@ -330,6 +332,7 @@
   position: relative;
   flex-direction: column;
   justify-content: start;
+  z-index: 10;
 }
 .musicOnOffWrapper > .musicOnOffBoard > .musicWrapper {
   width: 65%;

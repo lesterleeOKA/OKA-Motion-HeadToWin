@@ -334,7 +334,7 @@ export default {
       let baseFontSize = containerHeight * 0.18; // 10% of the container's height
       let sizeAdjustment = text.length * 0.2; // Adjust this factor to control how much the text length affects the font size
       let minFontSize = containerHeight * 0.05; // Minimum font size as 5% of the container's height
-      let maxFontSize = containerHeight * 0.2; // Maximum font size as 20% of the container's height
+      let maxFontSize = containerHeight * 0.19; // Maximum font size as 20% of the container's height
       // Calculate the font size
       let calculatedFontSize = Math.min(Math.max(baseFontSize - sizeAdjustment, minFontSize), maxFontSize);
       // Set the custom property for font size
@@ -477,7 +477,17 @@ export default {
     this.answerWrapper = document.createElement('span');
 
     switch (this.randomQuestion.type) {
-      case 'FillingBlank':
+      case 'Text':
+        this.questionWrapper.classList.add('questionFillBlankWrapper');
+        questionBg.classList.add('questionImgBg');
+        View.stageImg.appendChild(questionBg);
+        var questionText = document.createElement('span');
+        questionText.textContent = this.randomQuestion.question;
+        this.questionWrapper.appendChild(questionText);
+        var fontSize = `calc(min(max(3vh, 6vh - ${this.randomQuestion.question.length} * 0.1vh), 6vh))`;
+        this.questionWrapper.style.setProperty('--question-font-size', fontSize);
+        this.answerWrapper.classList.add('pictureType');
+        break;
       case 'Listening':
         this.questionWrapper.classList.add('questionFillBlankWrapper');
         questionBg.classList.add('questionImgBg');
@@ -633,8 +643,8 @@ export default {
           let bounceX;
           let angle;
           let optionCenter = (option.offsetLeft + (this.optionSize / 2));
-          bounceX = (optionCenter - headPosition.x) / 5;
-          angle = (optionCenter - headPosition.x) / 3;
+          bounceX = (optionCenter - (headPosition.x + headPosition.radius)) / 4;
+          angle = (optionCenter - headPosition.x) / 4;
           let bounceAngle;
           let bounceBottomAngle;
           console.log("angle", angle);
@@ -647,10 +657,9 @@ export default {
             bounceBottomAngle = '-' + (Math.abs(angle) + 25);
           }
 
-          option.style.setProperty('--bounce-x', `${bounceX}px`);
-
+          option.style.setProperty('--bounce-x', `${angle}px`);
           option.style.setProperty('--head-position-x', `${0}px`);
-          option.style.setProperty('--head-position-y', `${headPosition.y}px`);
+          option.style.setProperty('--head-position-y', `${headPosition.y - headPosition.radius - Math.abs(bounceX)}px`);
           option.style.setProperty('--bounce-angle', `${bounceAngle}deg`);
           option.style.setProperty('--bounce-bottom-angle', `${bounceBottomAngle}deg`);
           option.classList.remove('show');
@@ -725,7 +734,7 @@ export default {
     }
   },
   checkAnswer(answer) {
-    if (answer === this.randomQuestion.correctAnswer) {
+    if (answer.toLowerCase() === this.randomQuestion.correctAnswer.toLowerCase()) {
       //答岩1分，答錯唔扣分
       this.addScore(this.eachQAMark);
       this.answerWrapper.classList.add('correct');
