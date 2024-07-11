@@ -329,6 +329,116 @@
           "Crayons"
         ],
         "correctAnswer": "Pens"
+      },
+      {
+        "QID": "p2u1-e1",
+        "type": "Text",
+        "question": "I want to mail a letter.",
+        "answers": [
+          "Post office",
+          "School",
+          "Police station"
+        ],
+        "correctAnswer": "Post office"
+      },
+      {
+        "QID": "p2u1-e2",
+        "type": "Text",
+        "question": "My hair is too long. I want to have a haircut.",
+        "answers": [
+        "Restaurant",
+        "Salon",
+        "Cafe"
+        ],
+        "correctAnswer": "Salon"
+      },
+      {
+        "QID": "p2u1-e3",
+        "type": "Text",
+        "question": "My mom says I can play with Sally after my piano class.",
+        "answers": [
+        "Park",
+        "Clinic",
+        "Temple"
+        ],
+        "correctAnswer": "Park"
+      },
+      {
+        "QID": "p2u1-e4",
+        "type": "Text",
+        "question": "Oh no! I think I lost my wallet.",
+        "answers": [
+        "Fire station",
+        "Police station",
+        "Post office"
+        ],
+        "correctAnswer": "Police station"
+      },
+      {
+        "QID": "p2u1-e5",
+        "type": "Text",
+        "question": "I fell from a window and broke my arm!",
+        "answers": [
+        "Fire station",
+        "Police station",
+        "Post office"
+        ],
+        "correctAnswer": "Hospital"
+      },
+      {
+        "QID": "p2u1-e6",
+        "type": "Text",
+        "question": "I feel tired and hungry. Can we have a break?",
+        "answers": [
+        "Bank",
+        "Museum",
+        "Cafe"
+        ],
+        "correctAnswer": "Cafe"
+      },
+      {
+        "QID": "p2u1-e7",
+        "type": "Text",
+        "question": "My family believes in god. We go to pray every Sunday.",
+        "answers": [
+        "Church",
+        "Hospital",
+        "Home"
+        ],
+        "correctAnswer": "Church"
+      },
+      {
+        "QID": "p2u1-e8",
+        "type": "Text",
+        "question": "Uncle Billy is going to get some money.",
+        "answers": [
+        "Supermarket",
+        "Mall",
+        "Bank"
+        ],
+        "correctAnswer": "Bank"
+      },
+      {
+        "QID": "p2u1-e9",
+        "type": "Text",
+        "question": "I am excited to see Miss Wong and my classmates again!",
+        "answers": [
+        "Home",
+        "Park",
+        "School"
+        ],
+        "correctAnswer": "School"
+      },
+      {
+        "QID": "p2u1-e10",
+        "type": "Text",
+        "question": "It's 6 pm. I need to go or my mom will be angry!",
+        "answers": [
+        "Home",
+        "Cafe",
+        "School"
+        ],
+        "correctAnswer": "Home"
       }
    ]
 }

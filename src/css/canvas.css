@@ -263,7 +263,7 @@
   justify-content: center;
   align-items: center;
   animation-name: bounceAnimation;
-  animation-duration: 1s;
+  animation-duration: var(--bounce-speed);
   animation-timing-function: cubic-bezier(0.42,0,1,1);
   transform-origin: center bottom;
 }
@@ -298,8 +298,10 @@
   --bounce-angle: 0deg;
   --bounce-bottom-angle: 0deg;
   --bounce-x: 0px;
+  --bounce-speed: 1s;
   --head-position-x: 0px;
   --head-position-y: 0px;
+  --head-bounce-y: 0px;
   --fallingSpeed: 2.5s;
   --top-height: 0px;
   --bottom-height: 200px;
@@ -335,7 +337,7 @@
     transform: translate(0, var(--head-position-y)) rotate(0deg);
   }
   25%{
-    transform: translate(var(--bounce-x), calc(var(--head-position-y) - 100px)) rotate(var(--bounce-angle));
+    transform: translate(var(--bounce-x), var(--head-bounce-y)) rotate(var(--bounce-angle));
   }
   100% {
     transform: translate(var(--bounce-x), var(--bottom-height)) rotate(var(--bounce-bottom-angle));

@@ -183,6 +183,7 @@ export default {
     }
 
     if (state != 'playing') {
+      View.showHeadTracker(false);
       Game.stopCountTime();
     }
 

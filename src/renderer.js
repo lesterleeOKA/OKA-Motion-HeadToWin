@@ -3,6 +3,7 @@ import State from './state';
 import Sound from './sound';
 import Camera from './camera';
 import Game from './headToWin';
+import view from './view';
 
 
 export class RendererCanvas2d {
@@ -104,7 +105,6 @@ export class RendererCanvas2d {
     let isBodyOutBox;
 
     if (pose.keypoints != null) {
-      const headTracker = document.getElementById('head');
       //nose, left_eye_inner, left_eye, left_eye_outer, right_eye_inner, right_eye, right_eye_outer, left_ear, right_ear, mouth_left, mouth_right, left_shoulder, right_shoulder, left_elbow, right_elbow, left_wrist, right_wrist, left_pinky, right_pinky, left_index, right_index, left_thumb, right_thumb, left_hip, right_hip, left_knee, right_knee, left_ankle, right_ankle, left_heel, right_heel, left_foot_index, right_foot_index
       //let checkKeypoints = pose.keypoints.filter(k=>['left_shoulder', 'right_shoulder', 'left_elbow', 'right_elbow', 'left_wrist', 'right_wrist', 'left_hip', 'right_hip', 'left_knee', 'right_knee'].includes(k.name) && k.score>0.65);
       //let checkKeypoints = pose.keypoints.filter(k => k.name == 'nose' && k.score > passScore);
@@ -120,7 +120,7 @@ export class RendererCanvas2d {
       if (isBodyOutBox) {
         if (State.state == 'playing') State.changeState('outBox', 'outBox');
         //console.log('outBox', 'outBox');
-        headTracker.style.display = 'none';
+        view.showHeadTracker(false);
         return false;
       }
 
@@ -152,10 +152,7 @@ export class RendererCanvas2d {
           const offsetY = Math.max(10, this.headCircle.radius / 1.5);
           const top = `calc(${this.headCircle.y - this.headCircle.radius - offsetY}px)`;
 
-          headTracker.style.width = width;
-          headTracker.style.left = left;
-          headTracker.style.top = top;
-          headTracker.style.display = 'block';
+          view.showHeadTracker(true, width, left, top);
 
           const canvasWrapperRect = canvasWrapper.getBoundingClientRect();
           //console.log(this.headCircle);
@@ -215,7 +212,7 @@ export class RendererCanvas2d {
     const endX = this.videoWidth; // End of the line (right edge)
 
     this.ctx.beginPath();
-    this.ctx.lineWidth = isCurPoseValid ? 1 : Math.max(10, this.videoHeight * 0.01);
+    this.ctx.lineWidth = isCurPoseValid ? 5 : Math.max(10, this.videoHeight * 0.01);
     this.ctx.moveTo(startX, centerY); // Move to the start of the line
     this.ctx.lineTo(endX, centerY); // Draw the line to the end point
     this.ctx.strokeStyle = isCurPoseValid ? '#FFFFFF' : '#ff0000';

@@ -44,8 +44,7 @@ export default {
   topLeftControl: document.querySelector('.gameWrapper > .topLeftControl'),
   selectCounts: document.querySelectorAll('.canvasWrapper > .optionArea > .optionWrapper > .selectCount'),
 
-  rightHandImg: document.getElementById('right-hand'),
-  leftHandImg: document.getElementById('left-hand'),
+  headTracker: document.getElementById('head'),
   //-----------------------------------------------------------------------------------------------
   preloadedFallingImages: [],
   optionImages: [
@@ -227,6 +226,12 @@ export default {
   },
   //-----------------------------------------------------------------------------------------------
 
+  showHeadTracker(status, width = null, left = null, top = null) {
+    if (width) this.headTracker.style.width = width;
+    if (left) this.headTracker.style.left = left;
+    if (top) this.headTracker.style.top = top;
+    this.headTracker.style.display = status ? 'block' : 'none';
+  }
   /*showHands(status) {
     this.rightHandImg.style.display = status ? 'block' : 'none';
     this.leftHandImg.style.display = status ? 'block' : 'none';

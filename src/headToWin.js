@@ -39,6 +39,7 @@ export default {
   columnWidth: 0,
   numberOfColumns: 0,
   usedColumn: [],
+  wholeScreenColumnSeperated: false,
 
   init() {
     //View.showTips('tipsReady');
@@ -287,7 +288,10 @@ export default {
   seperateColumnWith() {
     const offset = 20;
     const availableWidth = View.canvas.width;
-    this.numberOfColumns = Math.floor(availableWidth / (this.optionSize + offset));
+    if (this.wholeScreenColumnSeperated)
+      this.numberOfColumns = Math.floor(availableWidth / (this.optionSize + offset));
+    else
+      this.numberOfColumns = 4;
 
     console.log("this.numberOfColumns", this.numberOfColumns);
     for (var i = 0; i < this.numberOfColumns; i++) {
@@ -299,14 +303,30 @@ export default {
   },
 
   generatePositionX(columnId) {
-    const offset = 20;
-    // Calculate the X position based on the columnId
-    let positionX = columnId * this.columnWidth + offset; // Center the position within the column
+    if (this.wholeScreenColumnSeperated) {
+      const offset = 20;
+      // Calculate the X position based on the columnId
+      let positionX = columnId * this.columnWidth + offset; // Center the position within the column
 
-    if (positionX + this.columnWidth / 2 > View.canvas.width - offset) {
-      positionX = View.canvas.width - offset - this.columnWidth / 2;
+      if (positionX + this.columnWidth / 2 > View.canvas.width - offset) {
+        positionX = View.canvas.width - offset - this.columnWidth / 2;
+      }
+      return positionX;
     }
-    return positionX;
+    else {
+      const isLeft = columnId < Math.floor(this.redBoxX / this.optionSize);
+      let numColumns, columnWidth;
+
+      if (isLeft) {
+        numColumns = Math.floor(this.redBoxX / this.optionSize);
+        columnWidth = this.redBoxX / numColumns;
+        return columnId * columnWidth + 30;
+      } else {
+        numColumns = Math.floor((View.canvas.width - this.redBoxX - this.redBoxWidth - 10) / this.optionSize);
+        columnWidth = (View.canvas.width - this.redBoxX - this.redBoxWidth - 10) / numColumns;
+        return this.redBoxX + this.redBoxWidth + (columnId - Math.floor(this.redBoxX / this.optionSize)) * columnWidth;
+      }
+    }
   },
 
   getRandomInt(min, max) {
@@ -334,7 +354,7 @@ export default {
       let baseFontSize = containerHeight * 0.18; // 10% of the container's height
       let sizeAdjustment = text.length * 0.2; // Adjust this factor to control how much the text length affects the font size
       let minFontSize = containerHeight * 0.05; // Minimum font size as 5% of the container's height
-      let maxFontSize = containerHeight * 0.19; // Maximum font size as 20% of the container's height
+      let maxFontSize = containerHeight * (0.1 + text.length * 0.01); // Maximum font size as 20% of the container's height
       // Calculate the font size
       let calculatedFontSize = Math.min(Math.max(baseFontSize - sizeAdjustment, minFontSize), maxFontSize);
       // Set the custom property for font size
@@ -645,8 +665,11 @@ export default {
           let optionCenter = (option.offsetLeft + (this.optionSize / 2));
           bounceX = (optionCenter - (headPosition.x + headPosition.radius)) / 4;
           angle = (optionCenter - headPosition.x) / 4;
+          let headPositionY = headPosition.y - headPosition.radius - Math.abs(bounceX);
+          let bounceY = headPositionY - 300;
           let bounceAngle;
           let bounceBottomAngle;
+          console.log("bounceY", bounceY);
           console.log("angle", angle);
           if (angle > 0) {
             bounceAngle = Math.abs(angle);
@@ -659,9 +682,11 @@ export default {
 
           option.style.setProperty('--bounce-x', `${angle}px`);
           option.style.setProperty('--head-position-x', `${0}px`);
-          option.style.setProperty('--head-position-y', `${headPosition.y - headPosition.radius - Math.abs(bounceX)}px`);
+          option.style.setProperty('--head-position-y', `${headPositionY}px`);
+          option.style.setProperty('--head-bounce-y', `${bounceY}px`);
           option.style.setProperty('--bounce-angle', `${bounceAngle}deg`);
           option.style.setProperty('--bounce-bottom-angle', `${bounceBottomAngle}deg`);
+          option.style.setProperty('--bounce-speed', `${1}s`)
           option.classList.remove('show');
           option.classList.add('showBonunce');
 
