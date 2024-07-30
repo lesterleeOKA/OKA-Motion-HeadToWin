@@ -70,7 +70,7 @@ async function renderResult() {
     try {
       poses = await detector.estimatePoses(
         Camera.video, { maxPoses: 1, flipHorizontal: false });
-
+      Util.updateLoadingStatus("Setup Viewer");
       if (removal === '1')
         segmentation = poses.map(singleSegmentation => singleSegmentation.segmentation);
       //console.log(poses[0]);
@@ -81,7 +81,7 @@ async function renderResult() {
     }
 
     if (segmentation && segmentation.length > 0) {
-
+      Util.updateLoadingStatus("Setting Removal");
       const binaryMask = await bodySegmentation.toBinaryMask(
         segmentation, { r: 0, g: 0, b: 0, a: 0 }, { r: 0, g: 0, b: 0, a: 255 },
         false, 0.65
@@ -135,6 +135,7 @@ async function renderResult() {
   else {
     View.renderer.draw([Camera.video, poses, fpsMode, null]);
   }
+  Util.updateLoadingStatus("Game is Ready");
 }
 
 function beginEstimatePosesStats() {
@@ -171,6 +172,7 @@ async function renderPrediction() {
 
 function init() {
   console.log('in init()');
+  Util.loadingStart();
   Sound.init();
   View.preloadUsedImages();
   QuestionManager.loadQuestionData();
@@ -397,16 +399,15 @@ async function app() {
   }
 
   init().then(() => {
-    Util.loadingStart();
     setTimeout(() => {
       Camera.initSetup();
       //(new FPSMeter({ ui: true })).start();
       createDetector().then((detector) => {
-
+        console.log('initial detector model............................');
+        Util.updateLoadingStatus("Loading Model");
         //console.log(detector);
         //const canvas = document.getElementById('output');
         View.renderer = new RendererCanvas2d(View.canvas);
-
         renderPrediction().then(() => {
           Util.loadingComplete().then(() => {
             State.changeState('instruction');

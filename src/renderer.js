@@ -301,7 +301,6 @@ export class RendererCanvas2d {
     this.ctx.strokeStyle = color;
     this.ctx.lineWidth = 2;
 
-    let nose = null;
     let leftEar = null;
     let rightEar = null;
     let offsetY = null;

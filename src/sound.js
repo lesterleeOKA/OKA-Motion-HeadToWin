@@ -1,3 +1,5 @@
+import Util from './util';
+
 export default {
   audioContext: null,
   audios: {},
@@ -133,7 +135,8 @@ export default {
   },
   //-----------------------------------------------------------------------------------------------
   preloadAudios(paramArray) {
-    console.log('in preloadAudios()');
+    console.log('in preloading audios....................................');
+    Util.updateLoadingStatus("Loading Audio");
     let pArray = [];
     for (let [key, url, createAudioContext, volume] of paramArray) {
       pArray.push(this.preloadAudio(key, url, createAudioContext, volume));
