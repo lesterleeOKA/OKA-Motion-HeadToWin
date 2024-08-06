@@ -331,6 +331,116 @@
         "correctAnswer": "Pens"
       },
       {
+        "QID": "p1u5-e1",
+        "type": "Text",
+        "question": "I have black and white fur, and I love to eat bamboo.",
+        "answers": [
+          "Zebra",
+          "Tiger",
+          "Panda"
+        ],
+        "correctAnswer": "Panda"
+      },
+      {
+        "QID": "p1u5-e2",
+        "type": "Text",
+        "question": "I have a long nose that can pick up things.",
+        "answers": [
+          "Elephant",
+          "Giraffe",
+          "Rabbit"
+        ],
+        "correctAnswer": "Elephant"
+      },
+      {
+        "QID": "p1u5-e3",
+        "type": "Text",
+        "question": "My ears are so long, they almost touch the ground.",
+        "answers": [
+          "Rabbit",
+          "Monkey",
+          "Giraffe"
+        ],
+        "correctAnswer": "Rabbit"
+      },
+      {
+        "QID": "p1u5-e4",
+        "type": "Text",
+        "question": "I have a long neck. I can touch the leaves.",
+        "answers": [
+          "Elephant",
+          "Giraffe",
+          "Monkey"
+        ],
+        "correctAnswer": "Giraffe"
+      },
+      {
+        "QID": "p1u5-e5",
+        "type": "Text",
+        "question": "I'm the king of the jungle. I have loud roar.",
+        "answers": [
+          "Hippo",
+          "Snake",
+          "Lion"
+        ],
+        "correctAnswer": "Lion"
+      },
+      {
+        "QID": "p1u5-e6",
+        "type": "Text",
+        "question": "I have a round tummy and a short tail. My thick brown fur keeps me warm.",
+        "answers": [
+          "Panda",
+          "Bear",
+          "Hippo"
+        ],
+        "correctAnswer": "Bear"
+      },
+      {
+        "QID": "p1u5-e7",
+        "type": "Text",
+        "question": "I am long. I have no legs and I slide.",
+        "answers": [
+          "Giraffe",
+          "Tiger",
+          "Snake"
+        ],
+        "correctAnswer": "Snake"
+      },
+      {
+        "QID": "p1u5-e8",
+        "type": "Text",
+        "question": "I have black and white strips. I run on the grass.",
+        "answers": [
+          "Zebra",
+          "Tiger",
+          "Panda"
+        ],
+        "correctAnswer": "Zebra"
+      },
+      {
+        "QID": "p1u5-e9",
+        "type": "Text",
+        "question": "I have a long tail and I swing from tree to tree.",
+        "answers": [
+          "Rabbit",
+          "Monkey",
+          "Giraffe"
+        ],
+        "correctAnswer": "Monkey"
+      },
+      {
+        "QID": "p1u5-e10",
+        "type": "Text",
+        "question": "I am gray in color. I live near the river.",
+        "answers": [
+          "Tiger",
+          "Crocodile",
+          "Hippo"
+        ],
+        "correctAnswer": "Hippo"
+      },
+      {
         "QID": "p2u1-e1",
         "type": "Text",
         "question": "I want to mail a letter.",

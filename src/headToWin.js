@@ -274,7 +274,7 @@ export default {
       }
       this.time--;
       this.updateTimerDisplay(this.time);
-      console.log(this.usedColumn);
+      //console.log(this.usedColumn);
 
       if (this.time <= 10 && !this.isPlayLastTen) {
         if (State.isSoundOn) {
@@ -739,8 +739,8 @@ export default {
           let bounceY = headPositionY - 300;
           let bounceAngle;
           let bounceBottomAngle;
-          console.log("bounceY", bounceY);
-          console.log("angle", angle);
+          //console.log("bounceY", bounceY);
+          //console.log("angle", angle);
           if (angle > 0) {
             bounceAngle = Math.abs(angle);
             bounceBottomAngle = Math.abs(angle) + 25;

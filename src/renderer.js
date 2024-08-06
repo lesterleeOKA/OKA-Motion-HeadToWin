@@ -38,7 +38,8 @@ export class RendererCanvas2d {
     if (['prepare', 'counting3', 'counting2', 'counting1', 'counting0', 'playing', 'outBox'].includes(State.state)) {
       let isCurPoseValid = false;
       if (poses && poses.length > 0) {
-        this.drawResults(poses, video.width / video.videoWidth, isFPSMode);
+        let ratio = video.width / video.videoWidth;
+        this.drawResults(poses, ratio, isFPSMode);
         //this.isPoseValid(poses, video.width / video.videoWidth);
         isCurPoseValid = this.isPoseValid(poses, video.width / video.videoWidth);
         if (isCurPoseValid && State.bodyInsideRedBox.value == true) {
