@@ -3,18 +3,18 @@
       {
         "QID":"p1u1-a1",
         "type":"Listening",
-        "question":"Good morning, good afternoon, good night",
+        "question":"Good morning, Good afternoon, Good night",
         "answers": [
          "Good morning",
-         "good afternoon",
-         "good night"
+         "Good afternoon",
+         "Good night"
         ],
         "correctAnswer":"Good afternoon"
       },
       {
         "QID": "p1u1-a2",
         "type": "Listening",
-        "question": "Good morning, good afternoon, goodbye",
+        "question": "Good morning, Good afternoon, Goodbye",
         "answers": [
           "Good morning",
           "Good afternoon",
@@ -25,7 +25,7 @@
       {
         "QID": "p1u1-a3",
         "type": "Listening",
-        "question": "Principal, friend, teacher",
+        "question": "Principal, Friend, Teacher",
         "answers": [
           "Principal",
           "Friend",
@@ -36,7 +36,7 @@
       {
         "QID": "p1u1-a4",
         "type": "Listening",
-        "question": "Greek, greet, greed",
+        "question": "Greek, Greet, Greed",
         "answers": [
           "Greek",
           "Greet",
@@ -47,7 +47,7 @@
       {
         "QID": "p1u1-a5",
         "type": "Listening",
-        "question": "Moniter, monitor, moniker",
+        "question": "Moniter, Monitor, Moniker",
         "answers": [
           "Moniter",
           "Monitor",
@@ -58,7 +58,7 @@
       {
         "QID": "p1u1-a6",
         "type": "Listening",
-        "question": "Schoolmate, classroom, classmate",
+        "question": "Schoolmate, Classroom, Classmate",
         "answers": [
           "Schoolmate",
           "Classroom",
@@ -69,7 +69,7 @@
       {
         "QID": "p1u1-a7",
         "type": "Listening",
-        "question": "Gardener, gadener, gardenor",
+        "question": "Gardener, Gadener, Gardenor",
         "answers": [
           "Gardener",
           "Gadener",
@@ -80,7 +80,7 @@
       {
         "QID": "p1u1-a8",
         "type": "Listening",
-        "question": "Hello, hallo, hullo",
+        "question": "Hello, Hallo, Hullo",
         "answers": [
           "Hello",
           "Hallo",
@@ -91,7 +91,7 @@
       {
         "QID": "p1u1-a9",
         "type": "Listening",
-        "question": "freind, fried, friend",
+        "question": "Freind, Fried, Friend",
         "answers": [
           "Freind",
           "Fried",
@@ -102,7 +102,7 @@
       {
         "QID": "p1u1-a10",
         "type": "Listening",
-        "question": "Good morning, good afternoon, goodbye",
+        "question": "Good morning, Good afternoon, Goodbye",
         "answers": [
           "Good morning",
           "Good afternoon",
@@ -113,7 +113,7 @@
       {
         "QID": "p1u1-a11",
         "type": "Listening",
-        "question": "Janitor, lender, leader",
+        "question": "Janitor, Lender, Leader",
         "answers": [
           "Janitor",
           "Lender",
@@ -124,18 +124,18 @@
       {
         "QID": "p1u1-a12",
         "type": "Listening",
-        "question": "Princes, principle, princess",
+        "question": "Princes, Principle, Princess",
         "answers": [
           "Princes",
           "Principle",
           "Princess"
         ],
-        "correctAnswer": "principle"
+        "correctAnswer": "Principle"
       },
       {
         "QID": "p1u1-a13",
         "type": "Listening",
-        "question": "Monitor, driver, janitor",
+        "question": "Monitor, Driver, Janitor",
         "answers": [
           "Monitor",
           "Driver",
@@ -146,7 +146,7 @@
       {
         "QID": "p1u1-a14",
         "type": "Listening",
-        "question": "Cockroach, coach, couch",
+        "question": "Cockroach, Coach, Couch",
         "answers": [
           "Cockroach",
           "Coach",
@@ -157,7 +157,7 @@
       {
         "QID": "p1u1-a15",
         "type": "Listening",
-        "question": "Library, libraries, librarian",
+        "question": "Library, Libraries, Librarian",
         "answers": [
           "Library",
           "Libraries",
@@ -168,7 +168,7 @@
       {
         "QID": "p1u1-a16",
         "type": "Listening",
-        "question": "English, Chinese, maths",
+        "question": "English, Chinese, Maths",
         "answers": [
           "English",
           "Chinese",
@@ -179,7 +179,7 @@
       {
         "QID": "p1u1-a17",
         "type": "Listening",
-        "question": "English, Chinese, maths",
+        "question": "English, Chinese, Maths",
         "answers": [
           "English",
           "Chinese",
@@ -190,7 +190,7 @@
       {
         "QID": "p1u1-a18",
         "type": "Listening",
-        "question": "Leader, driver, janitor",
+        "question": "Leader, Driver, Janitor",
         "answers": [
           "Leader",
           "Driver",
@@ -201,7 +201,7 @@
       {
         "QID": "p1u1-a19",
         "type": "Listening",
-        "question": "Students, student, study",
+        "question": "Students, Student, Study",
         "answers": [
           "Students",
           "Student",
@@ -212,7 +212,7 @@
       {
         "QID": "p1u1-a20",
         "type": "Listening",
-        "question": "Prefect, perfect, principal",
+        "question": "Prefect, Perfect, Principal",
         "answers": [
           "Prefect",
           "Perfect",

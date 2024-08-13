@@ -32,8 +32,9 @@
 }
 .instructionWrapper > .instructionBoard> .gameTextTitle {
   position: relative;
-  font-family: 'BoinkLETPlain', sans-serif;
-  font-weight: bolder;
+  /*font-family: 'BoinkLETPlain', sans-serif;*/
+  font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;
   text-shadow: 5px 5px 4px rgba(0, 0, 0, 0.5);
   font-size: calc(min(8.5vh, 8.5vw));
   /* height: calc(min(16.5vh, 16.5vw)); */
@@ -89,8 +90,9 @@
   margin-right: 0.5rem;
 }
 .instructionWrapper > .instructionBoard > .instructionText {
-  font-family: "Arzachel", system-ui;
-  font-weight: 700;
+  /*font-family: "Arzachel", system-ui;*/
+  font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;
   font-size: calc(min(4.5vh, 4.5vw));
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
@@ -101,8 +103,9 @@
   transform: translateY(5%);
 }
 .instructionWrapper > .instructionBoard >.instructionRule > .instructionContent {
-  font-family: "Arzachel", system-ui;
-  font-weight: bold;
+  /*font-family: "Arzachel", system-ui;*/
+  font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;
   font-size: calc(min(2.5vh, 2.5vw));
   color: #7C5729;
   pointer-events: none;
@@ -151,4 +154,8 @@
   content: url(../images/start_green.png);
 }*/
 
+@font-face {
+  font-family: 'PoetsenOne';
+  src: url('../font/PoetsenOne-Regular.ttf') format('truetype');
+}
 
