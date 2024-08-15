@@ -67,7 +67,7 @@ export default {
     View.scoreBoard.className = "scoreBoard";
     this.answeredNum = 0;
     this.answerLength = 0;
-    this.optionSize = View.canvas.width / 7.5;
+    this.optionSize = View.canvas.width / 6.5;
     this.redBoxX = View.canvas.width / 3;
     this.redBoxY = (View.canvas.height / 5) * 3;
     this.redBoxWidth = View.canvas.width / 3;
@@ -414,6 +414,7 @@ export default {
     optionWrapper.setAttribute('column', columnId);
     let option = document.createElement('span');
     option.classList.add('option');
+    option.classList.add('fixedText');
     option.textContent = text;
     optionWrapper.appendChild(option);
 
@@ -451,6 +452,9 @@ export default {
     this.usedColumn.push(parseInt(usedColumnId));
 
     optionWrapper.classList.remove('show');
+    const childSpan = optionWrapper.querySelector('.option');
+    childSpan.classList.remove('fixedText');
+
     const columnId = this.getBalancedColumn();
     optionWrapper.x = this.generatePositionX(columnId);
     optionWrapper.setAttribute('column', columnId);
@@ -464,6 +468,8 @@ export default {
       optionWrapper.style.left = optionWrapper.x + 'px';
       optionWrapper.style.setProperty('--bottom-height', `${(View.canvas.height)}px`);
       //optionWrapper.style.setProperty('--fallingSpeed', `${5 + this.randomPair.length}s`);
+      const childSpan = optionWrapper.querySelector('.option');
+      childSpan.classList.add('fixedText');
       optionWrapper.classList.add('show');
     }, delay);
   },
@@ -509,7 +515,7 @@ export default {
     if (this.answeredNum === 0) {
       questions = questions.sort(() => Math.random() - 0.5);
     }
-    console.log("questions", questions);
+    console.log("questions", questions[this.answeredNum]);
     const _type = questions[this.answeredNum].type;
     const _QID = questions[this.answeredNum].QID;
     const _question = questions[this.answeredNum].question;
@@ -758,6 +764,8 @@ export default {
           option.style.setProperty('--bounce-bottom-angle', `${bounceBottomAngle}deg`);
           option.style.setProperty('--bounce-speed', `${1}s`)
           option.classList.remove('show');
+          const childSpan = option.querySelector('.option');
+          childSpan.classList.remove('fixedText');
           option.classList.add('showBonunce');
 
           // console.log("deduct:", option);

@@ -34,7 +34,7 @@
   opacity: 1;
   background: url(../images/headToWin/fruit1.png);
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   transform: scale(1);
   z-index: 2;
 }
@@ -274,7 +274,7 @@
 }
 
 .canvasWrapper > .optionArea > .optionWrapper > .option {
-  position: absolute;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -298,6 +298,11 @@
   padding: 5px; /* Add padding to avoid text touching edges */
   box-sizing: border-box; /* Include padding in width/height calculations */
   line-height: var(--line-height);
+}
+.canvasWrapper > .optionArea > .optionWrapper > .option.fixedText {
+  animation-name: fixedRotation;
+  animation-duration: var(--fallingSpeed);
+  animation-timing-function: linear;
 }
 
 :root {
@@ -352,10 +357,19 @@
 
 @keyframes fallingAnimation {
   0% {
-    transform: translateY(var(--top-height));
+    transform: translateY(var(--top-height)) rotate(0deg);
   }
   100% {
-    transform: translateY(var(--bottom-height));
+    transform: translateY(var(--bottom-height)) rotate(360deg);
+  }
+}
+
+@keyframes fixedRotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
   }
 }
 

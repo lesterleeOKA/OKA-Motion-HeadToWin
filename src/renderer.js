@@ -150,7 +150,7 @@ export class RendererCanvas2d {
           const maxWidth = this.headCircle.radius * 2 / window.innerWidth * 120;
           const width = `calc(${maxWidth}vw)`;
           const left = `calc(${xInVw}vw - ${maxWidth / 2}vw)`;
-          const offsetY = Math.max(10, this.headCircle.radius / 1.5);
+          const offsetY = Math.max(10, this.headCircle.radius / 1.2);
           const top = `calc(${this.headCircle.y - this.headCircle.radius - offsetY}px)`;
 
           view.showHeadTracker(true, width, left, top);
