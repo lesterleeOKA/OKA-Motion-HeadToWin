@@ -149,6 +149,7 @@ export default {
     this.countUp(View.scoreText, currentScore, this.score, 1000);
     //View.finishedScore.innerText = this.score;
   },
+
   countUp(displayElement, start, end, duration) {
     let startTime = null;
     let lastSoundTime = 0;
@@ -175,7 +176,6 @@ export default {
         displayElement.style.color = 'white';
       }
     }
-
     requestAnimationFrame(animate);
   },
 
