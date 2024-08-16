@@ -356,13 +356,13 @@ function init() {
     ['bgm', require('./audio/bgm_mspell.mp3'), false, 0.5],
     ['btnClick', require('./audio/btnClick.wav')],
     ['countDown', require('./audio/countDown.mp3')],
-    //['instruction', require('./audio/instruction.mp3')],
-    ['prepare', require('./audio/prepare.mp3')],
+    /*['prepare', require('./audio/prepare.mp3')],*/
+    ['prepare', require('./audio/prepare_ch.mp3')],
     ['start', require('./audio/start.mp3')],
-    /*['finished', require('./audio/finished.mp3')],*/
     ['passGame', require('./audio/passgame.mp3')],
     ['failGame', require('./audio/failgame.mp3')],
-    ['outBox', require('./audio/outBox.mp3')],
+    /*['outBox', require('./audio/outBox.mp3')],*/
+    ['outBox', require('./audio/outBox_ch.mp3')],
     ['poseValid', require('./audio/poseValid.mp3')],
     ['ansCorrect', require('./audio/ansCorrect.mp3')],
     ['ansWrong', require('./audio/ansWrong.mp3')],

@@ -45,15 +45,18 @@
   position: absolute;
   top: 43%;
   /*font-family: "Arzachel", system-ui;*/
-  font-family: 'PoetsenOne', sans-serif;
-  font-weight: 100;
+  /*font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;*/
+  font-family: Arial, sans-serif;
+  font-weight: 600;
   font-size: calc(min(2vh, 2vw));
   color: #4b3002;
   pointer-events: none;
   line-height: 1;
   text-align: left;
   padding-left: calc(min(2.5vh, 5.5vw));
-  font-size: calc(min(1.5vh, 1.5vw));
+  /*font-size: calc(min(1.5vh, 1.5vw));*/
+  font-size: calc(min(2vh, 2vw));
   margin-top: calc(min(1.1vh, 1.1vw));
 }
 .gameWrapper > .prepareBoardWrapper >.rule-1 {

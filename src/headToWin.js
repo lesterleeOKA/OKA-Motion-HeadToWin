@@ -437,12 +437,12 @@ export default {
       // Calculate the font size based on the container size
       const containerHeight = optionWrapper.offsetHeight;
 
-      //let baseFontSize = containerHeight * 0.25;
-      let baseFontSize = containerHeight * 0.165;
+      let baseFontSize = containerHeight * 0.25;
+      //let baseFontSize = containerHeight * 0.165;
       let sizeAdjustment = text.length * 0.2; // Adjust this factor to control how much the text length affects the font size
       let minFontSize = containerHeight * 0.05; // Minimum font size as 5% of the container's height
-      //let maxFontSize = containerHeight * (0.4 - text.length * 0.02);
-      let maxFontSize = containerHeight * (0.1 + text.length * 0.01);
+      let maxFontSize = containerHeight * (0.4 - text.length * 0.02);
+      //let maxFontSize = containerHeight * (0.1 + text.length * 0.01);
 
       let calculatedFontSize = Math.min(Math.max(baseFontSize - sizeAdjustment, minFontSize), maxFontSize);
       // Set the custom property for font size

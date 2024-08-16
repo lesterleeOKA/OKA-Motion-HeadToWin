@@ -131,12 +131,12 @@
   text-align: left;
   font-size: var(--question-font-size);
   padding: calc(min(0.5vh, 0.5vw));
-  line-height: calc(min(3.5vh, 3.5vw));
   /*font-family: "Arzachel", system-ui;*/
-  font-family: 'PoetsenOne', sans-serif;
-  font-weight: 100;
-  /*font-family: Arial, sans-serif;
-  font-weight: 600;*/
+  /*font-family: 'PoetsenOne', sans-serif;
+  line-height: calc(min(3.5vh, 3.5vw));
+  font-weight: 100;*/
+  font-family: Arial, sans-serif;
+  font-weight: 600;
   width: calc(min(34.7vh, 34.7vw));
   height: calc(min(15vh, 15vw));
   color: rgb(192 134 97);
@@ -213,11 +213,11 @@
   border-radius: 4%;*/
   font-size: calc(min(4vh, 4vw));
   /*font-family: "Arzachel", system-ui;*/
-  font-family: 'PoetsenOne', sans-serif;
+  /*font-family: 'PoetsenOne', sans-serif;
   font-weight: 100;
-  padding: calc(min(0.2vh, 0.2vw));
-  /*font-family: Arial, sans-serif;
-  font-weight: 600;*/
+  padding: calc(min(0.2vh, 0.2vw));*/
+  font-family: Arial, sans-serif;
+  font-weight: 600;
   width: calc(min(32.7vh, 32.7vw));
   /*height: calc(min(4.7vh, 4.7vw));*/
   color: white;
@@ -295,10 +295,10 @@
   text-align: center;
   font-size: var(--font-size);
   /*font-family: "Arzachel", system-ui;*/
-  font-family: 'PoetsenOne', sans-serif;
-  font-weight: 100;
-  /*font-family: Arial, sans-serif;
-  font-weight: 600;*/
+  /*font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;*/
+  font-family: Arial, sans-serif;
+  font-weight: 600;
   background: transparent;
   border: none;
   color: white;
