@@ -81,9 +81,12 @@
   transition: opacity 0.1s ease;
   text-align: center;
   font-size: calc(min(3.5vh, 3.5vw));
+  line-height: calc(min(3.5vh, 3.5vw));
   /*font-family: "Arzachel", system-ui;*/
   font-family: 'PoetsenOne', sans-serif;
   font-weight: 100;
+  /*font-family: Arial, sans-serif;
+  font-weight: 600;*/
   width: calc(min(30.7vh, 30.7vw));
   color: rgb(149, 104, 27);
   height: auto;
@@ -99,10 +102,12 @@
   transition: opacity 0.1s ease;
   text-align: center;
   font-size: var(--question-font-size);
-  line-height: 3.5vh;
+  line-height: calc(min(3.5vh, 3.5vw));
   /*font-family: "Arzachel", system-ui;*/
   font-family: 'PoetsenOne', sans-serif;
   font-weight: 100;
+  /*font-family: Arial, sans-serif;
+  font-weight: 600;*/
   width: calc(min(30.7vh, 30.7vw));
   height: calc(min(26vh, 26vw));
   color: rgb(192 134 97);
@@ -120,15 +125,18 @@
 .questionFillBlankWrapper{
   position: absolute;
   top: -10%;
-  left: 52%;
+  left: 50%;
   transform: translate(-50%, 50%);
   transition: opacity 0.1s ease;
   text-align: left;
   font-size: var(--question-font-size);
-  line-height: 3.5vh;
+  padding: calc(min(0.5vh, 0.5vw));
+  line-height: calc(min(3.5vh, 3.5vw));
   /*font-family: "Arzachel", system-ui;*/
   font-family: 'PoetsenOne', sans-serif;
   font-weight: 100;
+  /*font-family: Arial, sans-serif;
+  font-weight: 600;*/
   width: calc(min(34.7vh, 34.7vw));
   height: calc(min(15vh, 15vw));
   color: rgb(192 134 97);
@@ -145,9 +153,10 @@
   transition: opacity 0.1s ease;
   text-align: center;
   font-size: var(--question-font-size);
-  line-height: 3.5vh;
+  line-height: calc(min(3.5vh, 3.5vw));
   /*font-family: "Arzachel", system-ui;*/
   font-family: 'PoetsenOne', sans-serif;
+  /*font-family: Arial, sans-serif;*/
   font-weight: 100;
   width: calc(min(30.7vh, 30.7vw));
   height: calc(min(26vh, 26vw));
@@ -206,6 +215,9 @@
   /*font-family: "Arzachel", system-ui;*/
   font-family: 'PoetsenOne', sans-serif;
   font-weight: 100;
+  padding: calc(min(0.2vh, 0.2vw));
+  /*font-family: Arial, sans-serif;
+  font-weight: 600;*/
   width: calc(min(32.7vh, 32.7vw));
   /*height: calc(min(4.7vh, 4.7vw));*/
   color: white;
@@ -285,6 +297,8 @@
   /*font-family: "Arzachel", system-ui;*/
   font-family: 'PoetsenOne', sans-serif;
   font-weight: 100;
+  /*font-family: Arial, sans-serif;
+  font-weight: 600;*/
   background: transparent;
   border: none;
   color: white;
@@ -470,4 +484,9 @@
 @font-face {
   font-family: 'PoetsenOne';
   src: url('../font/PoetsenOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Wt064';
+  src: url('../font/wt064.ttf') format('truetype');
 }
