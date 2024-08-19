@@ -383,23 +383,6 @@ export default {
     return newRandomId;
   },
 
-  /*seperateColumnWith() {
-    const offset = 20;
-    const availableWidth = View.canvas.width;
-    if (this.wholeScreenColumnSeperated)
-      this.numberOfColumns = Math.floor(availableWidth / (this.optionSize + offset));
-    else
-      this.numberOfColumns = 4;
-
-    console.log("this.numberOfColumns", this.numberOfColumns);
-    for (var i = 0; i < this.numberOfColumns; i++) {
-      if (!this.usedColumn.includes(i))
-        this.usedColumn.push(i);
-    }
-    const columnWidth = availableWidth / this.numberOfColumns;
-    return columnWidth;
-  },*/
-
   generatePositionX(columnId) {
     if (this.wholeScreenColumnSeperated) {
       const offset = 20;
@@ -422,7 +405,7 @@ export default {
       } else {
         numColumns = Math.floor((View.canvas.width - this.redBoxX - this.redBoxWidth - 10) / this.optionSize);
         columnWidth = (View.canvas.width - this.redBoxX - this.redBoxWidth - 10) / numColumns;
-        return this.redBoxX + this.redBoxWidth + (columnId - Math.floor(this.redBoxX / this.optionSize)) * columnWidth + 30;
+        return this.redBoxX + this.redBoxWidth + (columnId - Math.floor(this.redBoxX / this.optionSize)) * columnWidth;
       }
     }
   },
