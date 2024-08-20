@@ -61,7 +61,7 @@
   flex-direction: column;
 }
 .instructionWrapper > .instructionBoard > .previewImage {
-  background-image: url(../images/HeadToWin.jpg);
+  background-image: url(../images/headToWin/mhead_preview.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
