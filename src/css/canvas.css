@@ -124,13 +124,13 @@
 }
 .questionFillBlankWrapper{
   position: absolute;
-  top: -10%;
+  top: 0%;
   left: 50%;
   transform: translate(-50%, 50%);
   transition: opacity 0.1s ease;
   text-align: left;
   font-size: var(--question-font-size);
-  padding: calc(min(0.5vh, 0.5vw));
+  padding: calc(min(1vh, 1vw));
   /*font-family: "Arzachel", system-ui;*/
   /*font-family: 'PoetsenOne', sans-serif;
   line-height: calc(min(3.5vh, 3.5vw));
@@ -144,6 +144,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  line-height: calc(min(5vh, 5vw));
 }
 .questionAudioWrapper{
   position: fixed;
