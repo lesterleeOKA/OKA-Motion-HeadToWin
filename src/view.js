@@ -48,11 +48,11 @@ export default {
   //-----------------------------------------------------------------------------------------------
   preloadedFallingImages: [],
   optionImages: [
-    require("./images/headToWin/fruit1.png"),
-    require("./images/headToWin/fruit2.png"),
-    require("./images/headToWin/fruit3.png"),
-    require("./images/headToWin/fruit4.png"),
-    require("./images/headToWin/fruit5.png"),
+    require("./images/headToWin/meteor1.png"),
+    require("./images/headToWin/meteor2.png"),
+    require("./images/headToWin/meteor3.png"),
+    /*require("./images/headToWin/fruit4.png"),
+    require("./images/headToWin/fruit5.png"),*/
   ],
   preloadUsedImages() {
     this.optionImages.forEach((path) => {

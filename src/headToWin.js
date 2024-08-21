@@ -601,18 +601,18 @@ export default {
         var questionText = document.createElement('span');
         questionText.textContent = this.randomQuestion.question;
         this.questionWrapper.appendChild(questionText);
-        var fontSize = `calc(min(max(3vh, 6vh - ${this.randomQuestion.question.length} * 0.1vh), 6vh))`;
+        var fontSize = `calc(min(max(4vh, 6vh - ${this.randomQuestion.question.length} * 0.1vh), 6vh))`;
         this.questionWrapper.style.setProperty('--question-font-size', fontSize);
         this.answerWrapper.classList.add('pictureType');
         break;
       case 'Listening':
-        this.questionWrapper.classList.add('questionFillBlankWrapper');
+        this.questionWrapper.classList.add('questionAudioWrapper');
         questionBg.classList.add('questionImgBg');
         View.stageImg.appendChild(questionBg);
         var questionText = document.createElement('span');
         questionText.textContent = this.randomQuestion.question;
         this.questionWrapper.appendChild(questionText);
-        var fontSize = `calc(min(max(3vh, 6vh - ${this.randomQuestion.question.length} * 0.1vh), 6vh))`;
+        var fontSize = `calc(min(max(4vh, 6vh - ${this.randomQuestion.question.length} * 0.1vh), 6vh))`;
         this.questionWrapper.style.setProperty('--question-font-size', fontSize);
 
         this.buttonWrapper = document.createElement('button');

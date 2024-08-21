@@ -131,7 +131,7 @@
 }
 
 .finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .playAgainBtn {
-  background: url(../images/headToWin/btn_tryagain_green.png);
+  background: url(../images/headToWin/btn_tryagain.png);
   background-size: contain;
   width: calc(min(28.7vh, 28.7vw));
   height: 100%;
