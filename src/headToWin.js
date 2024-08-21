@@ -12,6 +12,7 @@ export default {
   score: 0,
   time: 0,
   remainingTime: 0,
+  fallingSpeed: 0,
   optionSize: 0,
   fallingOption: null,
   timer: null,
@@ -45,10 +46,12 @@ export default {
 
   init() {
     //View.showTips('tipsReady');
-    const { gameTime } = parseUrlParams();
+    const { gameTime, fallSpeed } = parseUrlParams();
     this.startedGame = false;
     this.fallingId = 0;
     this.remainingTime = gameTime !== null ? gameTime : 120;
+    this.fallingSpeed = fallSpeed !== null ? fallSpeed : 2.5;
+    this.fallingDelay = this.fallingSpeed * 250;
     this.updateTimerDisplay(this.remainingTime);
     this.questionType = QuestionManager.questionField;
     this.randomQuestion = null;
@@ -76,7 +79,6 @@ export default {
     this.redBoxHeight = (View.canvas.height / 5) * 2;
     this.leftCount = 0;
     this.rightCount = 0;
-    this.fallingDelay = 500;
     View.stageImg.innerHTML = '';
     View.optionArea.innerHTML = '';
     document.addEventListener('visibilitychange', this.handleVisibilityChange.bind(this));
@@ -252,11 +254,13 @@ export default {
   },
 
   startFalling() {
+    let firstFall = true;
     const falling = (timestamp) => {
       if (!this.lastFallingTime) this.lastFallingTime = timestamp;
       const elapsed = timestamp - this.lastFallingTime;
-
-      if (elapsed >= this.fallingDelay) {
+      let currentDelay = firstFall ? 500 : this.fallingDelay;
+      //console.log(this.finishedCreateOptions);
+      if (elapsed >= currentDelay) {
         if (!this.finishedCreateOptions && this.randomPair.length > 0) {
           if (this.fallingItems.length < this.randomPair.length) {
             if (this.fallingId < this.fallingItems.length) {
@@ -281,6 +285,7 @@ export default {
           }
         }
         this.lastFallingTime = timestamp;
+        firstFall = false;
       }
 
       if (this.timerRunning) {
@@ -457,6 +462,7 @@ export default {
     item.optionWrapper.style.left = item.x + 'px';
     /*item.optionWrapper.style.setProperty('--top-height', `${0}px`);*/
     item.optionWrapper.style.setProperty('--bottom-height', `${(View.canvas.height)}px`);
+    item.optionWrapper.style.setProperty('--fallingSpeed', `${this.fallingSpeed}s`);
     item.optionWrapper.addEventListener('animationend', () => this.animationEnd(item.optionWrapper));
   },
 
@@ -488,7 +494,7 @@ export default {
     setTimeout(() => {
       optionWrapper.style.left = optionWrapper.x + 'px';
       optionWrapper.style.setProperty('--bottom-height', `${(View.canvas.height)}px`);
-      //optionWrapper.style.setProperty('--fallingSpeed', `${5 + this.randomPair.length}s`);
+      optionWrapper.style.setProperty('--fallingSpeed', `${this.fallingSpeed}s`);
       const childSpan = optionWrapper.querySelector('.option');
       childSpan.classList.add('fixedText');
       optionWrapper.classList.add('show');

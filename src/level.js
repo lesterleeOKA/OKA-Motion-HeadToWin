@@ -12,6 +12,9 @@ function parseUrlParams() {
     const gameTimeParam = params.find(param => param.startsWith('gameTime='));
     const gameTimeValue = gameTimeParam ? gameTimeParam.split('=')[1] : null;
     console.log("game Time:", gameTimeValue);
+    const fallSpeedParam = params.find(param => param.startsWith('fallSpeed='));
+    const fallSpeedValue = fallSpeedParam ? fallSpeedParam.split('=')[1] : null;
+    console.log("fall Speed:", fallSpeedValue);
     const removalParam = params.find(param => param.startsWith('removal='));
     const removalValue = removalParam ? removalParam.split('=')[1] : null;
     console.log("removal:", removalValue);
@@ -25,6 +28,7 @@ function parseUrlParams() {
     return {
       levelKey: levelValue,
       gameTime: gameTimeValue,
+      fallSpeed: fallSpeedValue,
       removal: removalValue !== null ? removalValue : 0,
       fps: fpsValue !== null ? fpsValue : 0,
       model: modelValue,
@@ -34,6 +38,7 @@ function parseUrlParams() {
   return {
     levelKey: null,
     gameTime: null,
+    fallSpeed: null,
     removal: 0,
     fps: 0,
     model: null,
