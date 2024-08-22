@@ -18,7 +18,7 @@ let rafId;
 let stats;
 let startInferenceTime, numInferences = 0;
 let inferenceTimeSum = 0, lastPanelUpdate = 0;
-const bgImage = require('./images/headToWin/bg.jpg');
+const bgImage = require('./images/headToWin/bg.png');
 const fpsDebug = document.getElementById('stats');
 const { levelKey, model, removal, fps } = parseUrlParams();
 //const ctx = canvas.getContext('2d');
