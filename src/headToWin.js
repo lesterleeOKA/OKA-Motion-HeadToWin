@@ -613,17 +613,17 @@ export default {
         break;
       case 'Listening':
         this.questionWrapper.classList.add('questionAudioWrapper');
-        questionBg.classList.add('questionImgBg');
+        questionBg.classList.add('questionAudioBg');
         View.stageImg.appendChild(questionBg);
-        var questionText = document.createElement('span');
+        /*var questionText = document.createElement('span');
         questionText.textContent = this.randomQuestion.question;
         this.questionWrapper.appendChild(questionText);
         var fontSize = `calc(min(max(4vh, 6vh - ${this.randomQuestion.question.length} * 0.1vh), 6vh))`;
-        this.questionWrapper.style.setProperty('--question-font-size', fontSize);
+        this.questionWrapper.style.setProperty('--question-font-size', fontSize);*/
 
         this.buttonWrapper = document.createElement('button');
         this.buttonWrapper.classList.add('buttonWrapper');
-        this.buttonWrapper.classList.add('fillBlankPlay');
+        this.buttonWrapper.classList.add('audioPlay');
         this.buttonWrapper.addEventListener('mousedown', () => {
           this.buttonWrapper.classList.add('clicked');
           this.buttonWrapper.classList.remove('not-clicked');
@@ -647,8 +647,7 @@ export default {
           this.buttonWrapper.classList.add('not-clicked');
         });
         this.questionWrapper.appendChild(this.buttonWrapper);
-
-        this.answerWrapper.classList.add('pictureType');
+        this.answerWrapper.classList.add('audioType');
         break;
       case 'Picture':
         this.questionWrapper.classList.add('questionImageWrapper');

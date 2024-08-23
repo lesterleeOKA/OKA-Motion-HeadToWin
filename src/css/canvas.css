@@ -57,6 +57,7 @@
   bottom: calc(min(5.8vh, 5.5vw));
   width: 40%;
   height: 40%;
+  top: -48%;
 }
 .fillBlankPlay{
   width: 100%;
@@ -153,15 +154,15 @@
   transition: opacity 0.1s ease;
   text-align: left;
   font-size: var(--question-font-size);
-  padding: calc(min(0.5vh, 0.5vw));
+  /*padding: calc(min(0.5vh, 0.5vw));
   line-height: calc(min(4vh, 4vw));
-  /*font-family: "Arzachel", system-ui;*/
+  font-family: "Arzachel", system-ui;
   font-family: 'PoetsenOne', sans-serif;
-  font-weight: 100;
+  font-weight: 100;*/
   /*font-family: Arial, sans-serif;
   font-weight: 600;*/
-  width: calc(min(34.7vh, 34.7vw));
-  height: calc(min(15vh, 15vw));
+  width: calc(min(30.7vh, 30.7vw));
+  height: calc(min(26vh, 26vw));
   color: rgb(98 48 16);
   display: flex;
   flex-direction: column;
