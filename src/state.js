@@ -150,6 +150,7 @@ export default {
         Game.selectedCount = 0;
       }
     } else if (state == 'finished') {
+      View.showHeadTracker(false);
       View.hideTopLeftControl();
       View.hideTips();
       View.hideGame();

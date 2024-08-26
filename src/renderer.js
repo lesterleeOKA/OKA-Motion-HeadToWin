@@ -82,6 +82,7 @@ export class RendererCanvas2d {
           }
         }
       }
+      this.drawHeadTracker(true);
       this.drawHorizontalLine(isCurPoseValid);
     }
   }
@@ -121,7 +122,7 @@ export class RendererCanvas2d {
       if (isBodyOutBox) {
         if (State.state == 'playing') State.changeState('outBox', 'outBox');
         //console.log('outBox', 'outBox');
-        view.showHeadTracker(false);
+        //this.drawHeadTracker(false);
         return false;
       }
 
@@ -145,15 +146,6 @@ export class RendererCanvas2d {
 
         let touchingWord = [];
         if (this.headCircle) {
-
-          const xInVw = (this.headCircle.x / window.innerWidth) * 100;
-          const maxWidth = this.headCircle.radius * 2 / window.innerWidth * 130;
-          const width = `calc(${maxWidth}vw)`;
-          const left = `calc(${xInVw}vw - ${maxWidth / 2}vw)`;
-          const offsetY = Math.max(10, this.headCircle.radius / 1.6);
-          const top = `calc(${this.headCircle.y - this.headCircle.radius - offsetY}px)`;
-
-          view.showHeadTracker(true, width, left, top);
 
           const canvasWrapperRect = canvasWrapper.getBoundingClientRect();
           //console.log(this.headCircle);
@@ -225,6 +217,24 @@ export class RendererCanvas2d {
     this.lastPoseValidValue = isCurPoseValid;
   }
 
+  drawHeadTracker(status = true) {
+    if (this.headCircle) {
+      if (status) {
+        const xInVw = (this.headCircle.x / window.innerWidth) * 100;
+        const maxWidth = this.headCircle.radius * 2 / window.innerWidth * 130;
+        const width = `calc(${maxWidth}vw)`;
+        const left = `calc(${xInVw}vw - ${maxWidth / 2}vw)`;
+        const offsetY = Math.max(10, this.headCircle.radius / 1.6);
+        const top = `calc(${this.headCircle.y - this.headCircle.radius - offsetY}px)`;
+
+        view.showHeadTracker(true, width, left, top);
+      }
+      else {
+        view.showHeadTracker(false);
+      }
+    }
+  }
+
   drawCtx(video, bodySegmentationCanvas) {
     if (Camera.constraints.video.facingMode == 'user') {
       this.ctx.translate(this.videoWidth, 0);
@@ -250,7 +260,7 @@ export class RendererCanvas2d {
   drawResult(pose, ratio, isFPSMode) {
     if (pose.keypoints != null) {
       this.keypointsFitRatio(pose.keypoints, ratio);
-      this.drawKeypoints(pose.keypoints);
+      if (isFPSMode) this.drawKeypoints(pose.keypoints);
       this.drawSkeleton(pose.keypoints, pose.id, isFPSMode);
     }
   }
@@ -318,10 +328,12 @@ export class RendererCanvas2d {
 
       if (this.headKeypoints.includes(kp1.name) && this.headKeypoints.includes(kp2.name) &&
         score1 >= this.scoreThreshold && score2 >= this.scoreThreshold) {
+
+
         this.ctx.beginPath();
         this.ctx.moveTo(kp1.x, kp1.y);
         this.ctx.lineTo(kp2.x, kp2.y);
-        this.ctx.stroke();
+        if (isFPSMode) this.ctx.stroke();
       }
 
       // Store keypoints for left and right eye outer
