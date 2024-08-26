@@ -549,6 +549,116 @@
         "School"
         ],
         "correctAnswer": "Home"
-      }
+      },
+      {
+        "QID": "p2u6-e1",
+        "type": "Text",
+        "question": "I keep animals healthy and happy.",
+        "answers": [
+        "vet",
+        "nurse",
+        "chef"
+        ],
+        "correctAnswer": "vet"
+        },
+        {
+        "QID": "p2u6-e2",
+        "type": "Text",
+        "question": "I teach children new knowledge.",
+        "answers": [
+        "artist",
+        "teacher",
+        "singer"
+        ],
+        "correctAnswer": "teacher"
+        },
+        {
+        "QID": "p2u6-e3",
+        "type": "Text",
+        "question": "I help take care of the sick people.",
+        "answers": [
+        "waiter",
+        "thieves",
+        "nurse"
+        ],
+        "correctAnswer": "nurse"
+        },
+        {
+        "QID": "p2u6-e4",
+        "type": "Text",
+        "question": "I can write songs and perform in front of people.",
+        "answers": [
+        "singer",
+        "policeman",
+        "housewife"
+        ],
+        "correctAnswer": "singer"
+        },
+        {
+        "QID": "p2u6-e5",
+        "type": "Text",
+        "question": "I take good care of my children and spend time with them.",
+        "answers": [
+        "doctor",
+        "housewife",
+        "nurse"
+        ],
+        "correctAnswer": "housewife"
+        },
+        {
+        "QID": "p2u6-e6",
+        "type": "Text",
+        "question": "I catch bad people and protect the city.",
+        "answers": [
+        "postman",
+        "pilot",
+        "policeman"
+        ],
+        "correctAnswer": "policeman"
+        },
+        {
+        "QID": "p2u6-e7",
+        "type": "Text",
+        "question": "I travel around the world very often.",
+        "answers": [
+        "postman",
+        "pilot",
+        "policeman"
+        ],
+        "correctAnswer": "pilot"
+        },
+        {
+        "QID": "p2u6-e8",
+        "type": "Text",
+        "question": "I look after the shop and sell my goods to you.",
+        "answers": [
+        "waitress",
+        "artist",
+        "shopkeeper"
+        ],
+        "correctAnswer": "shopkeeper"
+        },
+        {
+        "QID": "p2u6-e9",
+        "type": "Text",
+        "question": "I draw beautiful paintings and make good sculptures.",
+        "answers": [
+        "waitress",
+        "artist",
+        "shopkeeper"
+        ],
+        "correctAnswer": "artist"
+        },
+        {
+        "QID": "p2u6-e10",
+        "type": "Text",
+        "question": "I help bring letters to you.",
+        "answers": [
+        "postman",
+        "pilot",
+        "policeman"
+        ],
+        "correctAnswer": "postman"
+        }
    ]
 }
