@@ -100,10 +100,12 @@ export default {
   },
 
   handleVisibilityChange() {
-    if (document.hidden) {
-      this.pauseGame();
-    } else {
-      this.resumeGame();
+    if (State.state === 'playing') {
+      if (document.hidden) {
+        this.pauseGame();
+      } else {
+        this.resumeGame();
+      }
     }
   },
 
