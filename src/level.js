@@ -6,6 +6,9 @@ function parseUrlParams() {
     const params = searchParams.split('&');
 
     // Extract the required parameters
+    const jwtParam = params.find(param => param.startsWith('jwt='));
+    const jwtValue = jwtParam ? jwtParam.split('=')[1] : null;
+    console.log("jwt:", jwtValue);
     const levelParam = params.find(param => param.startsWith('unit='));
     const levelValue = levelParam ? levelParam.split('=')[1] : null;
     console.log("level:", levelValue);
@@ -26,6 +29,7 @@ function parseUrlParams() {
     console.log("fpsValue:", fpsValue);
 
     return {
+      jwt: jwtValue,
       levelKey: levelValue,
       gameTime: gameTimeValue,
       fallSpeed: fallSpeedValue,
@@ -36,6 +40,7 @@ function parseUrlParams() {
   }
 
   return {
+    jwt: null,
     levelKey: null,
     gameTime: null,
     fallSpeed: null,

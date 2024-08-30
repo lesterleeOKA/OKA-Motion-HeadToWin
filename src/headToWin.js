@@ -1,7 +1,6 @@
 import View from './view';
 import State from './state';
 import Sound from './sound';
-import { parseUrlParams } from "./level";
 import QuestionManager from './question';
 
 export default {
@@ -44,9 +43,8 @@ export default {
   wholeScreenColumnSeperated: false,
   starNum: 0,
 
-  init() {
+  init(gameTime = null, fallSpeed = null) {
     //View.showTips('tipsReady');
-    const { gameTime, fallSpeed } = parseUrlParams();
     this.startedGame = false;
     this.fallingId = 0;
     this.remainingTime = gameTime !== null ? gameTime : 120;
@@ -115,6 +113,9 @@ export default {
       cancelAnimationFrame(this.fallingOption);
       this.timerRunning = false;
       this.showQuestions(false);
+      this.isPlayLastTen = false;
+      if (State.isSoundOn)
+        Sound.stopAll(['bgm']);
     }
   },
 
@@ -545,11 +546,11 @@ export default {
       questions = questions.sort(() => Math.random() - 0.5);
     }
     console.log("questions", questions[this.answeredNum]);
-    const _type = questions[this.answeredNum].type;
+    const _type = questions[this.answeredNum].QuestionType;
     const _QID = questions[this.answeredNum].QID;
-    const _question = questions[this.answeredNum].question;
-    const _answers = questions[this.answeredNum].answers;
-    const _correctAnswer = questions[this.answeredNum].correctAnswer;
+    const _question = questions[this.answeredNum].Question;
+    const _answers = questions[this.answeredNum].Answers;
+    const _correctAnswer = questions[this.answeredNum].CorrectAnswer;
     //const _media = questions[this.answeredNum].media;
 
     if (this.answeredNum < questions.length - 1) {
@@ -561,11 +562,11 @@ export default {
 
     //console.log("answered count", this.answeredNum);
     return {
-      type: _type,
+      QuestionType: _type,
       QID: _QID,
-      question: _question,
-      answers: _answers,
-      correctAnswer: _correctAnswer,
+      Question: _question,
+      Answers: _answers,
+      CorrectAnswer: _correctAnswer,
       //media: _media,
     };
   },
@@ -587,7 +588,7 @@ export default {
   randomOptions() {
     //console.log('question class', this.randomQuestion);
     this.answerLength = 1;
-    return this.randomizeAnswers(this.randomQuestion.answers);
+    return this.randomizeAnswers(this.randomQuestion.Answers);
   },
   setQuestions() {
     this.randomQuestion = this.randQuestion();
@@ -595,25 +596,25 @@ export default {
     if (this.randomQuestion === null)
       return;
 
-    this.question = this.randomQuestion.question;
+    this.question = this.randomQuestion.Question;
     this.randomPair = this.randomOptions();
     this.questionWrapper = document.createElement('div');
     let questionBg = document.createElement('div');
     this.answerWrapper = document.createElement('span');
 
-    switch (this.randomQuestion.type) {
+    switch (this.randomQuestion.QuestionType) {
       case 'Text':
         this.questionWrapper.classList.add('questionFillBlankWrapper');
         questionBg.classList.add('questionImgBg');
         View.stageImg.appendChild(questionBg);
         var questionText = document.createElement('span');
-        questionText.textContent = this.randomQuestion.question;
+        questionText.textContent = this.randomQuestion.Question;
         this.questionWrapper.appendChild(questionText);
-        var fontSize = `calc(min(max(4vh, 6vh - ${this.randomQuestion.question.length} * 0.1vh), 6vh))`;
+        var fontSize = `calc(min(max(4vh, 6vh - ${this.randomQuestion.Question.length} * 0.1vh), 6vh))`;
         this.questionWrapper.style.setProperty('--question-font-size', fontSize);
         this.answerWrapper.classList.add('pictureType');
         break;
-      case 'Listening':
+      case 'Audio':
         this.questionWrapper.classList.add('questionAudioWrapper');
         questionBg.classList.add('questionAudioBg');
         View.stageImg.appendChild(questionBg);
@@ -650,6 +651,11 @@ export default {
         });
         this.questionWrapper.appendChild(this.buttonWrapper);
         this.answerWrapper.classList.add('audioType');
+
+        if (this.randomQuestion.QID && this.randomQuestion.QID.trim() !== '') {
+          this.playWordAudio(this.randomQuestion.QID);
+          console.log('audio', this.randomQuestion.QID);
+        }
         break;
       case 'Picture':
         this.questionWrapper.classList.add('questionImageWrapper');
@@ -680,7 +686,7 @@ export default {
         break;
     }
 
-    console.log("this.randomQuestion.answers", this.randomQuestion.answers);
+    console.log("this.randomQuestion.answers", this.randomQuestion.Answers);
     /*if (this.randomQuestion.answers === undefined) {
       let resetBtn = document.createElement('div');
       resetBtn.classList.add('resetBtn');
@@ -689,7 +695,7 @@ export default {
         case 'Spelling':
           resetBtn.classList.add('resetTextType');
           break;
-        case 'Listening':
+        case 'Audio':
           resetBtn.classList.add('resetAudioType');
           break;
         case 'FillingBlank':
@@ -700,11 +706,6 @@ export default {
       }
       View.stageImg.appendChild(resetBtn);
     }*/
-
-    if (this.randomQuestion.QID && this.randomQuestion.QID.trim() !== '') {
-      this.playWordAudio(this.randomQuestion.QID);
-      console.log('audio', this.randomQuestion.QID);
-    }
 
     this.answerWrapper.classList.add('answerWrapper');
     View.stageImg.appendChild(this.questionWrapper);
@@ -859,7 +860,7 @@ export default {
 
   },
   checkAnswer(answer) {
-    if (answer.toLowerCase() === this.randomQuestion.correctAnswer.toLowerCase()) {
+    if (answer.toLowerCase() === this.randomQuestion.CorrectAnswer.toLowerCase()) {
       //答岩1分，答錯唔扣分
       this.addScore(this.eachQAMark);
       this.answerWrapper.classList.add('correct');

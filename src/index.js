@@ -11,6 +11,7 @@ import { setupStats } from './stats_panel';
 import { parseUrlParams } from './level';
 import { audioFiles } from './mediaFile';
 import QuestionManager from './question';
+import { apiManager } from './apiManager';
 
 let detector
 //let segmenter
@@ -20,7 +21,7 @@ let startInferenceTime, numInferences = 0;
 let inferenceTimeSum = 0, lastPanelUpdate = 0;
 const bgImage = require('./images/headToWin/bg.png');
 const fpsDebug = document.getElementById('stats');
-const { levelKey, model, removal, fps } = parseUrlParams();
+const { jwt, levelKey, model, removal, fps, gameTime, fallSpeed } = parseUrlParams();
 //const ctx = canvas.getContext('2d');
 
 async function createDetector() {
@@ -175,7 +176,10 @@ function init() {
   Util.loadingStart();
   Sound.init();
   View.preloadUsedImages();
-  QuestionManager.loadQuestionData();
+  Util.updateLoadingStatus("Download Questions");
+  QuestionManager.loadQuestionData(jwt, levelKey, () => View.setPlayerIcon(apiManager.iconDataUrl));
+  State.gameTime = gameTime;
+  State.fallSpeed = fallSpeed;
   //因應iPad及手機browser的nav bar會扣掉高度，在這裡將hv用innerHiehgt重新計算
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
