@@ -1,6 +1,7 @@
 import Questions from '../static/json/questions.json';
 import { imageFiles } from './mediaFile';
 import { apiManager } from "./apiManager";
+import Util from './util';
 
 const hostname = window.location.hostname;
 
@@ -19,6 +20,7 @@ const QuestionManager = {
       img.id = item[0];
       img.src = item[1];
       this.preloadedImagesItem.push(img);
+      Util.updateLoadingStatus("Loading Images");
     });
 
     console.log("preloadedImagesItem", this.preloadedImagesItem);
