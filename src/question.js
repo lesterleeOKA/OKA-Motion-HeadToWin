@@ -26,10 +26,11 @@ const QuestionManager = {
     console.log("preloadedImagesItem", this.preloadedImagesItem);
   },
 
-  loadQuestionData: async function (jwt = null, levelkey = null, onCompleted = null) {
+  loadQuestionData: async function (jwt = null, levelkey = null, onCompleted = null, onError = null) {
     try {
-      await apiManager.postGameSetting(jwt, () => this.loadQuestionFromJson(levelkey, onCompleted));
+      await apiManager.postGameSetting(jwt, () => this.loadQuestionFromJson(levelkey, onCompleted), () => onError());
     } catch (error) {
+      if (onError) onError();
       console.error('Error loading JSON data:', error);
     }
   },
