@@ -19,6 +19,7 @@ export class RendererCanvas2d {
     this.headCircle = null;
     this.headCircleXScale = 0.9;
     this.headCircleYScale = 1.4;
+    this.showSkeleton = false;
   }
 
   draw(rendererParams) {
@@ -41,7 +42,7 @@ export class RendererCanvas2d {
         let ratio = video.width / video.videoWidth;
         this.drawResults(poses, ratio, isFPSMode);
         //this.isPoseValid(poses, video.width / video.videoWidth);
-        isCurPoseValid = this.isPoseValid(poses, video.width / video.videoWidth);
+        isCurPoseValid = this.isPoseValid(poses);
         if (isCurPoseValid && State.bodyInsideRedBox.value == true) {
           if (State.state == 'prepare' && State.getStateLastFor() > 3500) {
             State.changeState('counting3');
@@ -260,7 +261,7 @@ export class RendererCanvas2d {
   drawResult(pose, ratio, isFPSMode) {
     if (pose.keypoints != null) {
       this.keypointsFitRatio(pose.keypoints, ratio);
-      if (isFPSMode) this.drawKeypoints(pose.keypoints);
+      if (isFPSMode || this.showSkeleton) this.drawKeypoints(pose.keypoints);
       this.drawSkeleton(pose.keypoints, pose.id, isFPSMode);
     }
   }
@@ -333,7 +334,7 @@ export class RendererCanvas2d {
         this.ctx.beginPath();
         this.ctx.moveTo(kp1.x, kp1.y);
         this.ctx.lineTo(kp2.x, kp2.y);
-        if (isFPSMode) this.ctx.stroke();
+        if (isFPSMode || this.showSkeleton) this.ctx.stroke();
       }
 
       // Store keypoints for left and right eye outer
@@ -367,7 +368,7 @@ export class RendererCanvas2d {
         radius: adjustedRadius,
       };
 
-      if (isFPSMode) {
+      if (isFPSMode || this.showSkeleton) {
         const radiusX = adjustedRadius * this.headCircleXScale; // Horizontal radius
         const radiusY = adjustedRadius * this.headCircleYScale; // Vertical radius, adjust this factor as needed
         this.ctx.beginPath();

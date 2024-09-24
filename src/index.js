@@ -21,7 +21,8 @@ let startInferenceTime, numInferences = 0;
 let inferenceTimeSum = 0, lastPanelUpdate = 0;
 const bgImage = require('./images/headToWin/bg.png');
 const fpsDebug = document.getElementById('stats');
-const { jwt, levelKey, model, removal, fps, gameTime, fallSpeed } = parseUrlParams();
+let { jwt, levelKey, model, removal, fps, gameTime, fallSpeed } = parseUrlParams();
+let holdTimeout;
 //const ctx = canvas.getContext('2d');
 
 async function createDetector() {
@@ -250,6 +251,7 @@ function handleButtonClick(e) {
       State.changeState('prepare');
       break;
     case View.exitBtn:
+      cleanup();
       if (State.isSoundOn) {
         Sound.play('btnClick');
       }
@@ -258,7 +260,7 @@ function handleButtonClick(e) {
       //State.changeState('pause');
       setTimeout(() => {
         State.changeState('leave');
-      }, 100);
+      }, 500);
       break;
     case View.musicBtn:
       if (State.state !== 'showMusicOnOff') {
@@ -283,13 +285,14 @@ function handleButtonClick(e) {
       }
       break;
     case View.backHomeBtnOfFinished:
+      cleanup();
       if (State.isSoundOn) {
         Sound.play('btnClick');
       }
       State.state = '';
       setTimeout(() => {
         State.changeState('leave');
-      }, 200);
+      }, 500);
       break;
     case View.playAgainBtn:
       if (State.isSoundOn) {
@@ -300,6 +303,7 @@ function handleButtonClick(e) {
       State.changeState('prepare');
       break;
     case View.backHomeBtnOfExit:
+      cleanup();
       if (State.isSoundOn) {
         Sound.play('btnClick');
       }
@@ -307,7 +311,7 @@ function handleButtonClick(e) {
       State.state = '';
       setTimeout(() => {
         State.changeState('leave');
-      }, 200);
+      }, 500);
       break;
     case View.continuebtn:
       if (State.isSoundOn) {
@@ -333,6 +337,24 @@ function handleButtonClick(e) {
       State.setSound(true);
       break;
   }
+}
+
+let isHolding = false;
+function startHold() {
+  if (!isHolding) { // Only set the timeout if not already holding
+    isHolding = true; // Mark as holding
+    holdTimeout = setTimeout(() => {
+      View.renderer.showSkeleton = !View.renderer.showSkeleton;
+      fps = View.renderer.showSkeleton ? '1' : '0';
+      fpsDebug.style.opacity = View.renderer.showSkeleton ? 1 : 0;
+      stats = View.renderer.showSkeleton ? setupStats() : null;
+      console.log(`Show Skeleton ${View.renderer.showSkeleton ? 'enabled' : 'disabled'}`);
+    }, 3000); // 3 seconds
+  }
+}
+function endHold() {
+  clearTimeout(holdTimeout);
+  isHolding = false;
 }
 
 function handleButtonTouch(e) {
@@ -410,6 +432,12 @@ function setupEventListeners() {
     button.addEventListener('pointerup', handleButtonTouchLeave);
     button.addEventListener('click', handleButtonClick);
   });
+
+  View.fpsModeBtn.addEventListener('pointerdown', startHold);
+  View.fpsModeBtn.addEventListener('pointerup', endHold);
+  View.fpsModeBtn.addEventListener('mousedown', startHold);
+  View.fpsModeBtn.addEventListener('mouseup', endHold);
+  View.fpsModeBtn.addEventListener('mouseleave', endHold);
 }
 
 
@@ -452,18 +480,23 @@ async function app() {
 };
 
 //-------------------------------------------------------------------------------------------------
-function toggleSound() {
-  State.isSoundOn = !State.isSoundOn;
-  //console.log('State.isSoundOn: ' + State.isSoundOn);
+async function cleanup() {
+  // Dispose the detector if it is created
+  if (detector) {
+    await detector.dispose(); // Ensure we await the dispose method if it's asynchronous
+    detector = null;
+  }
+  // Stop the camera if it's running
+  if (Camera.video) {
+    Camera.video.srcObject.getTracks().forEach(track => {
+      track.stop(); // Stop each track
+    });
+    Camera.video.srcObject = null; // Clear the video source
+  }
   if (State.isSoundOn) {
-    View.musicBtn.classList.add('on');
-    View.musicBtn.classList.remove('off');
-    Sound.play('bgm', true);
-  } else {
-    View.musicBtn.classList.remove('on');
-    View.musicBtn.classList.add('off');
     Sound.stopAll();
   }
+  console.log("Cleanup completed.");
 }
 //-------------------------------------------------------------------------------------------------
 app();

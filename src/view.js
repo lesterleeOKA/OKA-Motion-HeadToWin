@@ -49,6 +49,7 @@ export default {
 
   headTracker: document.getElementById('head'),
   playerIcon: document.getElementById('userIcon'),
+  fpsModeBtn: document.getElementById('fpsButton'),
   //-----------------------------------------------------------------------------------------------
   preloadedFallingImages: [],
   optionImages: [
