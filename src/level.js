@@ -9,6 +9,9 @@ function parseUrlParams() {
     const jwtParam = params.find(param => param.startsWith('jwt='));
     const jwtValue = jwtParam ? jwtParam.split('=')[1] : null;
     console.log("jwt:", jwtValue);
+    const idParam = params.find(param => param.startsWith('id='));
+    const idValue = idParam ? idParam.split('=')[1] : null;
+    console.log("App/Book id:", idValue);
     const levelParam = params.find(param => param.startsWith('unit='));
     const levelValue = levelParam ? levelParam.split('=')[1] : null;
     console.log("level:", levelValue);
@@ -30,6 +33,7 @@ function parseUrlParams() {
 
     return {
       jwt: jwtValue,
+      id: idValue,
       levelKey: levelValue,
       gameTime: gameTimeValue,
       fallSpeed: fallSpeedValue,
@@ -41,6 +45,7 @@ function parseUrlParams() {
 
   return {
     jwt: null,
+    id: null,
     levelKey: null,
     gameTime: null,
     fallSpeed: null,

@@ -439,19 +439,25 @@ export default {
 
     requestAnimationFrame(() => {
       // Calculate the font size based on the container size
-      const containerHeight = optionWrapper.offsetHeight;
+      //const containerHeight = optionWrapper.offsetHeight;
 
       //let baseFontSize = containerHeight * 0.25;
-      let baseFontSize = containerHeight * 0.165;
-      let sizeAdjustment = text.length * 0.2; // Adjust this factor to control how much the text length affects the font size
-      let minFontSize = containerHeight * 0.05; // Minimum font size as 5% of the container's height
+      //let baseFontSize = containerHeight * 0.165;
+      //let sizeAdjustment = text.length * 0.2; // Adjust this factor to control how much the text length affects the font size
+      //let minFontSize = containerHeight * 0.05; // Minimum font size as 5% of the container's height
       //let maxFontSize = containerHeight * (0.4 - text.length * 0.02);
-      let maxFontSize = containerHeight * (0.1 + text.length * 0.01);
+      //let maxFontSize = containerHeight * (0.1 + text.length * 0.01);
 
-      let calculatedFontSize = Math.min(Math.max(baseFontSize - sizeAdjustment, minFontSize), maxFontSize);
+      //let calculatedFontSize = Math.min(Math.max(baseFontSize - sizeAdjustment, minFontSize), maxFontSize);
       // Set the custom property for font size
-      option.style.setProperty('--font-size', `${calculatedFontSize}px`);
-      option.style.setProperty('--line-height', `${calculatedFontSize * 0.9}px`);
+      //option.style.setProperty('--font-size', `${calculatedFontSize}px`);
+      //option.style.setProperty('--line-height', `${calculatedFontSize * 0.9}px`);
+      let containerWidth = this.optionSize;
+      let maxFontSize = 50; // Maximum font size in px
+      let minFontSize = 10; // Minimum font size in px
+      let fontSize = Math.max(minFontSize, Math.min(maxFontSize, containerWidth / (text.length * 0.7)));
+      option.style.fontSize = `${fontSize}px`;
+      option.style.lineHeight = `${fontSize}px`;
     });
     return optionWrapper;
   },
@@ -541,17 +547,17 @@ export default {
     if (this.questionType === null || this.questionType === undefined)
       return null;
 
-    let questions = this.questionType.QA;
+    let questions = this.questionType.questions;
     if (this.answeredNum === 0) {
       questions = questions.sort(() => Math.random() - 0.5);
     }
     console.log("questions", questions[this.answeredNum]);
-    const _type = questions[this.answeredNum].QuestionType;
-    const _QID = questions[this.answeredNum].QID;
-    const _question = questions[this.answeredNum].Question;
-    const _answers = questions[this.answeredNum].Answers;
-    const _correctAnswer = questions[this.answeredNum].CorrectAnswer;
-    //const _media = questions[this.answeredNum].media;
+    const _type = questions[this.answeredNum].questionType;
+    const _QID = questions[this.answeredNum].qid;
+    const _question = questions[this.answeredNum].question;
+    const _answers = questions[this.answeredNum].answers;
+    const _correctAnswer = questions[this.answeredNum].correctAnswer;
+    const _media = questions[this.answeredNum].media;
 
     if (this.answeredNum < questions.length - 1) {
       this.answeredNum += 1;
@@ -567,7 +573,7 @@ export default {
       Question: _question,
       Answers: _answers,
       CorrectAnswer: _correctAnswer,
-      //media: _media,
+      media: _media,
     };
   },
   generateCharArray(word) {
@@ -603,7 +609,7 @@ export default {
     this.answerWrapper = document.createElement('span');
 
     switch (this.randomQuestion.QuestionType) {
-      case 'Text':
+      case 'text':
         this.questionWrapper.classList.add('questionFillBlankWrapper');
         questionBg.classList.add('questionImgBg');
         View.stageImg.appendChild(questionBg);
@@ -614,7 +620,7 @@ export default {
         this.questionWrapper.style.setProperty('--question-font-size', fontSize);
         this.answerWrapper.classList.add('pictureType');
         break;
-      case 'Audio':
+      case 'audio':
         this.questionWrapper.classList.add('questionAudioWrapper');
         questionBg.classList.add('questionAudioBg');
         View.stageImg.appendChild(questionBg);
@@ -657,7 +663,7 @@ export default {
           console.log('audio', this.randomQuestion.QID);
         }
         break;
-      case 'Picture':
+      case 'picture':
         this.questionWrapper.classList.add('questionImageWrapper');
         questionBg.classList.add('questionImgBg');
         View.stageImg.appendChild(questionBg);

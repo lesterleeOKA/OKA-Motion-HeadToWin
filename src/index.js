@@ -21,7 +21,7 @@ let startInferenceTime, numInferences = 0;
 let inferenceTimeSum = 0, lastPanelUpdate = 0;
 const bgImage = require('./images/headToWin/bg.png');
 const fpsDebug = document.getElementById('stats');
-let { jwt, levelKey, model, removal, fps, gameTime, fallSpeed } = parseUrlParams();
+let { jwt, id, levelKey, model, removal, fps, gameTime, fallSpeed } = parseUrlParams();
 let holdTimeout;
 //const ctx = canvas.getContext('2d');
 
@@ -189,6 +189,7 @@ async function init() {
   await new Promise((resolve, reject) => {
     QuestionManager.loadQuestionData(
       jwt,
+      id,
       levelKey,
       () => {
         View.setPlayerIcon(apiManager.iconDataUrl);
