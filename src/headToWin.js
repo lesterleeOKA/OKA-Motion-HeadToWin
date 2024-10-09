@@ -8,6 +8,7 @@ export default {
   questionType: null,
   randomQuestion: null,
   question: '',
+  totalQuestions: 0,
   score: 0,
   time: 0,
   remainingTime: 0,
@@ -21,7 +22,9 @@ export default {
   fallingItems: [],
   reFallingItems: [],
   typedItems: [],
+  randomQuestionId: 0,
   answeredNum: 0,
+  correctedAnswerNumber: 0,
   answerLength: 0,
   questionWrapper: null,
   answerWrapper: null,
@@ -42,6 +45,7 @@ export default {
   numberOfColumns: 4,
   wholeScreenColumnSeperated: false,
   starNum: 0,
+  apiManager: null,
 
   init(gameTime = null, fallSpeed = null) {
     //View.showTips('tipsReady');
@@ -54,6 +58,7 @@ export default {
     this.questionType = QuestionManager.questionField;
     this.randomQuestion = null;
     this.question = '';
+    this.totalQuestions = 0;
     this.score = 0;
     this.time = 0;
     this.timerRunning = false;
@@ -68,7 +73,9 @@ export default {
     this.questionWrapper = null;
     this.answerWrapper = null;
     View.scoreBoard.className = "scoreBoard";
+    this.randomQuestionId = 0;
     this.answeredNum = 0;
+    this.correctedAnswerNumber = 0;
     this.answerLength = 0;
     this.optionSize = View.canvas.width / 6.5;
     this.redBoxX = View.canvas.width / 3;
@@ -94,6 +101,7 @@ export default {
     this.isTriggeredBackSpace = false;
     this.starNum = 0;
     this.selectedCount = 0;
+    this.apiManager = State.apiManager;
 
   },
 
@@ -318,10 +326,7 @@ export default {
       }
 
       if (this.time <= 0) {
-        this.stopCountTime();
-        View.timeText.classList.remove('lastTen');
-        State.changeState('finished');
-        this.startedGame = false;
+        this.finishedGame();
       } else {
         this.timer = setTimeout(this.countTime.bind(this), 1000);
       }
@@ -548,22 +553,37 @@ export default {
       return null;
 
     let questions = this.questionType.questions;
-    if (this.answeredNum === 0) {
+    this.totalQuestions = questions.length;
+    if (this.randomQuestionId === 0) {
       questions = questions.sort(() => Math.random() - 0.5);
     }
-    console.log("questions", questions[this.answeredNum]);
-    const _type = questions[this.answeredNum].questionType;
-    const _QID = questions[this.answeredNum].qid;
-    const _question = questions[this.answeredNum].question;
-    const _answers = questions[this.answeredNum].answers;
-    const _correctAnswer = questions[this.answeredNum].correctAnswer;
-    const _media = questions[this.answeredNum].media;
+    console.log("questions", questions[this.randomQuestionId]);
+    const _type = questions[this.randomQuestionId].questionType;
+    const _QID = questions[this.randomQuestionId].qid;
+    const _question = questions[this.randomQuestionId].question;
+    const _answers = questions[this.randomQuestionId].answers;
+    const _correctAnswer = questions[this.randomQuestionId].correctAnswer;
+    const _star = questions[this.randomQuestionId].star;
+    const _score = questions[this.randomQuestionId].score;
+    const _correctAnswerIndex = questions[this.randomQuestionId].correctAnswerIndex;
+    const _media = questions[this.randomQuestionId].media;
 
-    if (this.answeredNum < questions.length - 1) {
+    if (this.randomQuestionId < this.totalQuestions - 1) {
+      this.randomQuestionId += 1;
+    }
+    else {
+      this.randomQuestionId = 0;
+    }
+
+    if (this.answeredNum < this.totalQuestions) {
       this.answeredNum += 1;
     }
     else {
-      this.answeredNum = 0;
+      if (this.apiManager.isLogined) {
+        console.log("finished question");
+        this.finishedGame();
+        return null;
+      }
     }
 
     //console.log("answered count", this.answeredNum);
@@ -573,7 +593,10 @@ export default {
       Question: _question,
       Answers: _answers,
       CorrectAnswer: _correctAnswer,
-      media: _media,
+      Star: _star,
+      Score: _score,
+      CorrectAnswerId: _correctAnswerIndex,
+      Media: _media,
     };
   },
   generateCharArray(word) {
@@ -753,10 +776,10 @@ export default {
     }
   },
   finishedGame() {
-    this.question = '';
-    this.fallingItems.splice(0);
-    View.stageImg.innerHTML = '';
-    View.optionArea.innerHTML = '';
+    this.stopCountTime();
+    View.timeText.classList.remove('lastTen');
+    State.changeState('finished');
+    this.startedGame = false;
   },
   fillWord(option, headPosition) {
     if (this.answerWrapper) {
@@ -865,19 +888,6 @@ export default {
     this.selectedCount = 0;
 
   },
-  checkAnswer(answer) {
-    if (answer.toLowerCase() === this.randomQuestion.CorrectAnswer.toLowerCase()) {
-      //答岩1分，答錯唔扣分
-      this.addScore(this.eachQAMark);
-      this.answerWrapper.classList.add('correct');
-      State.changeState('playing', 'ansCorrect');
-      View.showCorrectEffect(true);
-    } else {
-      //this.addScore(-1);
-      this.answerWrapper.classList.add('wrong');
-      State.changeState('playing', 'ansWrong');
-    }
-  },
   moveToNextQuestion() {
     this.randomQuestion = null;
     this.randomPair = [];
@@ -886,5 +896,78 @@ export default {
     setTimeout(() => {
       this.nextQuestion = true;
     }, 1000);
+  },
+  ////////////////////////////Added Submit Answer API/////////////////////////////////////////////////////
+  checkAnswer(answer) {
+    const isCorrect = answer.toLowerCase() === this.randomQuestion.CorrectAnswer.toLowerCase();
+    const eachQAScore = this.getScoreForQuestion();
+
+    if (isCorrect) {
+      //答岩1分，答錯唔扣分
+      this.addScore(eachQAScore);
+      this.answerWrapper.classList.add('correct');
+      State.changeState('playing', 'ansCorrect');
+      View.showCorrectEffect(true);
+    } else {
+      //this.addScore(-1);
+      this.answerWrapper.classList.add('wrong');
+      State.changeState('playing', 'ansWrong');
+    }
+
+    this.uploadAnswerToAPI(answer, this.randomQuestion, eachQAScore); ////submit answer api//////
+  },
+  getScoreForQuestion() {
+    return this.randomQuestion.Score ? this.randomQuestion.Score : this.eachQAMark;
+  },
+  answeredPercentage() {
+    if (this.totalQuestions === 0) return 0;
+    return (this.correctedAnswerNumber / this.totalQuestions) * 100;
+  },
+  uploadAnswerToAPI(answer, currentQuestion, eachMark) {
+    if (!this.apiManager || !this.apiManager.isLogined || answer === '') return;
+    console.log(`Game Time: ${this.remainingTime}, Remaining Time: ${this.time}`);
+    const currentTime = this.calculateCurrentTime();
+    const progress = this.calculateProgress();
+    const { correctId, score, currentQAPercent } = this.calculateAnswerMetrics(answer, currentQuestion, eachMark);
+    const answeredPercentage = this.calculateAnsweredPercentage();
+    this.apiManager.SubmitAnswer(
+      currentTime,
+      this.score,
+      answeredPercentage,
+      progress,
+      correctId,
+      currentTime,
+      currentQuestion.QID,
+      currentQuestion.CorrectAnswerId,
+      answer,
+      currentQuestion.CorrectAnswer,
+      score,
+      currentQAPercent
+    );
+  },
+  calculateCurrentTime() {
+    return Math.floor(((this.remainingTime - this.time) / this.remainingTime) * 100);
+  },
+  calculateProgress() {
+    return Math.floor((this.answeredNum / this.totalQuestions) * 100);
+  },
+  calculateAnswerMetrics(answer, currentQuestion, eachMark) {
+    let correctId = 0;
+    let score = 0;
+    let currentQAPercent = 0;
+
+    if (answer.toLowerCase() === this.randomQuestion.CorrectAnswer.toLowerCase()) {
+      this.correctedAnswerNumber = Math.min(this.correctedAnswerNumber + 1, this.totalQuestions);
+      correctId = 2;
+      score = eachMark;
+      currentQAPercent = 100;
+    }
+    console.log("Corrected Answer Number: ", this.correctedAnswerNumber);
+    return { correctId, score, currentQAPercent };
+  },
+  calculateAnsweredPercentage() {
+    return this.correctedAnswerNumber < this.totalQuestions
+      ? this.answeredPercentage(this.totalQuestions)
+      : 100;
   }
 }
