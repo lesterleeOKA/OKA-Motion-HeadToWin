@@ -4,6 +4,7 @@ import Sound from './sound';
 import Camera from './camera';
 import Game from './headToWin';
 import view from './view';
+//import { logController } from './logController';
 
 
 export class RendererCanvas2d {
@@ -122,7 +123,7 @@ export class RendererCanvas2d {
       State.setPoseState('bodyInsideRedBox', !isBodyOutBox);
       if (isBodyOutBox) {
         if (State.state == 'playing') State.changeState('outBox', 'outBox');
-        //console.log('outBox', 'outBox');
+        //logController.log('outBox', 'outBox');
         //this.drawHeadTracker(false);
         return false;
       }
@@ -149,7 +150,7 @@ export class RendererCanvas2d {
         if (this.headCircle) {
 
           const canvasWrapperRect = canvasWrapper.getBoundingClientRect();
-          //console.log(this.headCircle);
+          //logController.log(this.headCircle);
           for (let option of optionWrappers) {
             const optionRect = option.getBoundingClientRect();
             if (
@@ -169,7 +170,7 @@ export class RendererCanvas2d {
         for (let option of optionWrappers) {
           if (touchingWord.includes(option) && !option.classList.contains('touch')) {
             State.setPoseState('selectedImg', option);
-            //console.log("touch ", option);
+            //logController.log("touch ", option);
             Game.fillWord(option, this.headCircle);
           }
         }

@@ -2,6 +2,7 @@ import View from './view';
 import Sound from './sound';
 import Game from './headToWin';
 import { apiManager } from "./apiManager";
+import { logController } from './logController';
 
 export default {
   apiManager: apiManager,
@@ -47,7 +48,7 @@ export default {
     if (this.state === 'finished')
       return;
 
-    console.log(state, stateType, this.lastState);
+    logController.log(state, stateType, this.lastState);
     if (this.state == state) {
       this.stateLastFor = +new Date() - this.stateLastAt;
       if (this.stateType == stateType) return;
@@ -61,6 +62,7 @@ export default {
 
     if (state == 'instruction') {
       Game.init(this.gameTime, this.fallSpeed);
+      View.setProgressBar(false);
       View.hideTopLeftControl();
       View.hideTips();
       View.showCanvas();
@@ -101,6 +103,7 @@ export default {
       }
     } else if (state == 'playing') {
       //View.showTips('tipsReady');
+      View.setProgressBar(apiManager.isLogined ? true : false);
       View.showTopLeftControl();
       switch (stateType) {
         case 'showStage':
@@ -155,6 +158,7 @@ export default {
         Game.selectedCount = 0;
       }
     } else if (state == 'finished') {
+      View.setProgressBar(false);
       View.showHeadTracker(false);
       View.hideTopLeftControl();
       View.hideTips();
@@ -165,11 +169,11 @@ export default {
         Sound.stopAll('bgm');
         if (Game.score >= 30) {
           Sound.play('passGame');
-          //console.log("Play.........................p");
+          //logController.log("Play.........................p");
         }
         else {
           Sound.play('failGame');
-          //console.log("Play.........................f");
+          //logController.log("Play.........................f");
         }
       }
       Game.countUp(View.finishedScore, 0, Game.score, 2000);
@@ -185,7 +189,7 @@ export default {
         if (this.apiManager.isLogined) {
           this.apiManager.exitGameRecord(
             () => {
-              console.log("leave page, back to history");
+              logController.log("leave page, back to history");
               window.history.back();
             }
           );
@@ -199,7 +203,7 @@ export default {
         if (this.apiManager.isLogined) {
           this.apiManager.exitGameRecord(
             () => {
-              console.log("leave page, back to history");
+              logController.log("leave page, back to history");
               window.history.back();
             }
           );
@@ -213,7 +217,7 @@ export default {
         location.reload();
       }
       else {
-        console.log("Quit Game");
+        logController.log("Quit Game");
         if (this.apiManager.isLogined) {
           this.apiManager.exitGameRecord(
             () => {

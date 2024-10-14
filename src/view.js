@@ -1,5 +1,6 @@
 import Game from './headToWin';
 import State from './state';
+import { logController } from './logController';
 
 export default {
   //-----------------------------------------------------------------------------------------------
@@ -53,6 +54,8 @@ export default {
   headTracker: document.getElementById('head'),
   playerIcon: document.getElementById('userIcon'),
   fpsModeBtn: document.getElementById('fpsButton'),
+
+  progressBarWrapper: document.querySelector('.progressBarWrapper'),
   //-----------------------------------------------------------------------------------------------
   preloadedFallingImages: [],
   optionImages: [
@@ -69,7 +72,7 @@ export default {
       this.preloadedFallingImages.push(img);
     });
 
-    console.log("preloadUsedImages", this.preloadedFallingImages);
+    logController.log("preloadUsedImages", this.preloadedFallingImages);
   },
 
   showInstruction() {
@@ -247,10 +250,7 @@ export default {
     if (top) this.headTracker.style.top = top;
     this.headTracker.style.display = status ? 'block' : 'none';
   },
-  /*showHands(status) {
-    this.rightHandImg.style.display = status ? 'block' : 'none';
-    this.leftHandImg.style.display = status ? 'block' : 'none';
-  }*/
+
   setPlayerIcon(iconUrl = null) {
     if (iconUrl) {
       this.playerIcon.src = iconUrl;
@@ -266,5 +266,9 @@ export default {
       this.playerName.style.display = 'none';
       this.playerNameText.textContent = '';
     }
+  },
+
+  setProgressBar(status = null) {
+    this.progressBarWrapper.style.display = status ? 'block' : 'none';
   }
 };
