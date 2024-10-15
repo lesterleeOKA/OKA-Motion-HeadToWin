@@ -143,12 +143,6 @@ export default {
   //-----------------------------------------------------------------------------------------------
   showFinished() {
     this.finishedWrapper.classList.add("show");
-    /*let fullScore = 0;
-    for (let stage of Game.stages) for (let question of stage.questions) fullScore += question.correctImgNum;
-    let ttlScore = 0;
-    for (let score of Game.score) ttlScore += score;
-    this.finishedScore.innerText = ttlScore + "/" + fullScore;*/
-    //this.finishedTime.innerText = Game.getCurTimeString();
   },
   hideFinished() {
     this.finishedWrapper.classList.remove("show");
