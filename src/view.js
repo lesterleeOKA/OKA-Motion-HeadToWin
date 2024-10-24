@@ -46,6 +46,7 @@ export default {
   scoreText: document.querySelector('.gameWrapper > .topLeftControl > .scoreWrapper > .scoreText'),
   playerName: document.querySelector('.gameWrapper > .topLeftControl > .scoreWrapper > .playerName'),
   playerNameText: document.querySelector('.gameWrapper > .topLeftControl > .scoreWrapper > .playerName > .playerNameText'),
+  playerNameBox: document.querySelector('.gameWrapper > .topLeftControl > .scoreWrapper > .playerName > .playerNameBox'),
 
   timeText: document.querySelector('.gameWrapper > .topLeftControl > .timeWrapper > .timeText'),
   finishedScore: document.querySelector('.finishedWrapper > .finishedBoardWrapper > .scoreTimeWrapper > .row.score > .value'),
@@ -234,6 +235,14 @@ export default {
       result.addEventListener('animationend', () => result.classList.remove('show'));
     }
   },
+
+  showWrongEffect(status) {
+    let result = document.querySelector('.gameWrapper .ansResult .incorrect');
+    if (status) {
+      result.classList.add('show');
+      result.addEventListener('animationend', () => result.classList.remove('show'));
+    }
+  },
   //-----------------------------------------------------------------------------------------------
   setSelectCount(value) {
     for (let selectCount of this.selectCounts) selectCount.innerHTML = value;
@@ -256,9 +265,17 @@ export default {
   setPlayerName(name = null) {
     if (name && name !== '') {
       this.playerName.style.display = 'block';
+      this.playerNameBox.style.opacity = 1;
+      const textLength = name.length;
+      const baseSize = this.playerName.getBoundingClientRect().width / textLength;
       this.playerNameText.textContent = name;
+      if (baseSize > 10) {
+        const containerWidth = (baseSize) - (textLength);
+        this.playerNameText.style.fontSize = `${containerWidth}px`;
+      }
     }
     else {
+      this.playerNameBox.style.opacity = 0;
       this.playerName.style.display = 'none';
       this.playerNameText.textContent = '';
     }
