@@ -902,6 +902,7 @@ export default {
       //this.addScore(-1);
       this.answerWrapper.classList.add('wrong');
       State.changeState('playing', 'ansWrong');
+      View.showWrongEffect(true);
     }
 
     this.updateAnsweredProgressBar(() => {
