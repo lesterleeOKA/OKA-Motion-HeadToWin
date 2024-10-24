@@ -215,7 +215,9 @@ async function init() {
         if (apiManager.isLogined) {
           let previewImageUrl = (apiManager.settings.previewGameImageUrl && apiManager.settings.previewGameImageUrl !== '') ? apiManager.settings.previewGameImageUrl : null;
           State.gameTime = apiManager.settings.gameTime;
+          State.fallSpeed = apiManager.settings.fallSpeed;
           logController.log("settings gameTime:", State.gameTime);
+          logController.log("settings object speed:", apiManager.settings.fallSpeed);
           logController.log("settings removal:", apiManager.settings.removal);
           logController.log("settings detectionModel:", apiManager.settings.detectionModel);
 

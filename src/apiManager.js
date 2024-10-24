@@ -15,6 +15,7 @@ class Settings {
     this.gameTime = 0; // Default to 0
     this.removal = null;
     this.detectionModel = null;
+    this.fallSpeed = 0;
   }
 }
 
@@ -100,6 +101,7 @@ const apiManager = {
             }
 
             this.settings.gameTime = this.gameSettingJson.game_time;
+            this.settings.fallSpeed = this.gameSettingJson.object_speed;
             this.settings.removal = this.gameSettingJson.background_removal;
             this.settings.detectionModel = this.gameSettingJson.detection_model;
           }
