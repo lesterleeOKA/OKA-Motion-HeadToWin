@@ -47,6 +47,7 @@ export default {
   wholeScreenColumnSeperated: false,
   starNum: 0,
   apiManager: null,
+  itemDelay: 0,
 
   init(gameTime = null, fallSpeed = null) {
     //View.showTips('tipsReady');
@@ -54,7 +55,8 @@ export default {
     this.fallingId = 0;
     this.remainingTime = gameTime !== null ? gameTime : 120;
     this.fallingSpeed = fallSpeed !== null ? fallSpeed : 2.5;
-    this.fallingDelay = this.fallingSpeed * 250;
+    this.itemDelay = 250;
+    this.fallingDelay = 800;
     this.updateTimerDisplay(this.remainingTime);
     this.questionType = QuestionManager.questionField;
     this.randomQuestion = null;
@@ -270,7 +272,7 @@ export default {
     const falling = (timestamp) => {
       if (!this.lastFallingTime) this.lastFallingTime = timestamp;
       const elapsed = timestamp - this.lastFallingTime;
-      let currentDelay = firstFall ? 500 : this.fallingDelay;
+      let currentDelay = this.fallingDelay;
       //logController.log(this.finishedCreateOptions);
       if (elapsed >= currentDelay) {
         if (!this.finishedCreateOptions && this.randomPair.length > 0) {
@@ -289,13 +291,13 @@ export default {
             logController.log("finished created all");
           }
         }
-        else {
+        /*else {
           if (this.reFallingItems.length > 0) {
             let refallingItem = this.reFallingItems[0];
             this.resetFallingItem(refallingItem);
             this.reFallingItems.splice(0, 1);
           }
-        }
+        }*/
         this.lastFallingTime = timestamp;
         firstFall = false;
       }
@@ -476,7 +478,7 @@ export default {
     item.optionWrapper.classList.add("show");
     item.optionWrapper.style.left = item.x + 'px';
     /*item.optionWrapper.style.setProperty('--top-height', `${0}px`);*/
-    item.optionWrapper.style.setProperty('--bottom-height', `${(View.canvas.height)}px`);
+    item.optionWrapper.style.setProperty('--bottom-height', `${(View.canvas.height + this.optionSize)}px`);
     item.optionWrapper.style.setProperty('--fallingSpeed', `${this.fallingSpeed}s`);
     item.optionWrapper.addEventListener('animationend', () => this.animationEnd(item.optionWrapper));
   },
@@ -484,6 +486,11 @@ export default {
   animationEnd(optionWrapper) {
     this.reFallingItems.push(optionWrapper);
     logController.log("re falling item", this.reFallingItems);
+    if (this.reFallingItems.length > 0) {
+      let refallingItem = this.reFallingItems[0];
+      this.resetFallingItem(refallingItem);
+      this.reFallingItems.splice(0, 1);
+    }
   },
 
   resetFallingItem(optionWrapper) {
@@ -508,7 +515,7 @@ export default {
     //logController.log("delay", delay, itemLength);
     setTimeout(() => {
       optionWrapper.style.left = optionWrapper.x + 'px';
-      optionWrapper.style.setProperty('--bottom-height', `${(View.canvas.height)}px`);
+      optionWrapper.style.setProperty('--bottom-height', `${(View.canvas.height + this.optionSize)}px`);
       optionWrapper.style.setProperty('--fallingSpeed', `${this.fallingSpeed}s`);
       const childSpan = optionWrapper.querySelector('.option');
       childSpan.classList.add('fixedText');
@@ -528,7 +535,7 @@ export default {
     let delay = 0;
 
     if (itemLength > 1) {
-      delay = itemLength * 250;
+      delay = itemLength * this.itemDelay;
     }
     return delay;
   },

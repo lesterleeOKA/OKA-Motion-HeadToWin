@@ -254,6 +254,8 @@ async function init() {
 
   // Add onbeforeunload event handler
   window.onbeforeunload = function (e) {
+    if (State.state === 'leave') return;
+
     logController.log("Calling OnClose from Browser!");
     apiManager.exitGameRecord(
       () => {
@@ -312,10 +314,15 @@ function handleButtonClick(e) {
       }
       State.gamePauseData.state = State.state;
       State.gamePauseData.stateType = State.stateType;
-      //State.changeState('pause');
-      setTimeout(() => {
-        State.changeState('leave');
-      }, 500);
+
+      apiManager.exitGameRecord(
+        () => {
+          logController.log("Quit Game");
+          setTimeout(() => {
+            State.changeState('leave');
+          }, 500);
+        }
+      );
       break;
     case View.motionBtn:
       if (State.isSoundOn) {

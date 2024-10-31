@@ -210,6 +210,9 @@ const apiManager = {
     // Check for invalid parameters
     if (!this.payloads || this.accountUid === -1 || !this.jwt || !this.isLogined) {
       logController.log("Invalid parameters: payloads, accountUid, or jwt is null or empty, quit game");
+      if (onCompleted) {
+        onCompleted();
+      }
       return;
     }
 
