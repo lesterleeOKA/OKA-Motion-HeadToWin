@@ -100,6 +100,7 @@ const apiManager = {
               logController.log(`Downloaded preview image: ${this.settings.previewGameImageUrl}`);
             }
 
+            this.settings.instructionContent = this.gameSettingJson.description;
             this.settings.gameTime = this.gameSettingJson.game_time;
             this.settings.fallSpeed = this.gameSettingJson.object_speed;
             this.settings.removal = this.gameSettingJson.background_removal;
@@ -340,4 +341,4 @@ class Answer {
   }
 }
 
-export { apiManager };
+export { apiManager, HostName };

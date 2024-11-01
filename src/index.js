@@ -231,6 +231,7 @@ async function init() {
           setAPIImage(document.getElementById('previewImg'), previewImageUrl);
           View.setPlayerIcon(apiManager.iconDataUrl);
           View.setPlayerName(apiManager.loginName);
+          View.setInstructionContent(apiManager.settings.instructionContent);
         }
         else {
           if (removal === '1') {
@@ -285,12 +286,19 @@ async function init() {
     ['lastTen', require('./audio/dingding.wav')],
   ];
 
-  const additionalAudios = audioFiles;
-  const filteredAdditionalAudios = levelKey
-    ? additionalAudios.filter(([key]) => key.includes(levelKey))
-    : additionalAudios;
+  let questionsAudio = null;
 
-  const audiosToPreload = [...defaultAudios, ...filteredAdditionalAudios];
+  if (apiManager.isLogined) {
+    questionsAudio = QuestionManager.apiMedia;
+  }
+  else {
+    const additionalAudios = audioFiles;
+    questionsAudio = levelKey
+      ? additionalAudios.filter(([key]) => key.includes(levelKey))
+      : additionalAudios;
+  }
+
+  const audiosToPreload = [...defaultAudios, ...questionsAudio];
 
   await Promise.all([
     Sound.preloadAudios(audiosToPreload),
