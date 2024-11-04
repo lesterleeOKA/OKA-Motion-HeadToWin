@@ -14,6 +14,8 @@ const QuestionManager = {
   preloadedImages: [],
   preloadedImagesItem: [],
   apiMedia: [],
+  mediaType: '',
+  questionType: '',
 
   preloadImagesFile() {
     logController.log("preloadedImages", this.preloadedImages);
@@ -54,35 +56,27 @@ const QuestionManager = {
   loadQuestionFromJson: async function (levelkey = null, onCompleted = null) {
     let questionsJsonPath;
     let questions;
-    let questionType;
     let mediaFiles;
 
     logController.log("Account Logined", apiManager.isLogined);
     if (apiManager.questionJson && apiManager.isLogined) {
       questions = apiManager.questionJson;
-      questionType = questions[0].questionType;
+      this.questionType = questions[0].questionType;
       mediaFiles = questions[0].media;
-      logController.log("question Type:", questionType);
+      logController.log("question Type:", this.questionType);
 
+      if (mediaFiles[0]) {
+        this.mediaType = getMediaType(mediaFiles[0]);
+        logController.log("mediaType:", this.mediaType);
+      }
+      logController.log("question Type:", this.questionType);
       if (mediaFiles.length > 0) {
-        switch (questionType) {
-          case 'picture':
-            questions.forEach((question) => {
-              const key = question.qid;
-              const url = HostName.blobMedia + question.media;
-              this.apiMedia.push([key, url]);
-              Util.updateLoadingStatus("Loading QAImgs");
-            });
-            break;
-          case 'audio':
-            questions.forEach((question) => {
-              const key = question.qid;
-              const url = HostName.blobMedia + question.media;
-              this.apiMedia.push([key, url]);
-              Util.updateLoadingStatus("Loading QAVOs");
-            });
-            break;
-        }
+        questions.forEach((question) => {
+          const key = question.qid;
+          const url = HostName.blobMedia + question.media;
+          this.apiMedia.push([key, url]);
+          Util.updateLoadingStatus("Loading Medias");
+        });
         logController.log("apiMedia files:", this.apiMedia);
       }
 
@@ -127,7 +121,13 @@ const QuestionManager = {
     }
     else {
       question = { questions: this.QUESTION_TYPE.questions };
-      this.preloadedImages = imageFiles;
+      if (apiManager.isLogined) {
+        if (this.mediaType === 'picture')
+          this.preloadedImages = this.apiMedia;
+      }
+      else {
+        this.preloadedImages = imageFiles;
+      }
     }
     if (question.questions.length > 0)
       this.questionField = Object.freeze(question);
@@ -137,8 +137,21 @@ const QuestionManager = {
 
     logController.log("Filtered: ", this.questionField);
   },
-
-
 };
+
+function getMediaType(mediaPath) {
+  // Get the file extension
+  const extension = mediaPath.split('.').pop().toLowerCase();
+  const audioExtensions = ['mp3', 'wav', 'ogg', 'm4a'];
+  const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+
+  if (audioExtensions.includes(extension)) {
+    return 'audio';
+  } else if (imageExtensions.includes(extension)) {
+    return 'picture';
+  } else {
+    return 'unknown';
+  }
+}
 
 export default QuestionManager;

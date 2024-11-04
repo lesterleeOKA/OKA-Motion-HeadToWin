@@ -29,6 +29,7 @@ export default {
   answerLength: 0,
   questionWrapper: null,
   answerWrapper: null,
+  answerTextField: null,
   fillwordTime: 0,
   redBoxX: 0,
   redBoxY: 0,
@@ -61,7 +62,7 @@ export default {
     this.questionType = QuestionManager.questionField;
     this.randomQuestion = null;
     this.question = '';
-    this.totalQuestions = 0;
+    this.totalQuestions = this.questionType.questions ? this.questionType.questions.length : 0;
     this.score = 0;
     this.time = 0;
     this.timerRunning = false;
@@ -75,6 +76,7 @@ export default {
     this.fillwordTime = 0;
     this.questionWrapper = null;
     this.answerWrapper = null;
+    this.answerTextField = null;
     View.scoreBoard.className = "scoreBoard";
     this.randomQuestionId = 0;
     this.answeredNum = 0;
@@ -570,11 +572,15 @@ export default {
     const _QID = questions[this.randomQuestionId].qid;
     const _question = questions[this.randomQuestionId].question;
     const _answers = questions[this.randomQuestionId].answers;
-    const _correctAnswer = questions[this.randomQuestionId].correctAnswer;
+    let _correctAnswer = questions[this.randomQuestionId].correctAnswer;
     const _star = this.apiManager.isLogined ? questions[this.randomQuestionId].star : null;
     const _score = this.apiManager.isLogined ? questions[this.randomQuestionId].score.full : null;
     const _correctAnswerIndex = this.apiManager.isLogined ? questions[this.randomQuestionId].correctAnswerIndex : null;
     const _media = this.apiManager.isLogined ? questions[this.randomQuestionId].media : null;
+
+    if ((_correctAnswer === null || _correctAnswer === undefined) && _correctAnswerIndex !== null && _answers.length > 0) {
+      _correctAnswer = _answers[_correctAnswerIndex];
+    }
 
     if (this.randomQuestionId < this.totalQuestions - 1) {
       this.randomQuestionId += 1;
@@ -626,7 +632,8 @@ export default {
     this.randomPair = this.randomOptions();
     this.questionWrapper = document.createElement('div');
     let questionBg = document.createElement('div');
-    this.answerWrapper = document.createElement('span');
+    this.answerTextField = document.createElement('div');
+
 
     switch (this.randomQuestion.QuestionType) {
       case 'text':
@@ -638,7 +645,7 @@ export default {
         this.questionWrapper.appendChild(questionText);
         var fontSize = `calc(min(max(4vh, 6vh - ${this.randomQuestion.Question.length} * 0.1vh), 6vh))`;
         this.questionWrapper.style.setProperty('--question-font-size', fontSize);
-        this.answerWrapper.classList.add('pictureType');
+        this.answerTextField.classList.add('pictureType');
         break;
       case 'audio':
         this.questionWrapper.classList.add('questionAudioWrapper');
@@ -676,7 +683,7 @@ export default {
           this.buttonWrapper.classList.add('not-clicked');
         });
         this.questionWrapper.appendChild(this.buttonWrapper);
-        this.answerWrapper.classList.add('audioType');
+        this.answerTextField.classList.add('audioType');
 
         if (this.randomQuestion.QID && this.randomQuestion.QID.trim() !== '') {
           this.playWordAudio(this.randomQuestion.QID);
@@ -708,7 +715,7 @@ export default {
             this.questionWrapper.appendChild(imageElement);
           }
         }
-        this.answerWrapper.classList.add('pictureType');
+        this.answerTextField.classList.add('pictureType');
         break;
     }
 
@@ -733,11 +740,35 @@ export default {
       View.stageImg.appendChild(resetBtn);
     }*/
 
-    this.answerWrapper.classList.add('answerWrapper');
+    this.answerTextField.classList.add('answerWrapper');
+    this.answerWrapper = document.createElement('span');
+    this.answerWrapper.classList.add('answerText');
+    this.answerTextField.appendChild(this.answerWrapper);
     View.stageImg.appendChild(this.questionWrapper);
-    View.stageImg.appendChild(this.answerWrapper);
+    View.stageImg.appendChild(this.answerTextField);
     View.stageImg.classList.add('fadeIn');
     View.stageImg.style.opacity = 1;
+  },
+
+  adjustAnswerTextFontSize(answer) {
+    if (this.answerWrapper) {
+      const textLength = answer.length;
+      let fontSize;
+      // Base font size
+      const baseFontSize = 24; // Adjust this value as needed
+
+      // Set font size based on text length
+      if (textLength <= 10) {
+        fontSize = baseFontSize; // Maximum size for short text
+      } else if (textLength <= 20) {
+        fontSize = baseFontSize * 0.8; // Scale down for medium-length text
+      } else if (textLength <= 30) {
+        fontSize = baseFontSize * 0.6; // Further scale down for longer text
+      } else {
+        fontSize = baseFontSize * 0.4; // Minimum size for very long text
+      }
+      this.answerWrapper.style.fontSize = `${fontSize}px`;
+    }
   },
 
   motionTriggerPlayAudio(_play) {
@@ -782,6 +813,7 @@ export default {
     if (this.answerWrapper) {
       if (this.fillwordTime < this.answerLength) {
         this.answerWrapper.textContent += option.getAttribute('word');
+        this.adjustAnswerTextFontSize(this.answerWrapper.textContent);
 
         if (this.questionType.type === "MultipleChoice") {
           if (View.optionArea.contains(option)) {
@@ -875,8 +907,8 @@ export default {
     this.fallingId = 0;
     this.leftCount = 0;
     this.rightCount = 0;
-    this.answerWrapper.classList.remove('correct');
-    this.answerWrapper.classList.remove('wrong');
+    this.answerTextField.classList.remove('correct');
+    this.answerTextField.classList.remove('wrong');
     this.answerWrapper.textContent = '';
     this.fillwordTime = 0;
     this.fallingItems.splice(0);
@@ -902,12 +934,12 @@ export default {
     if (isCorrect) {
       //答岩1分，答錯唔扣分
       this.addScore(eachQAScore);
-      this.answerWrapper.classList.add('correct');
+      this.answerTextField.classList.add('correct');
       State.changeState('playing', 'ansCorrect');
       View.showCorrectEffect(true);
     } else {
       //this.addScore(-1);
-      this.answerWrapper.classList.add('wrong');
+      this.answerTextField.classList.add('wrong');
       State.changeState('playing', 'ansWrong');
       View.showWrongEffect(true);
     }
@@ -932,7 +964,7 @@ export default {
     logController.log(`Game Time: ${this.remainingTime}, Remaining Time: ${this.time}`);
     const currentTime = this.calculateCurrentTime();
     const progress = this.calculateProgress();
-    const { correctId, score, currentQAPercent } = this.calculateAnswerMetrics(answer, currentQuestion, eachMark);
+    const { correctId, score, currentQAPercent } = this.calculateAnswerMetrics(answer, eachMark);
     const answeredPercentage = this.calculateAnsweredPercentage();
     this.apiManager.SubmitAnswer(
       currentTime,
@@ -955,7 +987,7 @@ export default {
   calculateProgress() {
     return Math.floor((this.answeredNum / this.totalQuestions) * 100);
   },
-  calculateAnswerMetrics(answer, currentQuestion, eachMark) {
+  calculateAnswerMetrics(answer, eachMark) {
     let correctId = 0;
     let score = 0;
     let currentQAPercent = 0;
@@ -975,7 +1007,7 @@ export default {
       : 100;
   },
 
-  updateAnsweredProgressBar(onCompleted = null) {
+  /*updateAnsweredProgressBar(onCompleted = null) {
     if (this.apiManager.isLogined) {
       let progress = 0;
       if (this.answeredNum < this.totalQuestions) {
@@ -1018,6 +1050,51 @@ export default {
         progressText.textContent = "0%"; // Reset text
       }
     }
-  }
+  }*/
 
+  updateAnsweredProgressBar(onCompleted = null) {
+    if (this.apiManager.isLogined) {
+      let progress = 0;
+
+      // Increment answered questions and calculate progress
+      if (this.answeredNum < this.totalQuestions) {
+        this.answeredNum += 1;
+        progress = this.answeredNum / this.totalQuestions;
+      } else {
+        progress = 1;
+      }
+
+      let progressColorBar = document.getElementById("progressColorBar");
+      let progressText = document.querySelector('.progressText');
+
+      if (progressColorBar) {
+        let rightPosition = (100 - (progress * 100)) + "%";
+        progressColorBar.style.setProperty('--progress-right', rightPosition);
+        // Show the progress in the format "answered/total"
+        progressText.innerText = `${this.answeredNum}/${this.totalQuestions}`;
+
+        if (progress >= 1) {
+          setTimeout(() => {
+            if (onCompleted) onCompleted();
+          }, 500);
+        }
+      }
+    }
+  },
+
+  resetProgressBar() {
+    if (this.apiManager.isLogined) {
+      this.answeredNum = 0; // Reset answered questions
+      let progressColorBar = document.getElementById("progressColorBar");
+      let progressText = document.querySelector('.progressText');
+
+      if (progressColorBar) {
+        progressColorBar.style.setProperty('--progress-right', "100%"); // Reset position
+      }
+
+      if (progressText) {
+        progressText.textContent = "0/" + this.totalQuestions; // Reset text to show answered/total format
+      }
+    }
+  }
 }
