@@ -755,7 +755,7 @@ export default {
       const textLength = answer.length;
       let fontSize;
       // Base font size
-      const baseFontSize = 24; // Adjust this value as needed
+      const baseFontSize = 26; // Adjust this value as needed
 
       // Set font size based on text length
       if (textLength <= 10) {
