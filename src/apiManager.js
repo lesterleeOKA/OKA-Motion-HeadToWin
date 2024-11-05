@@ -152,7 +152,7 @@ const apiManager = {
 
       } catch (error) {
         if (onError) onError();
-        console.error("Error:", error.message);
+        logController.error("Error:", error.message);
         retryCount++;
         logController.log(`Retrying... Attempt ${retryCount}`);
         await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
@@ -161,7 +161,7 @@ const apiManager = {
 
     if (!requestSuccessful) {
       if (onError) onError();
-      console.error(`Failed to get a successful response after ${maxRetries} attempts.`);
+      logController.error(`Failed to get a successful response after ${maxRetries} attempts.`);
     }
   },
 
@@ -180,7 +180,7 @@ const apiManager = {
     }
 
     const api = this.submitAnswerAPI(answer, this.payloads, this.accountUid, this.jwt);
-    console.debug("Called submit marks API: " + api);
+    logController.log("Called submit marks API: " + api);
     const maxRetries = this.maxRetries;
     let retryCount = 0;
     let requestSuccessful = false;
@@ -208,13 +208,13 @@ const apiManager = {
 
       } catch (error) {
         retryCount++;
-        console.error("Error: " + error.message + " Retrying... " + retryCount);
+        logController.error("Error: " + error.message + " Retrying... " + retryCount);
         await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
       }
     }
 
     if (!requestSuccessful) {
-      console.error("Failed to call upload marks response after " + maxRetries + " attempts.");
+      logController.error("Failed to call upload marks response after " + maxRetries + " attempts.");
       if (onCompleted) onCompleted();
     }
   },
@@ -261,17 +261,17 @@ const apiManager = {
             onCompleted();
           }
         } catch (ex) {
-          console.error("Failed to parse JSON:", ex.message);
+          logController.error("Failed to parse JSON:", ex.message);
         }
       } catch (error) {
         retryCount++;
-        console.error("Error:", error.message, "Retrying...", retryCount);
+        logController.error("Error:", error.message, "Retrying...", retryCount);
         await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 2 seconds before retrying
       }
     }
 
     if (!requestSuccessful) {
-      console.error("Failed to call endgame api after", maxRetries, "attempts.");
+      logController.error("Failed to call endgame api after", maxRetries, "attempts.");
       if (onCompleted) {
         onCompleted(); // Call onCompleted even if it failed
       }
