@@ -280,7 +280,7 @@ export default {
         if (!this.finishedCreateOptions && this.randomPair.length > 0) {
           if (this.fallingItems.length < this.randomPair.length) {
             if (this.fallingId < this.fallingItems.length) {
-              logController.log("falling id:", this.fallingId);
+              /*logController.log("falling id:", this.fallingId);*/
               this.fallingId += 1;
             } else {
               this.fallingId = 0;
@@ -436,8 +436,10 @@ export default {
     optionWrapper.classList.add('optionWrapper');
     optionWrapper.style.width = `${this.optionSize}px`;
     optionWrapper.style.height = `${this.optionSize}px`;
-    if (optionImage !== '' && optionImage !== 'undefined')
-      optionWrapper.style.backgroundImage = `url(${optionImage.src})`;
+    if (optionImage !== '' && optionImage !== 'undefined') {
+      logController.log("created option image url:", optionImage);
+      optionWrapper.style.backgroundImage = `url(${optionImage})`;
+    }
     optionWrapper.id = id;
     optionWrapper.setAttribute('word', text);
     optionWrapper.setAttribute('column', columnId);
@@ -766,7 +768,7 @@ export default {
         fontSize = baseFontSize * 0.6; // Further scale down for longer text
       } else {
         fontSize = baseFontSize * 0.4; // Minimum size for very long text
-      }
+      } 3
       this.answerWrapper.style.fontSize = `${fontSize}px`;
     }
   },

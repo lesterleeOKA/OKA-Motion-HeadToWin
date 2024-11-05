@@ -198,8 +198,7 @@ async function init() {
 
   // Initialize sounds and preload images concurrently
   await Promise.all([
-    Sound.init(),
-    View.preloadUsedImages()
+    Sound.init()
   ]);
 
   Util.updateLoadingStatus("Loading Data");
@@ -232,8 +231,10 @@ async function init() {
           View.setPlayerIcon(apiManager.iconDataUrl);
           View.setPlayerName(apiManager.loginName);
           View.setInstructionContent(apiManager.settings.instructionContent);
+          View.preloadUsedImages(apiManager.settings.option_item_images);
         }
         else {
+          View.preloadUsedImages(null);
           if (removal === '1') {
             setAPIImage(document.getElementById('bgImage'), bgImage);
           }

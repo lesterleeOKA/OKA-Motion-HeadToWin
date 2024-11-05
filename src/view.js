@@ -69,14 +69,30 @@ export default {
     /*require("./images/headToWin/fruit4.png"),
     require("./images/headToWin/fruit5.png"),*/
   ],
-  preloadUsedImages() {
-    this.optionImages.forEach((path) => {
-      const img = new Image();
-      img.src = path;
-      this.preloadedFallingImages.push(img);
+  toAPIImageUrl(url) {
+    if (url === null) return;
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.blob(); // Get the image as a Blob
+      })
+      .then(blob => {
+        let successUrl = URL.createObjectURL(blob);
+        logController.log("success blob", successUrl);
+        this.preloadedFallingImages.push(successUrl);
+      })
+      .catch(error => {
+        logController.error("Error loading image:", error);
+      });
+  },
+  preloadUsedImages(option_images = null) {
+    let logined = option_images !== null ? true : false;
+    let _optionImages = logined ? option_images : this.optionImages;
+    _optionImages.forEach((path) => {
+      this.toAPIImageUrl(path);
     });
-
-    logController.log("preloadUsedImages", this.preloadedFallingImages);
   },
 
   showInstruction() {

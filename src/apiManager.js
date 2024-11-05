@@ -16,6 +16,7 @@ class Settings {
     this.removal = null;
     this.detectionModel = null;
     this.fallSpeed = 0;
+    this.option_item_images = null;
   }
 }
 
@@ -79,7 +80,7 @@ const apiManager = {
           logController.log("questions:", JSON.stringify(this.questionJson, null, 2));
           logController.log(`account: ${JSON.stringify(this.accountJson, null, 2)}`);
           logController.log(`photo: ${photoJsonUrl}`);
-          logController.log(`setting: ${this.gameSettingJson}`);
+          logController.log(`setting: ${JSON.stringify(this.gameSettingJson, null, 2)}`);
           logController.log("payloads:", JSON.stringify(this.payloads, null, 2));
 
 
@@ -100,13 +101,24 @@ const apiManager = {
               logController.log(`Downloaded preview image: ${this.settings.previewGameImageUrl}`);
             }
 
+            if (this.gameSettingJson.fall_item_images) {
+              let optionImages = [];
+              this.gameSettingJson.fall_item_images.forEach((url) => {
+                const optionImage = url.replace(/"/g, "");
+                let optionImageUpdated = optionImage.startsWith("https://")
+                  ? optionImage
+                  : HostName.blobMedia + optionImage;
+                optionImages.push(optionImageUpdated);
+              });
+              this.settings.option_item_images = optionImages;
+              logController.log(`Final option_item_images:`, this.settings.option_item_images); // Debug final output
+            }
             this.settings.instructionContent = this.gameSettingJson.description;
             this.settings.gameTime = this.gameSettingJson.game_time;
             this.settings.fallSpeed = this.gameSettingJson.object_speed;
             this.settings.removal = this.gameSettingJson.background_removal;
             this.settings.detectionModel = this.gameSettingJson.detection_model;
           }
-
 
           if (photoJsonUrl) {
             const modifiedPhotoDataUrl = photoJsonUrl.replace(/"/g, "");
