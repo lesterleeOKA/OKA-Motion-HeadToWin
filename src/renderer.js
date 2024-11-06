@@ -242,11 +242,58 @@ export class RendererCanvas2d {
       this.ctx.translate(this.videoWidth, 0);
       this.ctx.scale(-1, 1);
     }
+    /*this.ctx.drawImage(bodySegmentationCanvas ? bodySegmentationCanvas : video, 0, 0, this.videoWidth, this.videoHeight);
+    if (Camera.constraints.video.facingMode == 'user') {
+      this.ctx.translate(this.videoWidth, 0);
+      this.ctx.scale(-1, 1);
+    }*/
+    // Draw the current video frame or the body segmentation canvas
     this.ctx.drawImage(bodySegmentationCanvas ? bodySegmentationCanvas : video, 0, 0, this.videoWidth, this.videoHeight);
+    this.enhanceSharpness();
     if (Camera.constraints.video.facingMode == 'user') {
       this.ctx.translate(this.videoWidth, 0);
       this.ctx.scale(-1, 1);
     }
+  }
+
+  enhanceSharpness() {
+    const imageData = this.ctx.getImageData(0, 0, this.videoWidth, this.videoHeight);
+    const data = imageData.data;
+    const width = imageData.width;
+    const height = imageData.height;
+    const outputData = this.ctx.createImageData(width, height);
+    const output = outputData.data;
+
+    // 锐化卷积核
+    const kernel = [
+      [0, -1, 0],
+      [-1, 5, -1],
+      [0, -1, 0]
+    ];
+
+    for (let y = 1; y < height - 1; y++) {
+      for (let x = 1; x < width - 1; x++) {
+        const idx = (y * width + x) * 4;
+        let r = 0, g = 0, b = 0;
+
+        // 应用卷积核
+        for (let ky = -1; ky <= 1; ky++) {
+          for (let kx = -1; kx <= 1; kx++) {
+            const pixelIdx = ((y + ky) * width + (x + kx)) * 4;
+            r += data[pixelIdx] * kernel[ky + 1][kx + 1];
+            g += data[pixelIdx + 1] * kernel[ky + 1][kx + 1];
+            b += data[pixelIdx + 2] * kernel[ky + 1][kx + 1];
+          }
+        }
+        // 限制 RGB 值在 0-255 之间
+        output[idx] = Math.min(Math.max(r, 0), 255);     // R
+        output[idx + 1] = Math.min(Math.max(g, 0), 255); // G
+        output[idx + 2] = Math.min(Math.max(b, 0), 255); // B
+        output[idx + 3] = 255; // Alpha
+      }
+    }
+    // 将处理后的数据绘制回 Canvas
+    this.ctx.putImageData(outputData, 0, 0);
   }
 
   clearCtx() {
@@ -331,7 +378,6 @@ export class RendererCanvas2d {
       if (this.headKeypoints.includes(kp1.name) && this.headKeypoints.includes(kp2.name) &&
         score1 >= this.scoreThreshold && score2 >= this.scoreThreshold) {
 
-
         this.ctx.beginPath();
         this.ctx.moveTo(kp1.x, kp1.y);
         this.ctx.lineTo(kp2.x, kp2.y);
@@ -387,7 +433,6 @@ export class RendererCanvas2d {
       }
     }
   }
-
 
 
 }
