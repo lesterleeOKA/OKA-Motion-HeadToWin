@@ -214,6 +214,7 @@ function gameSetup() {
     View.setPlayerName(apiManager.loginName);
     View.setInstructionContent(apiManager.settings.instructionContent);
     View.preloadUsedImages(apiManager.settings.option_item_images);
+    View.setHeadTrackerMask(apiManager.settings.mask_url);
     logController.log("Completed load files!!!!!!!!!!!!!!!!");
   }
   else {

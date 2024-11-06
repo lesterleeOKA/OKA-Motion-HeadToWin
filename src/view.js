@@ -265,7 +265,11 @@ export default {
     for (let selectCount of this.selectCounts) selectCount.innerHTML = value;
   },
   //-----------------------------------------------------------------------------------------------
-
+  setHeadTrackerMask(imgUrl = null) {
+    if (imgUrl) {
+      this.headTracker.src = imgUrl;
+    }
+  },
   showHeadTracker(status, width = null, left = null, top = null) {
     if (width) this.headTracker.style.width = width;
     if (left) this.headTracker.style.left = left;

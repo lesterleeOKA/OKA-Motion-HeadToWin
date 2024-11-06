@@ -17,6 +17,7 @@ class Settings {
     this.detectionModel = null;
     this.fallSpeed = 0;
     this.option_item_images = null;
+    this.mask_url = null;// only headToWin;
   }
 }
 
@@ -113,6 +114,15 @@ const apiManager = {
               this.settings.option_item_images = optionImages;
               logController.log(`Final option_item_images:`, this.settings.option_item_images); // Debug final output
             }
+
+            if (this.gameSettingJson.mask_url) {
+              const maskUrl = this.gameSettingJson.mask_url.replace(/"/g, "");
+              this.settings.mask_url = maskUrl.startsWith("https://")
+                ? maskUrl
+                : HostName.blobMedia + maskUrl;
+              logController.log(`Downloaded MaskImage: ${this.settings.mask_url}`);
+            }
+
             this.settings.instructionContent = this.gameSettingJson.description;
             this.settings.gameTime = this.gameSettingJson.game_time;
             this.settings.fallSpeed = this.gameSettingJson.object_speed;
