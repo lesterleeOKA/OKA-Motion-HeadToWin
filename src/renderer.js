@@ -249,7 +249,7 @@ export class RendererCanvas2d {
     }*/
     // Draw the current video frame or the body segmentation canvas
     this.ctx.drawImage(bodySegmentationCanvas ? bodySegmentationCanvas : video, 0, 0, this.videoWidth, this.videoHeight);
-    this.enhanceSharpness();
+    //this.enhanceSharpness();
     if (Camera.constraints.video.facingMode == 'user') {
       this.ctx.translate(this.videoWidth, 0);
       this.ctx.scale(-1, 1);
