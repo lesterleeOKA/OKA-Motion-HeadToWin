@@ -24,7 +24,7 @@ export class RendererCanvas2d {
   }
 
   draw(rendererParams) {
-    const [video, poses, isFPSMode, bodySegmentationCanvas] = rendererParams;
+    const [video, poses, isFPSMode, bodySegmentationCanvas, showMask = true] = rendererParams;
     this.videoWidth = video.width;
     this.videoHeight = video.height;
     this.ctx.canvas.width = this.videoWidth;
@@ -84,7 +84,7 @@ export class RendererCanvas2d {
           }
         }
       }
-      this.drawHeadTracker(true);
+      this.drawHeadTracker(showMask);
       this.drawHorizontalLine(isCurPoseValid);
     }
   }
