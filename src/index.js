@@ -132,11 +132,13 @@ async function renderResult() {
   }
 
   let fpsMode = fps === '1' ? true : false;
+  let showMask = !apiManager.isLogined || (apiManager.settings.show_mask && apiManager.settings.show_mask === 1) ? true : false;
+
   if (removal === '1') {
-    if (compositeCanvas) View.renderer.draw([Camera.video, poses, fpsMode, compositeCanvas]);
+    if (compositeCanvas) View.renderer.draw([Camera.video, poses, fpsMode, compositeCanvas, showMask]);
   }
   else {
-    View.renderer.draw([Camera.video, poses, fpsMode, null]);
+    View.renderer.draw([Camera.video, poses, fpsMode, null, showMask]);
   }
   Util.updateLoadingStatus("Game is Ready");
 }

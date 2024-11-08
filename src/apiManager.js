@@ -18,6 +18,7 @@ class Settings {
     this.fallSpeed = 0;
     this.option_item_images = null;
     this.mask_url = null;// only headToWin;
+    this.show_mask = null;
   }
 }
 
@@ -123,11 +124,12 @@ const apiManager = {
               logController.log(`Downloaded MaskImage: ${this.settings.mask_url}`);
             }
 
-            this.settings.instructionContent = this.gameSettingJson.description;
+            this.settings.instructionContent = this.gameSettingJson.hint;
             this.settings.gameTime = this.gameSettingJson.game_time;
             this.settings.fallSpeed = this.gameSettingJson.object_speed;
             this.settings.removal = this.gameSettingJson.background_removal;
             this.settings.detectionModel = this.gameSettingJson.detection_model;
+            this.settings.show_mask = this.gameSettingJson.show_mask;
           }
 
           if (photoJsonUrl) {
