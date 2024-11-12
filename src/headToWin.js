@@ -49,9 +49,12 @@ export default {
   starNum: 0,
   apiManager: null,
   itemDelay: 0,
+  lang: null,
 
-  init(gameTime = null, fallSpeed = null) {
+  init(lang = null, gameTime = null, fallSpeed = null) {
     //View.showTips('tipsReady');
+    this.lang = lang;
+    console.log("FKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKkk lang", this.lang);
     this.startedGame = false;
     this.fallingId = 0;
     this.remainingTime = gameTime !== null ? gameTime : 120;
@@ -449,6 +452,18 @@ export default {
     option.textContent = text;
     optionWrapper.appendChild(option);
 
+    switch (this.lang) {
+      case "0":
+        optionWrapper.classList.add("engOpt");
+        break;
+      case "1":
+        optionWrapper.classList.add("chOpt");
+        break;
+      default:
+        optionWrapper.classList.add("engOpt");
+        break;
+    }
+
     requestAnimationFrame(() => {
       // Calculate the font size based on the container size
       //const containerHeight = optionWrapper.offsetHeight;
@@ -636,7 +651,20 @@ export default {
     this.questionWrapper = document.createElement('div');
     let questionBg = document.createElement('div');
     this.answerTextField = document.createElement('div');
-
+    switch (this.lang) {
+      case "0":
+        this.questionWrapper.classList.add("eng");
+        this.answerTextField.classList.add("engAns");
+        break;
+      case "1":
+        this.questionWrapper.classList.add("ch");
+        this.answerTextField.classList.add("chAns");
+        break;
+      default:
+        this.questionWrapper.classList.add("eng");
+        this.answerTextField.classList.add("engAns");
+        break;
+    }
 
     switch (this.randomQuestion.QuestionType) {
       case 'text':

@@ -222,8 +222,9 @@ export class RendererCanvas2d {
   drawHeadTracker(status = true) {
     if (this.headCircle) {
       if (status) {
+        const widthScale = State.lang === "0" ? 130 : 105;
         const xInVw = (this.headCircle.x / window.innerWidth) * 100;
-        const maxWidth = this.headCircle.radius * 2 / window.innerWidth * 130;
+        const maxWidth = this.headCircle.radius * 2 / window.innerWidth * widthScale;
         const width = `calc(${maxWidth}vw)`;
         const left = `calc(${xInVw}vw - ${maxWidth / 2}vw)`;
         const offsetY = Math.max(10, this.headCircle.radius / 1.6);

@@ -4,6 +4,7 @@ import { logController } from './logController';
 
 export default {
   //-----------------------------------------------------------------------------------------------
+  lang: null,
   renderer: null,
   loadingBarWrapper: document.querySelector('.loadingBarWrapper'),
   instructionWrapper: document.querySelector('.instructionWrapper'),
@@ -35,6 +36,7 @@ export default {
   reloadBtn: document.querySelector('.loginErrorWrapper > .loginErrorBoard  > .errorWrapper > .reloadBtn'),
 
   musicOnOffWrapper: document.querySelector('.musicOnOffWrapper'),
+  musicOnOffBoard: document.querySelector('.musicOnOffWrapper > .musicOnOffBoard'),
   onBtn: document.querySelector('.musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .onBtn'),
   offBtn: document.querySelector('.musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .offBtn'),
   exitWrapper: document.querySelector('.exitWrapper'),
@@ -60,15 +62,37 @@ export default {
 
   progressBarWrapper: document.querySelector('.progressBarWrapper'),
   instructionContent: document.querySelector('.instructionBoard > .instructionRule > .instructionContent'),
+  rule: document.querySelector('.gameWrapper > .prepareBoardWrapper > .rule'),
   //-----------------------------------------------------------------------------------------------
   preloadedFallingImages: [],
-  optionImages: [
+
+  optionImages: {
+    en: [
+      require("./images/headToWin/meteor1.png"),
+      require("./images/headToWin/meteor2.png"),
+      require("./images/headToWin/meteor3.png"),
+    ],
+    ch: [
+      require("./images/old/fruit1.png"),
+      require("./images/old/fruit2.png"),
+      require("./images/old/fruit3.png"),
+      require("./images/old/fruit4.png"),
+      require("./images/old/fruit5.png"),
+    ],
+  },
+  /*optionImages: [
+    //eng
     require("./images/headToWin/meteor1.png"),
     require("./images/headToWin/meteor2.png"),
     require("./images/headToWin/meteor3.png"),
-    /*require("./images/headToWin/fruit4.png"),
-    require("./images/headToWin/fruit5.png"),*/
-  ],
+
+    //ch
+    require("./images/old/fruit1.png"),
+    require("./images/old/fruit2.png"),
+    require("./images/old/fruit3.png"),
+    require("./images/old/fruit4.png"),
+    require("./images/old/fruit5.png"),
+  ],*/
   toAPIImageUrl(url) {
     if (url === null) return;
     fetch(url)
@@ -89,7 +113,8 @@ export default {
   },
   preloadUsedImages(option_images = null) {
     let logined = option_images !== null ? true : false;
-    let _optionImages = logined ? option_images : this.optionImages;
+    let defaultOptionImages = this.lang === "0" ? this.optionImages.en : this.optionImages.ch;
+    let _optionImages = logined ? option_images : defaultOptionImages;
     _optionImages.forEach((path) => {
       this.toAPIImageUrl(path);
     });
@@ -136,6 +161,17 @@ export default {
   //-----------------------------------------------------------------------------------------------
   showCount(num) {
     this.countImg.classList.add("count", "c" + num);
+
+    if (num === 0) {
+      switch (this.lang) {
+        case "0":
+          this.countImg.classList.add("eng");
+          break;
+        case "1":
+          this.countImg.classList.add("ch");
+          break;
+      }
+    }
     //this.countImg.style.opacity = 1;
     //this.countImg.style.maxHeight = "calc(min(60vh, 60vw))";
     setTimeout(() => this.hideCount(num), 750);
@@ -174,6 +210,23 @@ export default {
   showSuccess() {
     this.finishedBoard.classList.remove("fail");
     this.finishedBoard.classList.add("success");
+    switch (this.lang) {
+      case "0":
+        this.playAgainBtn.classList.add('engReplay');
+        this.backHomeBtnOfFinished.classList.add('engBack');
+        this.finishedBoard.classList.add('engSuccess');
+        break;
+      case "1":
+        this.playAgainBtn.classList.add('chReplay');
+        this.backHomeBtnOfFinished.classList.add('chBack');
+        this.finishedBoard.classList.add('chSuccess');
+        break;
+      default:
+        this.playAgainBtn.classList.add('engReplay');
+        this.backHomeBtnOfFinished.classList.add('engBack');
+        this.finishedBoard.classList.add('engSuccess');
+        break;
+    }
   },
   hideSuccess() {
     this.finishedBoard.classList.remove("success");
@@ -181,6 +234,23 @@ export default {
   showFailure() {
     this.finishedBoard.classList.remove("success");
     this.finishedBoard.classList.add("fail");
+    switch (this.lang) {
+      case "0":
+        this.playAgainBtn.classList.add('engReplay');
+        this.backHomeBtnOfFinished.classList.add('engBack');
+        this.finishedBoard.classList.add('engFail');
+        break;
+      case "1":
+        this.playAgainBtn.classList.add('chReplay');
+        this.backHomeBtnOfFinished.classList.add('chBack');
+        this.finishedBoard.classList.add('chFail');
+        break;
+      default:
+        this.playAgainBtn.classList.add('engReplay');
+        this.backHomeBtnOfFinished.classList.add('engBack');
+        this.finishedBoard.classList.add('engFail');
+        break;
+    }
   },
   hideFailure() {
     this.finishedBoard.classList.remove("fail");
@@ -248,6 +318,17 @@ export default {
   showCorrectEffect(status) {
     let result = document.querySelector('.gameWrapper .ansResult .wellDone');
     if (status) {
+      switch (this.lang) {
+        case "0":
+          result.classList.add('engCorrect');
+          break;
+        case "1":
+          result.classList.add('chCorrect');
+          break;
+        default:
+          result.classList.add('engCorrect');
+          break;
+      }
       result.classList.add('show');
       result.addEventListener('animationend', () => result.classList.remove('show'));
     }
@@ -256,6 +337,17 @@ export default {
   showWrongEffect(status) {
     let result = document.querySelector('.gameWrapper .ansResult .incorrect');
     if (status) {
+      switch (this.lang) {
+        case "0":
+          result.classList.add('engWrong');
+          break;
+        case "1":
+          result.classList.add('chWrong');
+          break;
+        default:
+          result.classList.add('engWrong');
+          break;
+      }
       result.classList.add('show');
       result.addEventListener('animationend', () => result.classList.remove('show'));
     }
@@ -307,6 +399,66 @@ export default {
   },
 
   setInstructionContent(content = null) {
+    switch (this.lang) {
+      case "0":
+        this.instructionContent.classList.add('eng');
+        break;
+      case "1":
+        this.instructionContent.classList.add('ch');
+        break;
+      default:
+        this.instructionContent.classList.add('eng');
+        break;
+    }
     this.instructionContent.textContent = content;
+  },
+
+  setRuleContent(content = null) {
+    switch (this.lang) {
+      case "0":
+        this.rule.classList.add('eng');
+        break;
+      case "1":
+        this.rule.classList.add('ch');
+        break;
+      default:
+        this.rule.classList.add('eng');
+        break;
+    }
+    this.rule.textContent = content;
+  },
+
+  setStartBtn() {
+    switch (this.lang) {
+      case "0":
+        this.startBtn.classList.add('eng');
+        break;
+      case "1":
+        this.startBtn.classList.add('ch');
+        break;
+      default:
+        this.startBtn.classList.add('eng');
+        break;
+    }
+  },
+
+  setMusicOnOffWrapper() {
+    switch (this.lang) {
+      case "0":
+        this.musicOnOffBoard.classList.add('eng');
+        this.onBtn.classList.add('engOn');
+        this.offBtn.classList.add('engOff');
+        break;
+      case "1":
+        this.musicOnOffBoard.classList.add('ch');
+        this.onBtn.classList.add('chOn');
+        this.offBtn.classList.add('chOff');
+        break;
+      default:
+        this.musicOnOffBoard.classList.add('eng');
+        this.onBtn.classList.add('engOn');
+        this.offBtn.classList.add('engOff');
+        break;
+    }
   }
 };

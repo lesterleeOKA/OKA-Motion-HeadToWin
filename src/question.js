@@ -1,4 +1,3 @@
-import Questions from '../static/json/questions.json';
 import { imageFiles } from './mediaFile';
 import { apiManager, HostName } from "./apiManager";
 import { logController } from './logController';
@@ -16,6 +15,7 @@ const QuestionManager = {
   apiMedia: [],
   mediaType: '',
   questionType: '',
+  jsonFileName: "questions",
 
   preloadImagesFile() {
     logController.log("preloadedImages", this.preloadedImages);
@@ -90,16 +90,23 @@ const QuestionManager = {
         hostname.includes('www.rainbowone.app')
       ) {
         // We're in the build context, use the relative path
-        questionsJsonPath = './json/questions.json';
+        questionsJsonPath = `./json/${this.jsonFileName}.json`;
         const response = await fetch(questionsJsonPath);
         if (!response.ok) {
           throw new Error(`Failed to fetch ${questionsJsonPath}: ${response.statusText}`);
         }
         questions = await response.json();
-        logController.log(questions);
+        logController.log("questionsJsonPath: ", questions);
       } else {
         // We're in the development context, use the relative path
-        questions = Questions;
+
+        const Questions = {
+          questionFiles: {
+            questions: require('../static/json/questions.json'),
+            questions_ch: require('../static/json/questions_ch.json'),
+          },
+        };
+        questions = Questions.questionFiles[this.jsonFileName];
         logController.log(questions);
       }
 

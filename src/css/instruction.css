@@ -104,29 +104,28 @@
   transform: translateY(5%);
 }
 .instructionWrapper > .instructionBoard >.instructionRule > .instructionContent {
-  /*font-family: "Arzachel", system-ui;*/
-  /*font-family: 'PoetsenOne', sans-serif;
-    font-weight: 600;*/
-  font-weight: 100;
-  font-family: 'PoetsenOne', sans-serif;
-  font-size: calc(min(2.5vh, 2.5vw));
   color: #7C5729;
   pointer-events: none;
   text-align: center;
   height: fit-content;
 }
+.instructionWrapper > .instructionBoard >.instructionRule > .instructionContent.eng {
+  font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;
+  font-size: calc(min(2.5vh, 2.5vw));
+}
+
+.instructionWrapper > .instructionBoard >.instructionRule > .instructionContent.ch {
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+  font-size: calc(min(3vh, 3vw));
+}
 
 .instructionWrapper > .instructionBoard > .startBtn {
-  content: url(../images/headToWin/btn_start.png);
-  /*width: calc(min(20.7vh, 20.7vw));*/
   height: calc(min(7.5vh, 7.5vw));
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  /*animation-name: startBtnAnimation;
-  animation-timing-function: ease;
-  animation-iteration-count: infinite;
-  animation-duration: 1s;*/
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -136,6 +135,12 @@
   user-select: none;
   position: absolute;
   margin-top: calc(min(35vh, 35vw));
+}
+.instructionWrapper > .instructionBoard > .startBtn.eng{
+  content: url(../images/headToWin/btn_start.png);
+}
+.instructionWrapper > .instructionBoard > .startBtn.ch{
+  content: url(../images/headToWin/btn_start_chi.png);
 }
 
 .instructionWrapper > .instructionBoard > .startBtn:active,

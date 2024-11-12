@@ -44,14 +44,10 @@
 .gameWrapper > .prepareBoardWrapper >.rule {
   position: absolute;
   top: 43%;
-  /*font-family: "Arzachel", system-ui;*/
-  /*;
-  font-weight: 100;
-    font-family: Arial, sans-serif;*/
   font-family: 'PoetsenOne', sans-serif;
   font-weight: 100;
   font-size: calc(min(2vh, 2vw));
-  color: #4b3002;
+  color: #623010;
   pointer-events: none;
   line-height: 1;
   text-align: left;
@@ -60,6 +56,15 @@
   /*font-size: calc(min(2vh, 2vw));*/
   margin-top: calc(min(1.1vh, 1.1vw));
 }
+.gameWrapper > .prepareBoardWrapper >.rule.eng {
+  font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;
+}
+.gameWrapper > .prepareBoardWrapper >.rule.ch {
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+}
+
 .gameWrapper > .prepareBoardWrapper >.rule-1 {
   position: absolute;
   top: 30%;
@@ -113,9 +118,14 @@
 }
 .gameWrapper > .ansResult > .wellDone{
   opacity: 0;
-  content: url(../images/headToWin/ui_welldone.png);
   height: calc(min(50.44vh, 50.44vw));
  /* animation: dropAndDisappear 2s forwards; */
+}
+.gameWrapper > .ansResult > .wellDone.engCorrect{
+  content: url(../images/headToWin/ui_welldone.png);
+}
+.gameWrapper > .ansResult > .wellDone.chCorrect{
+  content: url(../images/headToWin/ui_welldone_chi.png);
 }
 .gameWrapper > .ansResult > .wellDone.show{
   height: calc(min(50.44vh, 50.44vw));
@@ -126,10 +136,15 @@
 .gameWrapper > .ansResult > .incorrect{
   position: absolute;
   opacity: 0;
-  content: url(../images/headToWin/ans_wrong_en.png);
   width: calc(min(40.44vh, 40.44vw));
   height: auto;
  /* animation: dropAndDisappear 2s forwards; */
+}
+.gameWrapper > .ansResult > .incorrect.engWrong{
+  content: url(../images/headToWin/ans_wrong_en.png);
+}
+.gameWrapper > .ansResult > .incorrect.chWrong{
+  content: url(../images/headToWin/ans_wrong_chi.png);
 }
 .gameWrapper > .ansResult > .incorrect.show{
   animation: dropAndDisappear 1s forwards;
@@ -496,7 +511,6 @@
   background-color: rgba(0,0,0,0.5);
 }
 .musicOnOffWrapper > .musicOnOffBoard {
-  background-image: url(../images/headToWin/ui_board_sound.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -508,6 +522,12 @@
   flex-direction: column;
   justify-content: start;
 }
+.musicOnOffWrapper > .musicOnOffBoard.eng{
+  background-image: url(../images/headToWin/ui_board_sound.png);
+}
+.musicOnOffWrapper > .musicOnOffBoard.ch{
+  background-image: url(../images/headToWin/ui_board_sound_chi.png);
+}
 .musicOnOffWrapper > .musicOnOffBoard > .musicWrapper {
   width: 65%;
   height: calc(min(10vh, 10vw));
@@ -516,10 +536,15 @@
   margin-top: calc(min(25vh, 25vw));
 }
 .musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .offBtn {
-  content: url(../images/headToWin/btn_no.png);
   height: calc(min(5vh, 5vw));
   scale: 1;
   -webkit-tap-highlight-color: transparent;
+}
+.musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .offBtn.engOff {
+  content: url(../images/headToWin/btn_no.png);
+}
+.musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .offBtn.chOff {
+  content: url(../images/headToWin/btn_no_chi.png);
 }
 .musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .offBtn:active,
 .musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .offBtn.touched  {
@@ -527,10 +552,15 @@
   -webkit-tap-highlight-color: transparent;
 }
 .musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .onBtn {
-  content: url(../images/headToWin/btn_yes.png);
   height: calc(min(5vh, 5vw));
   scale: 1;
   -webkit-tap-highlight-color: transparent;
+}
+.musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .onBtn.engOn {
+  content: url(../images/headToWin/btn_yes.png);
+}
+.musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .onBtn.chOn {
+  content: url(../images/headToWin/btn_yes_chi.png);
 }
 .musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .onBtn:active,
 .musicOnOffWrapper > .musicOnOffBoard  > .musicWrapper > .onBtn.touched {
@@ -628,10 +658,17 @@
   transform-origin: center;
 }
 .gameWrapper > .count.c0 {
-  content: url(../images/headToWin/ui_go.png);
   animation: scaleUp 0.75s forwards;
   opacity: 1;
 }
+.gameWrapper > .count.c0.eng {
+  content: url(../images/headToWin/ui_go.png);
+}
+.gameWrapper > .count.c0.ch {
+  content: url(../images/headToWin/ui_go_chi.png);
+  width: calc(min(50vh, 50vw));
+}
+
 .gameWrapper > .count.c1 {
   content: url(../images/headToWin/ui_1.png);
   animation: scaleUp 0.75s forwards;

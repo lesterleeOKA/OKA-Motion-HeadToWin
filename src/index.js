@@ -20,10 +20,13 @@ let rafId;
 let stats;
 let startInferenceTime, numInferences = 0;
 let inferenceTimeSum = 0, lastPanelUpdate = 0;
+const previewImageEng = require('./images/headToWin/mhead_preview.png');
+const previewImageCh = require('./images/headToWin/mhead_preview_ch.png');
 const bgImage = require('./images/headToWin/bg.png');
 const fpsDebug = document.getElementById('stats');
-let { jwt, id, levelKey, model, removal, fps, gameTime, fallSpeed } = parseUrlParams();
+let { jwt, id, levelKey, model, removal, fps, gameTime, fallSpeed, lang } = parseUrlParams();
 let holdTimeout;
+let previewImageUrl = null;
 //const ctx = canvas.getContext('2d');
 
 async function createDetector() {
@@ -195,8 +198,9 @@ function setAPIImage(imageElement, url) {
 }
 
 function gameSetup() {
+  View.lang = lang;
   if (apiManager.isLogined) {
-    let previewImageUrl = (apiManager.settings.previewGameImageUrl && apiManager.settings.previewGameImageUrl !== '') ? apiManager.settings.previewGameImageUrl : null;
+    previewImageUrl = (apiManager.settings.previewGameImageUrl && apiManager.settings.previewGameImageUrl !== '') ? apiManager.settings.previewGameImageUrl : null;
     State.gameTime = apiManager.settings.gameTime;
     State.fallSpeed = apiManager.settings.fallSpeed;
     logController.log("settings gameTime:", State.gameTime);
@@ -221,9 +225,38 @@ function gameSetup() {
   }
   else {
     View.preloadUsedImages(null);
+    setAPIImage(document.getElementById('previewImg'), lang === 0 ? previewImageEng : previewImageCh);
+    let instruction = languagesContent(
+      "Use your head to collide the letters!",
+      "請閱讀金句，選出（   ）內的字詞。",
+      "请阅读金句，选出（   ）内的字词。"
+    );
+    View.setInstructionContent(instruction);
     if (removal === '1') {
       setAPIImage(document.getElementById('bgImage'), bgImage);
     }
+  }
+
+  let ruleContent = languagesContent(
+    "Stay your head under the white line.",
+    "請保持頭部在白色線下方.",
+    "请保持头部在白色线下方."
+  );
+  View.setRuleContent(ruleContent);
+  View.setStartBtn();
+  View.setMusicOnOffWrapper();
+}
+
+function languagesContent(eng = "", ch = "", cn = "") {
+  switch (lang) {
+    case "0":
+      return eng;
+    case "1":
+      return ch;
+    case "2":
+      return cn;
+    default:
+      return eng;
   }
 }
 
@@ -239,6 +272,9 @@ async function init() {
   Util.updateLoadingStatus("Loading Data");
   State.gameTime = gameTime;
   State.fallSpeed = fallSpeed;
+  State.lang = lang;
+  QuestionManager.jsonFileName = lang === "0" ? "questions" : "questions_ch";
+  logController.log("current jsonFileName:", QuestionManager.jsonFileName);
   // Load question data and handle callbacks
   await new Promise((resolve, reject) => {
     QuestionManager.checkIsLogin(
@@ -278,18 +314,29 @@ async function init() {
     return dialogText;
   };
 
+  const langAudioFiles = {
+    prepare: {
+      eng: require('./audio/prepare_eng.mp3'),
+      ch: require('./audio/prepare_ch.mp3'),
+    },
+    outBox: {
+      eng: require('./audio/outBox_eng.mp3'),
+      ch: require('./audio/outBox_ch.mp3'),
+    }
+  };
+
   const defaultAudios = [
     ['bgm', require('./audio/bgm.mp3'), false, 0.5],
     ['btnClick', require('./audio/btnClick.wav')],
     ['countDown', require('./audio/countDown.mp3')],
     ['score', require('./audio/score.mp3')],
     //['instruction', require('./audio/instruction.mp3')],
-    ['prepare', require('./audio/prepare.mp3')],
+    ['prepare', langAudioFiles.prepare[lang === "0" ? "eng" : "ch"]],
     ['start', require('./audio/start.mp3')],
     /*['finished', require('./audio/finished.mp3')],*/
     ['passGame', require('./audio/passgame.mp3')],
     ['failGame', require('./audio/failgame.mp3')],
-    ['outBox', require('./audio/outBox.mp3')],
+    ['outBox', langAudioFiles.outBox[lang === "0" ? "eng" : "ch"]],
     ['poseValid', require('./audio/poseValid.mp3')],
     ['ansCorrect', require('./audio/ansCorrect.mp3')],
     ['ansWrong', require('./audio/ansWrong.mp3')],

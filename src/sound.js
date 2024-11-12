@@ -56,7 +56,7 @@ export default {
       }
     });
   },
-  play(key, loop = false, volume = null) {
+  play(key, loop = false, volume = null, onCompleted = null) {
     //logController.log('Play sound: ' + key);
     if (!this.audios[key]) return;
     let audio = this.audios[key];
@@ -76,6 +76,9 @@ export default {
 
     source.addEventListener('ended', () => {
       source.stop();
+      if (typeof onCompleted === 'function') {
+        onCompleted();
+      }
     });
 
     audio.gainNode = gainNode

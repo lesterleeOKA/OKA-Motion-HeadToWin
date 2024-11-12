@@ -12,6 +12,7 @@ export default {
   stateLastFor: 0,
   stateType: '',
   isSoundOn: true,
+  lang: null,
   gameTime: 0,
   fallSpeed: 0,
   gamePauseData: {
@@ -61,7 +62,8 @@ export default {
     this.stateType = stateType;
 
     if (state == 'instruction') {
-      Game.init(this.gameTime, this.fallSpeed);
+      console.log("DIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII lang", this.lang);
+      Game.init(this.lang, this.gameTime, this.fallSpeed);
       View.setProgressBar(false);
       View.hideTopLeftControl();
       View.hideTips();
@@ -77,7 +79,7 @@ export default {
         //Sound.play('instruction');
       }
     } else if (state == 'prepare') {
-      Game.init(this.gameTime, this.fallSpeed);
+      Game.init(this.lang, this.gameTime, this.fallSpeed);
       View.hideFinished();
       View.showCanvas();
       View.hideInstruction();

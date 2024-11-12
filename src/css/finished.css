@@ -30,13 +30,18 @@
 .finishedWrapper > .finishedBoardWrapper > .finishedBoard {
   position: relative;
   height: calc(min(50vh, 50vw));
-  content: url(../images/headToWin/ui_board_fail_1p.png);
 }
-.finishedWrapper > .finishedBoardWrapper > .finishedBoard.success {
+.finishedWrapper > .finishedBoardWrapper > .finishedBoard.engSuccess {
   content: url(../images/headToWin/ui_board_pass_1p.png);
 }
-.finishedWrapper > .finishedBoardWrapper > .finishedBoard.fail {
+.finishedWrapper > .finishedBoardWrapper > .finishedBoard.chSuccess {
+  content: url(../images/headToWin/ui_board_pass_1p_chi.png);
+}
+.finishedWrapper > .finishedBoardWrapper > .finishedBoard.engFail {
   content: url(../images/headToWin/ui_board_fail_1p.png);
+}
+.finishedWrapper > .finishedBoardWrapper > .finishedBoard.chFail {
+  content: url(../images/headToWin/ui_board_fail_1p_chi.png);
 }
 
 .finishedBoardText{
@@ -109,13 +114,20 @@
 }
 
 .finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .backHomeBtn {
-  background: url(../images/headToWin/quit_btn.png);
-  background-size: contain;
   width: calc(min(28.7vh, 28.7vw));
   height: 100%;
-  background-repeat: no-repeat;
   scale: 1;
   -webkit-tap-highlight-color: transparent;
+}
+.finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .backHomeBtn.engBack {
+  background: url(../images/headToWin/quit_btn.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .backHomeBtn.chBack {
+  background: url(../images/headToWin/quit_btn_chi.png);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .backHomeBtn:active,
@@ -131,14 +143,21 @@
 }
 
 .finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .playAgainBtn {
-  background: url(../images/headToWin/btn_tryagain.png);
-  background-size: contain;
   width: calc(min(28.7vh, 28.7vw));
   height: 100%;
-  background-repeat: no-repeat;
   scale: 1;
   -webkit-tap-highlight-color: transparent;
   animation: jump 0.8s infinite;
+}
+.finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .playAgainBtn.engReplay {
+  background: url(../images/headToWin/btn_tryagain.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .playAgainBtn.chReplay {
+  background: url(../images/headToWin/btn_tryagain_chi.png);
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 @keyframes jump {
