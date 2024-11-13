@@ -62,7 +62,6 @@ export default {
     this.stateType = stateType;
 
     if (state == 'instruction') {
-      console.log("DIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII lang", this.lang);
       Game.init(this.lang, this.gameTime, this.fallSpeed);
       View.setProgressBar(false);
       View.hideTopLeftControl();
@@ -138,7 +137,12 @@ export default {
           setTimeout(() => {
             this.setPoseState('selectedImg', '');
             if (state === 'playing')
-              Game.moveToNextQuestion();
+              if (View.lang === "0") {
+                Game.moveToNextQuestion();
+              }
+              else {
+                Game.clearOption();
+              }
           }, 1000);
           break;
       }

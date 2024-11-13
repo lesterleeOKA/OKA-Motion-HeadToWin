@@ -20,6 +20,16 @@ const audioFiles = [
   ['p1u1-a18', require('./audio/p1/u1/p1u1-a18.mp3')],
   ['p1u1-a19', require('./audio/p1/u1/p1u1-a19.mp3')],
   ['p1u1-a20', require('./audio/p1/u1/p1u1-a20.mp3')],
+  ['d1', require('./audio/ch/d1.wav')],
+  ['d2', require('./audio/ch/d2.wav')],
+  ['d3', require('./audio/ch/d3.wav')],
+  ['d4', require('./audio/ch/d4.wav')],
+  ['d5', require('./audio/ch/d5.wav')],
+  ['d6', require('./audio/ch/d6.wav')],
+  ['d7', require('./audio/ch/d7.wav')],
+  ['d8', require('./audio/ch/d8.wav')],
+  ['d9', require('./audio/ch/d9.wav')],
+  ['d10', require('./audio/ch/d10.wav')]
 ];
 
 

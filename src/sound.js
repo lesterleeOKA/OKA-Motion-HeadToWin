@@ -143,6 +143,7 @@ export default {
     Util.updateLoadingStatus("Loading Audio");
     let pArray = [];
     for (let [key, url, createAudioContext, volume] of paramArray) {
+      logController.log("audio preloaded url: ", url);
       pArray.push(this.preloadAudio(key, url, createAudioContext, volume));
     }
     return Promise.all(pArray);

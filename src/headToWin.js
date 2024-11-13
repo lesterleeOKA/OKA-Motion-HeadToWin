@@ -54,7 +54,6 @@ export default {
   init(lang = null, gameTime = null, fallSpeed = null) {
     //View.showTips('tipsReady');
     this.lang = lang;
-    console.log("FKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKkk lang", this.lang);
     this.startedGame = false;
     this.fallingId = 0;
     this.remainingTime = gameTime !== null ? gameTime : 120;
@@ -814,11 +813,11 @@ export default {
     }
   },
 
-  playWordAudio(QID) {
+  playWordAudio(QID, onCompleted = null) {
     // Add your button click event handler logic here
     if (State.isSoundOn) {
       Sound.stopAll(['bgm', 'lastTen']);
-      Sound.play(QID);
+      Sound.play(QID, false, null, onCompleted);
     }
   },
 
@@ -946,7 +945,16 @@ export default {
     View.optionArea.innerHTML = '';
     this.typedItems.splice(0);
     this.selectedCount = 0;
-
+  },
+  clearOption() {
+    this.fallingId = 0;
+    this.leftCount = 0;
+    this.rightCount = 0;
+    this.fillwordTime = 0;
+    this.fallingItems.splice(0);
+    View.optionArea.innerHTML = '';
+    this.typedItems.splice(0);
+    this.selectedCount = 0;
   },
   moveToNextQuestion() {
     this.randomQuestion = null;
@@ -968,6 +976,7 @@ export default {
       this.answerTextField.classList.add('correct');
       State.changeState('playing', 'ansCorrect');
       View.showCorrectEffect(true);
+      if (this.lang === "1") this.playWordAudio(this.randomQuestion.QID, () => this.moveToNextQuestion());
     } else {
       //this.addScore(-1);
       this.answerTextField.classList.add('wrong');

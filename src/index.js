@@ -199,6 +199,7 @@ function setAPIImage(imageElement, url) {
 
 function gameSetup() {
   View.lang = lang;
+  View.setGameTitle();
   if (apiManager.isLogined) {
     previewImageUrl = (apiManager.settings.previewGameImageUrl && apiManager.settings.previewGameImageUrl !== '') ? apiManager.settings.previewGameImageUrl : null;
     State.gameTime = apiManager.settings.gameTime;

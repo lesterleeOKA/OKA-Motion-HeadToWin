@@ -59,6 +59,7 @@ export default {
   headTracker: document.getElementById('head'),
   playerIcon: document.getElementById('userIcon'),
   fpsModeBtn: document.getElementById('fpsButton'),
+  gameTitle: document.getElementById('game-title'),
 
   progressBarWrapper: document.querySelector('.progressBarWrapper'),
   instructionContent: document.querySelector('.instructionBoard > .instructionRule > .instructionContent'),
@@ -469,6 +470,20 @@ export default {
         this.musicOnOffBoard.classList.add('eng');
         this.onBtn.classList.add('engOn');
         this.offBtn.classList.add('engOff');
+        break;
+    }
+  },
+
+  setGameTitle() {
+    switch (this.lang) {
+      case "0":
+        this.gameTitle.innerText = "Head To Win";
+        break;
+      case "1":
+        this.gameTitle.innerText = "金句温習";
+        break;
+      default:
+        this.gameTitle.innerText = "Head To Win";
         break;
     }
   }
