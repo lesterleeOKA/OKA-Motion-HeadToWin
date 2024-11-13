@@ -45,7 +45,7 @@ function parseUrlParams() {
       removal: removalValue !== null ? removalValue : 0,
       fps: fpsValue !== null ? fpsValue : 0,
       model: modelValue,
-      lang: langValue !== null ? langValue : 0,
+      lang: langValue !== null ? langValue : "0",
     };
   }
 
@@ -58,7 +58,7 @@ function parseUrlParams() {
     removal: 0,
     fps: 0,
     model: null,
-    lang: 0
+    lang: "0"
   };
 }
 
