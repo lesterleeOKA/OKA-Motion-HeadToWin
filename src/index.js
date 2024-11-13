@@ -22,6 +22,10 @@ let startInferenceTime, numInferences = 0;
 let inferenceTimeSum = 0, lastPanelUpdate = 0;
 const previewImageEng = require('./images/headToWin/mhead_preview.png');
 const previewImageCh = require('./images/headToWin/mhead_preview_ch.png');
+const headImages = [
+  require("./images/headToWin/helmet.png"),
+  require("./images/headToWin/helmet_ch.png")
+];
 const bgImage = require('./images/headToWin/bg.png');
 const fpsDebug = document.getElementById('stats');
 let { jwt, id, levelKey, model, removal, fps, gameTime, fallSpeed, lang } = parseUrlParams();
@@ -226,7 +230,7 @@ function gameSetup() {
   }
   else {
     View.preloadUsedImages(null);
-    setAPIImage(document.getElementById('previewImg'), lang === 0 ? previewImageEng : previewImageCh);
+    setAPIImage(document.getElementById('previewImg'), lang === "0" ? previewImageEng : previewImageCh);
     let instruction = languagesContent(
       "Use your head to collide the letters!",
       "請閱讀金句，選出（   ）內的字詞。",
@@ -236,6 +240,14 @@ function gameSetup() {
     if (removal === '1') {
       setAPIImage(document.getElementById('bgImage'), bgImage);
     }
+
+    let headImagesSrc = [];
+    headImages.forEach((path) => {
+      const img = new Image();
+      img.src = path;
+      headImagesSrc.push(img.src);
+    });
+    View.setHeadTrackerMask(lang === "0" ? headImagesSrc[0] : headImagesSrc[1]);
   }
 
   let ruleContent = languagesContent(
@@ -326,18 +338,20 @@ async function init() {
     }
   };
 
+  let audioLang = "eng";
+  if (lang === "1") audioLang = "ch";
   const defaultAudios = [
     ['bgm', require('./audio/bgm.mp3'), false, 0.5],
     ['btnClick', require('./audio/btnClick.wav')],
     ['countDown', require('./audio/countDown.mp3')],
     ['score', require('./audio/score.mp3')],
     //['instruction', require('./audio/instruction.mp3')],
-    ['prepare', langAudioFiles.prepare[lang === "0" ? "eng" : "ch"]],
+    ['prepare', langAudioFiles.prepare[audioLang]],
     ['start', require('./audio/start.mp3')],
     /*['finished', require('./audio/finished.mp3')],*/
     ['passGame', require('./audio/passgame.mp3')],
     ['failGame', require('./audio/failgame.mp3')],
-    ['outBox', langAudioFiles.outBox[lang === "0" ? "eng" : "ch"]],
+    ['outBox', langAudioFiles.outBox[audioLang]],
     ['poseValid', require('./audio/poseValid.mp3')],
     ['ansCorrect', require('./audio/ansCorrect.mp3')],
     ['ansWrong', require('./audio/ansWrong.mp3')],

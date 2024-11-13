@@ -171,6 +171,9 @@ export default {
         case "1":
           this.countImg.classList.add("ch");
           break;
+        default:
+          this.countImg.classList.add("eng");
+          break;
       }
     }
     //this.countImg.style.opacity = 1;
@@ -363,22 +366,11 @@ export default {
       this.headTracker.src = imgUrl;
     }
   },
-  headImages: [
-    require("./images/headToWin/helmet.png"),
-    require("./images/headToWin/helmet_ch.png")
-  ],
   showHeadTracker(status, width = null, left = null, top = null) {
-    let headImagesSrc = [];
     if (width) this.headTracker.style.width = width;
     if (left) this.headTracker.style.left = left;
     if (top) this.headTracker.style.top = top;
     this.headTracker.style.display = status ? 'block' : 'none';
-    this.headImages.forEach((path) => {
-      const img = new Image();
-      img.src = path;
-      headImagesSrc.push(img.src);
-    });
-    this.headTracker.src = this.lang === "0" ? headImagesSrc[0] : headImagesSrc[1];
   },
 
   setPlayerIcon(iconUrl = null) {
