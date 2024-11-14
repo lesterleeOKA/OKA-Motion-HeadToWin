@@ -50,6 +50,7 @@ export default {
   apiManager: null,
   itemDelay: 0,
   lang: null,
+  firstFall: true,
 
   init(lang = null, gameTime = null, fallSpeed = null) {
     //View.showTips('tipsReady');
@@ -110,6 +111,7 @@ export default {
     this.selectedCount = 0;
     this.apiManager = State.apiManager;
     this.resetProgressBar();
+    this.firstFall = true;
   },
 
   handleVisibilityChange() {
@@ -272,7 +274,6 @@ export default {
   },
 
   startFalling() {
-    let firstFall = true;
     const falling = (timestamp) => {
       if (!this.lastFallingTime) this.lastFallingTime = timestamp;
       const elapsed = timestamp - this.lastFallingTime;
@@ -280,6 +281,10 @@ export default {
       //logController.log(this.finishedCreateOptions);
       if (elapsed >= currentDelay) {
         if (!this.finishedCreateOptions && this.randomPair.length > 0) {
+          if (this.firstFall) {
+            this.selectedCount = this.getRandomInt(-1, this.numberOfColumns - 1);
+            this.firstFall = false;
+          }
           if (this.fallingItems.length < this.randomPair.length) {
             if (this.fallingId < this.fallingItems.length) {
               /*logController.log("falling id:", this.fallingId);*/
@@ -303,7 +308,6 @@ export default {
           }
         }*/
         this.lastFallingTime = timestamp;
-        firstFall = false;
       }
 
       if (this.timerRunning) {
@@ -368,7 +372,7 @@ export default {
   },
   createRandomItem(char, optionImage) {
     if (char && char.length !== 0) {
-      const columnId = this.getBalancedColumn();
+      const columnId = this.getNextSordOrder();
       const word = char;
       const generatePosition = () => {
         const x = this.generatePositionX(columnId);
@@ -395,14 +399,9 @@ export default {
     else
       this.selectedCount = 0;
 
+    logController.log("new randomw id", this.selectedCount);
     return this.selectedCount;
   },
-  getBalancedColumn() {
-    let newRandomId = this.getNextSordOrder();
-    logController.log("new randomw id", newRandomId);
-    return newRandomId;
-  },
-
   generatePositionX(columnId) {
     if (this.wholeScreenColumnSeperated) {
       const offset = 20;
@@ -526,12 +525,11 @@ export default {
     else {
       currentColumnId = 0;
     }
-    optionWrapper.x = this.generatePositionX(currentColumnId);
-    optionWrapper.setAttribute('column', currentColumnId);
-
     let delay = this.refallingDelay();
     //logController.log("delay", delay, itemLength);
     setTimeout(() => {
+      optionWrapper.x = this.generatePositionX(currentColumnId);
+      optionWrapper.setAttribute('column', currentColumnId);
       optionWrapper.style.left = optionWrapper.x + 'px';
       optionWrapper.style.setProperty('--bottom-height', `${(View.canvas.height + this.optionSize)}px`);
       optionWrapper.style.setProperty('--fallingSpeed', `${this.fallingSpeed}s`);
@@ -933,6 +931,7 @@ export default {
     }
   },
   clearWrapper() {
+    this.firstFall = true;
     this.finishedCreateOptions = false;
     this.fallingId = 0;
     this.leftCount = 0;
@@ -947,6 +946,7 @@ export default {
     this.selectedCount = 0;
   },
   clearOption() {
+    this.firstFall = true;
     this.fallingId = 0;
     this.leftCount = 0;
     this.rightCount = 0;
@@ -976,7 +976,13 @@ export default {
       this.answerTextField.classList.add('correct');
       State.changeState('playing', 'ansCorrect');
       View.showCorrectEffect(true);
-      if (this.lang === "1") this.playWordAudio(this.randomQuestion.QID, () => this.moveToNextQuestion());
+      if (this.lang === "1" && this.lang) {
+        State.isPlayingAudio = true;
+        this.playWordAudio(this.randomQuestion.QID, () => {
+          State.isPlayingAudio = false;
+          this.moveToNextQuestion();
+        });
+      }
     } else {
       //this.addScore(-1);
       this.answerTextField.classList.add('wrong');

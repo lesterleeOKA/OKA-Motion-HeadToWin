@@ -122,7 +122,15 @@ export class RendererCanvas2d {
 
       State.setPoseState('bodyInsideRedBox', !isBodyOutBox);
       if (isBodyOutBox) {
-        if (State.state == 'playing') State.changeState('outBox', 'outBox');
+        if (State.state == 'playing') {
+          if (State.lang === "1" && State.lang) {
+            if (!State.isPlayingAudio) {
+              State.changeState('outBox', 'outBox');
+            }
+          } else {
+            State.changeState('outBox', 'outBox');
+          }
+        }
         //logController.log('outBox', 'outBox');
         //this.drawHeadTracker(false);
         return false;

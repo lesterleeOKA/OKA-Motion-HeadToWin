@@ -12,6 +12,7 @@ export default {
   stateLastFor: 0,
   stateType: '',
   isSoundOn: true,
+  isPlayingAudio: false,
   lang: null,
   gameTime: null,
   fallSpeed: null,
@@ -137,11 +138,15 @@ export default {
           setTimeout(() => {
             this.setPoseState('selectedImg', '');
             if (state === 'playing')
-              if (View.lang === "0") {
+              if (this.apiManager.isLogined) {
                 Game.moveToNextQuestion();
               }
               else {
-                Game.clearOption();
+                if (this.lang === "0" || !this.lang) {
+                  Game.moveToNextQuestion();
+                } else {
+                  Game.clearOption();
+                }
               }
           }, 1000);
           break;
