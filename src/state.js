@@ -13,8 +13,8 @@ export default {
   stateType: '',
   isSoundOn: true,
   lang: null,
-  gameTime: 0,
-  fallSpeed: 0,
+  gameTime: null,
+  fallSpeed: null,
   gamePauseData: {
     state: '',
     stateType: '',

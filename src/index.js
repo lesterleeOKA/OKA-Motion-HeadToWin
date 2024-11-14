@@ -258,6 +258,8 @@ function gameSetup() {
   View.setRuleContent(ruleContent);
   View.setStartBtn();
   View.setMusicOnOffWrapper();
+  if (gameTime) State.gameTime = gameTime;
+  if (fallSpeed) State.fallSpeed = fallSpeed;
 }
 
 function languagesContent(eng = "", ch = "", cn = "") {
@@ -283,8 +285,6 @@ async function init() {
   ]);
 
   Util.updateLoadingStatus("Loading Data");
-  State.gameTime = gameTime;
-  State.fallSpeed = fallSpeed;
   State.lang = lang;
   QuestionManager.jsonFileName = lang === "0" ? "questions" : "questions_ch";
   logController.log("current jsonFileName:", QuestionManager.jsonFileName);
