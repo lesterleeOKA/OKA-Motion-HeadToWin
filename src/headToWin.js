@@ -172,7 +172,7 @@ export default {
     //View.finishedScore.innerText = this.score;
   },
 
-  countUp(displayElement, start, end, duration, playEffect = true, unit = "", updateTextColor = true) {
+  countUp(displayElement, start, end, duration, playEffect = true, unit = "", updateTextColor = true, updateColor = 'yellow', originalColor = 'white') {
     let startTime = null;
     let lastSoundTime = 0;
     const soundInterval = 200;
@@ -180,7 +180,7 @@ export default {
     function animate(timestamp) {
       if (!startTime) {
         startTime = timestamp;
-        if (updateTextColor) displayElement.style.color = 'yellow';
+        if (updateTextColor) displayElement.style.color = updateColor;
       }
       const progress = timestamp - startTime;
       // Calculate the current value based on the start value
@@ -195,7 +195,7 @@ export default {
         requestAnimationFrame(animate);
       }
       else {
-        if (updateTextColor) displayElement.style.color = 'white';
+        if (updateTextColor) displayElement.style.color = originalColor;
       }
     }
     requestAnimationFrame(animate);
