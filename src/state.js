@@ -206,6 +206,10 @@ export default {
           );
         }
         else {
+          if (this.lang === "1" && this.lang) {
+            location.reload();
+            return;
+          }
           homePageUrl = window.location.origin + '/RainbowOne/webapp/OKAGames/SelectGames/';
           window.open(homePageUrl, '_self');
         }
@@ -220,6 +224,10 @@ export default {
           );
         }
         else {
+          if (this.lang === "1" && this.lang) {
+            location.reload();
+            return;
+          }
           homePageUrl = 'https://www.starwishparty.com';
           window.open(homePageUrl, '_self');
         }
