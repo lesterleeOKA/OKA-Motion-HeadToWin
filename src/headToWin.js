@@ -287,7 +287,6 @@ export default {
           }
           if (this.fallingItems.length < this.randomPair.length) {
             if (this.fallingId < this.fallingItems.length) {
-              /*logController.log("falling id:", this.fallingId);*/
               this.fallingId += 1;
             } else {
               this.fallingId = 0;
@@ -957,6 +956,7 @@ export default {
     this.selectedCount = 0;
   },
   moveToNextQuestion() {
+    View.preloadedFallingImages.sort(() => Math.random() - 0.5);
     this.randomQuestion = null;
     this.randomPair = [];
     this.clearWrapper();
