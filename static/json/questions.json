@@ -659,6 +659,266 @@
         "policeman"
         ],
         "correctAnswer": "postman"
-        }
+        },
+        {
+          "qid": "p3bu1-b1",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "africa",
+              "afraid",
+              "fry",
+              "avoid"
+          ],
+          "correctAnswer": "afraid",
+          "correctAnswerIndex": 1
+      },
+      {
+          "qid": "p3bu1-b2",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "angle",
+              "angel",
+              "anchor",
+              "angry"
+          ],
+          "correctAnswer": "angry",
+          "correctAnswerIndex": 3
+      },
+      {
+          "qid": "p3bu1-b3",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "board",
+              "boar",
+              "boat",
+              "bored"
+          ],
+          "correctAnswer": "bored",
+          "correctAnswerIndex": 3
+      },
+      {
+          "qid": "p3bu1-b4",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "excited",
+              "exited",
+              "exclaim",
+              "extra"
+          ],
+          "correctAnswer": "excited",
+          "correctAnswerIndex": 0
+      },
+      {
+          "qid": "p3bu1-b5",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "hungary",
+              "hungry",
+              "hung",
+              "honey"
+          ],
+          "correctAnswer": "hungry",
+          "correctAnswerIndex": 1
+      },
+      {
+          "qid": "p3bu1-b6",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "nan",
+              "nurse",
+              "nervous",
+              "nerve"
+          ],
+          "correctAnswer": "nervous",
+          "correctAnswerIndex": 2
+      },
+      {
+          "qid": "p3bu1-b7",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "said",
+              "sad",
+              "salt",
+              "set"
+          ],
+          "correctAnswer": "sad",
+          "correctAnswerIndex": 1
+      },
+      {
+          "qid": "p3bu1-b8",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "first",
+              "forty",
+              "thirty",
+              "thirsty"
+          ],
+          "correctAnswer": "thirty",
+          "correctAnswerIndex": 2
+      },
+      {
+          "qid": "p3bu1-b9",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "timed",
+              "tried",
+              "tired",
+              "tyre"
+          ],
+          "correctAnswer": "tired",
+          "correctAnswerIndex": 2
+      },
+      {
+          "qid": "p3bu1-b10",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "confident",
+              "confession",
+              "connection",
+              "consequence"
+          ],
+          "correctAnswer": "confident",
+          "correctAnswerIndex": 0
+      },
+      {
+          "qid": "p3bu1-b11",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "ember",
+              "embarassed",
+              "embarrassed",
+              "embarrased"
+          ],
+          "correctAnswer": "embarrassed",
+          "correctAnswerIndex": 2
+      },
+      {
+          "qid": "p3bu1-b12",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "fixture",
+              "rusty",
+              "thruster",
+              "frustrated"
+          ],
+          "correctAnswer": "frustrated",
+          "correctAnswerIndex": 3
+      },
+      {
+          "qid": "p3bu1-b13",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "jelly",
+              "jealous",
+              "jellyfish",
+              "jester"
+          ],
+          "correctAnswer": "jealous",
+          "correctAnswerIndex": 1
+      },
+      {
+          "qid": "p3bu1-b14",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "onset",
+              "upset",
+              "headset",
+              "reset"
+          ],
+          "correctAnswer": "upset",
+          "correctAnswerIndex": 1
+      },
+      {
+          "qid": "p3bu1-b15",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "crowd",
+              "prowl",
+              "proud",
+              "pour"
+          ],
+          "correctAnswer": "proud",
+          "correctAnswerIndex": 2
+      },
+      {
+          "qid": "p3bu1-b16",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "shot",
+              "shopped",
+              "shook",
+              "shocked"
+          ],
+          "correctAnswer": "shocked",
+          "correctAnswerIndex": 3
+      },
+      {
+          "qid": "p3bu1-b17",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "stressed",
+              "dressed",
+              "stretched",
+              "streets"
+          ],
+          "correctAnswer": "stressed",
+          "correctAnswerIndex": 0
+      },
+      {
+          "qid": "p3bu1-b18",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "wary",
+              "warm",
+              "wormy",
+              "worried"
+          ],
+          "correctAnswer": "worried",
+          "correctAnswerIndex": 3
+      },
+      {
+          "qid": "p3bu1-b19",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "torched",
+              "tummy",
+              "twitch",
+              "touched"
+          ],
+          "correctAnswer": "touched",
+          "correctAnswerIndex": 3
+      },
+      {
+          "qid": "p3bu1-b20",
+          "questionType": "audio",
+          "question": "",
+          "answers": [
+              "axe",
+              "anchor",
+              "anxious",
+              "answer"
+          ],
+          "correctAnswer": "anxious",
+          "correctAnswerIndex": 2
+      }
    ]
 }
