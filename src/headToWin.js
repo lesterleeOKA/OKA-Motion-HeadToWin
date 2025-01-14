@@ -446,20 +446,27 @@ export default {
     let option = document.createElement('span');
     option.classList.add('option');
     option.classList.add('fixedText');
-    option.textContent = text;
-    optionWrapper.appendChild(option);
+    let formattedText = '';
 
     switch (this.lang) {
       case "0":
+        formattedText = text.split(' ').join('<br>'); // Replace spaces with <br>
+        option.innerHTML = formattedText; // Use innerHTML to include <br>
         optionWrapper.classList.add("engOpt");
         break;
       case "1":
+        formattedText = text;
+        option.textContent = formattedText;
         optionWrapper.classList.add("chOpt");
         break;
       default:
+        formattedText = text.split(' ').join('<br>'); // Replace spaces with <br>
+        option.innerHTML = formattedText; // Use innerHTML to include <br>
         optionWrapper.classList.add("engOpt");
         break;
     }
+
+    optionWrapper.appendChild(option);
 
     requestAnimationFrame(() => {
       // Calculate the font size based on the container size

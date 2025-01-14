@@ -32,16 +32,16 @@
   height: calc(min(50vh, 50vw));
 }
 .finishedWrapper > .finishedBoardWrapper > .finishedBoard.engSuccess {
-  content: url(../images/headToWin/ui_board_pass_1p.png);
+  content: url(../images/normal/ui_board_pass_1p.png);
 }
 .finishedWrapper > .finishedBoardWrapper > .finishedBoard.chSuccess {
-  content: url(../images/headToWin/ui_board_pass_1p_chi.png);
+  content: url(../images/normal/ui_board_pass_1p_chi.png);
 }
 .finishedWrapper > .finishedBoardWrapper > .finishedBoard.engFail {
-  content: url(../images/headToWin/ui_board_fail_1p.png);
+  content: url(../images/normal/ui_board_fail_1p.png);
 }
 .finishedWrapper > .finishedBoardWrapper > .finishedBoard.chFail {
-  content: url(../images/headToWin/ui_board_fail_1p_chi.png);
+  content: url(../images/normal/ui_board_fail_1p_chi.png);
 }
 
 .finishedBoardText{
@@ -87,10 +87,10 @@
   height: calc(min(5vh, 5vw));
 }
 .finishedWrapper > .finishedBoardWrapper > .scoreTimeWrapper > .row.score > .icon {
-  content: url(../images/headToWin/icon_star_empty.png);
+  content: url(../images/normal/icon_star_empty.png);
 }
 .finishedWrapper > .finishedBoardWrapper > .scoreTimeWrapper > .row.score > .icon.show {
-  content: url(../images/headToWin/icon_star.png);
+  content: url(../images/normal/icon_star.png);
 }
 /*.finishedWrapper > .finishedBoardWrapper > .scoreTimeWrapper > .row.time > .icon {
   content: url(../images/iconTime.png);
@@ -120,12 +120,12 @@
   -webkit-tap-highlight-color: transparent;
 }
 .finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .backHomeBtn.engBack {
-  background: url(../images/headToWin/quit_btn.png);
+  background: url(../images/normal/quit_btn.png);
   background-repeat: no-repeat;
   background-size: contain;
 }
 .finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .backHomeBtn.chBack {
-  background: url(../images/headToWin/quit_btn_chi.png);
+  background: url(../images/normal/quit_btn_chi.png);
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -150,12 +150,12 @@
   animation: jump 0.8s infinite;
 }
 .finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .playAgainBtn.engReplay {
-  background: url(../images/headToWin/btn_tryagain.png);
+  background: url(../images/normal/btn_tryagain.png);
   background-size: contain;
   background-repeat: no-repeat;
 }
 .finishedWrapper > .finishedBoardWrapper > .finishedBtnWrapper > .playAgainBtn.chReplay {
-  background: url(../images/headToWin/btn_tryagain_chi.png);
+  background: url(../images/normal/btn_tryagain_chi.png);
   background-size: contain;
   background-repeat: no-repeat;
 }

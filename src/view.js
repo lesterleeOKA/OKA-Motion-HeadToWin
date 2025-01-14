@@ -81,19 +81,7 @@ export default {
       require("./images/old/fruit5.png"),
     ],
   },
-  /*optionImages: [
-    //eng
-    require("./images/headToWin/meteor1.png"),
-    require("./images/headToWin/meteor2.png"),
-    require("./images/headToWin/meteor3.png"),
 
-    //ch
-    require("./images/old/fruit1.png"),
-    require("./images/old/fruit2.png"),
-    require("./images/old/fruit3.png"),
-    require("./images/old/fruit4.png"),
-    require("./images/old/fruit5.png"),
-  ],*/
   toAPIImageUrl(url) {
     if (url === null) return;
     fetch(url)
