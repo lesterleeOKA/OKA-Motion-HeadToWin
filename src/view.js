@@ -16,7 +16,12 @@ export default {
   countImg: document.querySelector('.gameWrapper > .count'),
   stageImg: document.querySelector('.gameWrapper > .questionBoard'),
   startBtn: document.querySelector('.startBtn'),
-  instructionBtn: document.querySelector('.gameWrapper > .topRightControl > .instructionBtn'),
+
+  ruleBtn: document.querySelector('.gameWrapper > .topRightControl > .ruleBtn'),
+  ruleCloseBtn: document.querySelector('.gameWrapper > .topRightControl > .ruleBox > .closeBtn'),
+  ruleBox: document.querySelector('.gameWrapper > .topRightControl > .ruleBox'),
+  ruleHints: document.querySelector('.gameWrapper > .topRightControl > .ruleBox > .hints'),
+
   motionBtn: document.querySelector('.gameWrapper > .topRightControl  > .motionBtn'),
 
   musicBtn: document.querySelector('.gameWrapper > .topRightControl > .musicBtn'),
@@ -345,6 +350,20 @@ export default {
     }
   },
   //-----------------------------------------------------------------------------------------------
+  showRuleBox(status) {
+    if (this.ruleBtn) {
+      this.ruleBox.style.opacity = status ? 1 : 0;
+      if (status) {
+        this.ruleBtn.classList.remove('on');
+        this.ruleBtn.classList.add('off');
+      }
+      else {
+        this.ruleBtn.classList.add('on');
+        this.ruleBtn.classList.remove('off');
+      }
+    }
+  },
+  //-----------------------------------------------------------------------------------------------
   setSelectCount(value) {
     for (let selectCount of this.selectCounts) selectCount.innerHTML = value;
   },
@@ -369,8 +388,8 @@ export default {
 
   setPlayerName(name = null) {
     if (name && name !== '') {
-      this.playerName.style.display = 'block';
-      this.playerNameBox.style.opacity = 1;
+      //this.playerName.style.display = 'block';
+      //this.playerNameBox.style.opacity = 1;
       const textLength = name.length;
       const baseSize = this.playerName.getBoundingClientRect().width / textLength;
       this.playerNameText.textContent = name;
@@ -380,8 +399,8 @@ export default {
       }
     }
     else {
-      this.playerNameBox.style.opacity = 0;
-      this.playerName.style.display = 'none';
+      //this.playerNameBox.style.opacity = 0;
+      //this.playerName.style.display = 'none';
       this.playerNameText.textContent = '';
     }
   },
@@ -403,6 +422,21 @@ export default {
         break;
     }
     this.instructionContent.textContent = content;
+  },
+
+  setRuleHints(content = null) {
+    switch (this.lang) {
+      case "0":
+        this.ruleHints.classList.add('eng');
+        break;
+      case "1":
+        this.ruleHints.classList.add('ch');
+        break;
+      default:
+        this.ruleHints.classList.add('eng');
+        break;
+    }
+    this.ruleHints.textContent = content;
   },
 
   setRuleContent(content = null) {

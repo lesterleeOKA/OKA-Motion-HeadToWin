@@ -232,7 +232,7 @@ function gameSetup() {
     View.preloadUsedImages(null);
     setAPIImage(document.getElementById('previewImg'), lang === "0" ? previewImageEng : previewImageCh);
     let instruction = languagesContent(
-      "Use your head to collide the letters!",
+      "Use your head to collide the words!",
       "請閱讀金句，選出（   ）內的字詞。",
       "请阅读金句，选出（   ）内的字词。"
     );
@@ -256,6 +256,14 @@ function gameSetup() {
     "请保持头部在白色线下方."
   );
   View.setRuleContent(ruleContent);
+
+  let ruleHints = languagesContent(
+    "Just move your head left or right to bump words.",
+    "只需移動頭部左或右即可碰撞單字。",
+    "只需移动头部左或右即可碰撞单字。"
+  );
+  View.setRuleHints(ruleHints);
+
   View.setStartBtn();
   View.setMusicOnOffWrapper();
   if (gameTime) State.gameTime = gameTime;
@@ -496,6 +504,20 @@ function handleButtonClick(e) {
       State.changeState(State.gamePauseData.state, State.gamePauseData.stateType);
       State.setSound(true);
       break;
+    case View.ruleBtn:
+      View.ruleBtn.style.pointerEvents = 'none';
+      if (State.isSoundOn) {
+        Sound.play('btnClick');
+      }
+      View.showRuleBox(true);
+      break;
+    case View.ruleCloseBtn:
+      View.ruleBtn.style.pointerEvents = 'auto';
+      if (State.isSoundOn) {
+        Sound.play('btnClick');
+      }
+      View.showRuleBox(false);
+      break;
   }
 }
 
@@ -546,6 +568,12 @@ function handleButtonTouch(e) {
     case View.reloadBtn:
       View.reloadBtn.classList.add('touched');
       break;
+    case View.ruleBtn:
+      View.ruleBtn.classList.add('touched');
+      break;
+    case View.ruleCloseBtn:
+      View.ruleCloseBtn.classList.add('touched');
+      break;
   }
 }
 
@@ -578,6 +606,12 @@ function handleButtonTouchLeave(e) {
     case View.reloadBtn:
       View.reloadBtn.classList.remove('touched');
       break;
+    case View.ruleBtn:
+      View.ruleBtn.classList.remove('touched');
+      break;
+    case View.ruleCloseBtn:
+      View.ruleCloseBtn.classList.remove('touched');
+      break;
   }
 }
 
@@ -591,7 +625,9 @@ function setupEventListeners() {
     View.playAgainBtn,
     View.onBtn,
     View.offBtn,
-    View.reloadBtn
+    View.reloadBtn,
+    View.ruleBtn,
+    View.ruleCloseBtn
   ];
 
   buttons.forEach(button => {

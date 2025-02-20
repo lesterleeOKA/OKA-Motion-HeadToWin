@@ -300,7 +300,7 @@
 .gameWrapper > .topLeftControl > .scoreWrapper > .playerName > .playerNameBox {
   /*content: url(../images/fruitNinja/name_box.png);*/
   position: relative;
-  opacity: 0;
+  opacity: 1;
   top: 0;
   left: 0;
   width: 100%;
@@ -595,6 +595,86 @@
 }
 .gameWrapper > .topRightControl > .musicBtn.off {
   content: url(../images/normal/musicBtnOff.png);
+}
+/*-----------------------------------------------------------------------------------------------*/
+.gameWrapper > .topRightControl> .ruleBox {
+  position: absolute;
+  width: calc(min(45vh, 45vw));
+  height: calc(min(20vh, 20vw));
+  top: calc(min(12vh, 12vw));
+  right: calc(min(7.5vh, 7.5vw));
+  background-image: url(../images/normal/tooltip.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+}
+.gameWrapper > .topRightControl> .ruleBox > .hintTitle {
+  position: absolute;
+  width: calc(min(5vh, 5vw));
+  height: calc(min(5vh, 5vw));
+  top: calc(min(4vh, 4vw));
+  left: calc(min(4vh, 4vw));
+  font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;
+  font-size: calc(min(2.5vh, 2.5vw));
+  color: #8a4709;
+}
+.gameWrapper > .topRightControl> .ruleBox > .hints {
+  position: absolute;
+  width: calc(min(35vh, 35vw));
+  height: calc(min(5vh, 5vw));
+  top: calc(min(8.5vh, 8.5vw));
+  left: calc(min(4vh, 4vw));
+  align-content: center;
+  color: #381c02;
+}
+.gameWrapper > .topRightControl> .ruleBox > .hints.eng {
+  font-family: 'PoetsenOne', sans-serif;
+  font-weight: 100;
+  font-size: calc(min(2vh, 2vw));
+  line-height: calc(min(2.5vh, 2.5vw));
+}
+.gameWrapper > .topRightControl> .ruleBox > .hints.ch {
+  font-family: Arial, sans-serif;
+  font-weight: 600;
+  font-size: calc(min(2vh, 2vw));
+  line-height: calc(min(2.5vh, 2.5vw));
+}
+.gameWrapper > .topRightControl> .ruleBox > .closeBtn {
+  position: absolute;
+  width: calc(min(5vh, 5vw));
+  height: calc(min(5vh, 5vw));
+  top: calc(min(3vh, 3vw));
+  right: calc(min(5.5vh, 5.5vw));
+  content: url(../images/normal/ruleClose.png);
+}
+.gameWrapper > .topRightControl > .ruleBtn {
+  width: calc(min(9vh, 9vw));
+  margin-right: calc(min(3vh, 3vw));
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
+  touch-action: manipulation;
+  transform: scale(1);
+  transition: transform 0.2s ease-in-out;
+}
+.gameWrapper > .topRightControl > .ruleBtn:active,
+.gameWrapper > .topRightControl > .ruleBtn.touched {
+  width: calc(min(7vh, 7vw));
+  padding: calc(min(1vh, 1vw));
+  filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.35));
+  transform: scale(0.8);
+}
+.gameWrapper > .topRightControl > .ruleBtn.on {
+  content: url(../images/normal/instuctionBtnOn.png);
+}
+.gameWrapper > .topRightControl > .ruleBtn.off {
+  content: url(../images/normal/instuctionBtnOff.png);
 }
 /*-----------------------------------------------------------------------------------------------*/
 .gameWrapper > .topRightControl > .motionBtn {
