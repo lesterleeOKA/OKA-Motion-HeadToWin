@@ -29,7 +29,7 @@
   left: 0px;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 1));
   transition: opacity 0.1s ease;
   opacity: 1;
   background: url(../images/headToWin/meteor1.png);
@@ -315,8 +315,8 @@ font-size: calc(min(7vh, 7vw));
   background: transparent;
   border: none;
   color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 1));
   transform-origin: center center; /* Ensure the options scale from the center */
   will-change: transform; /* Optimize the animation */
   word-wrap: break-word; /* Allow long words to break and wrap to the next line */

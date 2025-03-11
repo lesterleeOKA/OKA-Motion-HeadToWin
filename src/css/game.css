@@ -129,7 +129,7 @@
   height: calc(min(50.44vh, 50.44vw));
 }
 .gameWrapper > .ansResult > .wellDone.show{
-  height: calc(min(50.44vh, 50.44vw));
+  height: calc(min(40.44vh, 40.44vw));
   animation: dropAndDisappear 1s forwards;
   z-index: 5;
 }

@@ -35,6 +35,9 @@ function parseUrlParams() {
     const langParam = params.find(param => param.startsWith('lang='));
     const langValue = langParam ? langParam.split('=')[1] : null;
     logController.log("langValue:", langValue);
+    const engFontSizeParam = params.find(param => param.startsWith('engfs='));
+    const engFontSizeValue = engFontSizeParam ? engFontSizeParam.split('=')[1] : null;
+    logController.log("engFontSizeValue:", engFontSizeValue);
 
     return {
       jwt: jwtValue,
@@ -46,6 +49,7 @@ function parseUrlParams() {
       fps: fpsValue !== null ? fpsValue : 0,
       model: modelValue,
       lang: langValue !== null ? langValue : "0",
+      engFontSize: engFontSizeValue
     };
   }
 
@@ -58,7 +62,8 @@ function parseUrlParams() {
     removal: 0,
     fps: 0,
     model: null,
-    lang: "0"
+    lang: "0",
+    engFontSize: null
   };
 }
 

@@ -51,14 +51,16 @@ export default {
   itemDelay: 0,
   lang: null,
   firstFall: true,
+  engFontSize: null,
 
-  init(lang = null, gameTime = null, fallSpeed = null) {
+  init(lang = null, gameTime = null, fallSpeed = null, engFontSize=null) {
     //View.showTips('tipsReady');
     this.lang = lang;
     this.startedGame = false;
     this.fallingId = 0;
     this.remainingTime = gameTime !== null ? gameTime : 120;
-    this.fallingSpeed = fallSpeed !== null ? fallSpeed : 2.5;
+    this.fallingSpeed = fallSpeed !== null ? fallSpeed : 6;
+    this.engFontSize = engFontSize !== null ? engFontSize : 30;
     this.itemDelay = 250;
     this.fallingDelay = 800;
     this.updateTimerDisplay(this.remainingTime);
@@ -483,12 +485,14 @@ export default {
       // Set the custom property for font size
       //option.style.setProperty('--font-size', `${calculatedFontSize}px`);
       //option.style.setProperty('--line-height', `${calculatedFontSize * 0.9}px`);
-      let containerWidth = this.optionSize;
-      let maxFontSize = 50; // Maximum font size in px
-      let minFontSize = 10; // Minimum font size in px
-      let fontSize = Math.max(minFontSize, Math.min(maxFontSize, containerWidth / (text.length * 0.7)));
+      //let containerWidth = this.optionSize;
+      //let maxFontSize = 50; // Maximum font size in px
+      //let minFontSize = 10; // Minimum font size in px
+      //let fontSize = Math.max(minFontSize, Math.min(maxFontSize, containerWidth / (text.length * 0.7)));
+      let fontSize = this.engFontSize;
+      let lineHeightMultiplier = 1;
       option.style.fontSize = `${fontSize}px`;
-      option.style.lineHeight = `${fontSize}px`;
+      option.style.lineHeight = `${fontSize * lineHeightMultiplier}px`;
     });
     return optionWrapper;
   },

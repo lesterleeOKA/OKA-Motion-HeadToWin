@@ -28,7 +28,7 @@ const headImages = [
 ];
 const bgImage = require('./images/headToWin/bg.png');
 const fpsDebug = document.getElementById('stats');
-let { jwt, id, levelKey, model, removal, fps, gameTime, fallSpeed, lang } = parseUrlParams();
+let { jwt, id, levelKey, model, removal, fps, gameTime, fallSpeed, lang, engFontSize} = parseUrlParams();
 let holdTimeout;
 let previewImageUrl = null;
 //const ctx = canvas.getContext('2d');
@@ -268,6 +268,7 @@ function gameSetup() {
   View.setMusicOnOffWrapper();
   if (gameTime) State.gameTime = gameTime;
   if (fallSpeed) State.fallSpeed = fallSpeed;
+  if (engFontSize) State.engFontSize = engFontSize;
 }
 
 function languagesContent(eng = "", ch = "", cn = "") {
